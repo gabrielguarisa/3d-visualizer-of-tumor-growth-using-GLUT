@@ -1,64 +1,4 @@
-#include "OGL.h"
-
-void ogl::Render::renderCells(std::vector<Cell> cells)
-{
-	for (int i = 0; i < cells.size(); i++) {
-		glPushMatrix();
-		glTranslatef(cells[i].coordinates.x, cells[i].coordinates.y, cells[i].coordinates.z);
-		switch (cells[i].type) {
-		case NEC: //Necrotic Cell (0): RGB DEPENDS ON CALCIFICATION LEVEL
-			glColor4f((cells[i].calcification)*1.0f, 0.0f, (1 - cells[i].calcification)*1.0f, 1.0f);
-			glutSolidSphere(cells[i].radius, NUM_SEGMENTS, NUM_SEGMENTS);
-			break;
-		case QUI: //Quiescent Cell (1): RGB #CCCCFF & RGB #4D4DFF
-			glColor4f(0.302f, 0.302f, 1.0f, 1.0f);
-			glutSolidSphere(cells[i].nucleusRadius, NUM_SEGMENTS, NUM_SEGMENTS);
-			glDepthMask(GL_FALSE);
-			glColor4f(0.8f, 0.8f, 1.0f, 0.2f);
-			glutSolidSphere(cells[i].radius, NUM_SEGMENTS, NUM_SEGMENTS);
-			glDepthMask(GL_TRUE);
-			break;
-		case PRO: //Proliferative Cell (2): RGB #00CC00 & RGB #4D4DFF
-			glColor4f(0.302f, 0.302f, 1.0f, 1.0f);
-			glutSolidSphere(cells[i].nucleusRadius, NUM_SEGMENTS, NUM_SEGMENTS);
-			glDepthMask(GL_FALSE);
-			glColor4f(0.0f, 0.8f, 0.0f, 0.2f);
-			glutSolidSphere(cells[i].radius, NUM_SEGMENTS, NUM_SEGMENTS);
-			glDepthMask(GL_TRUE);
-			break;
-		case APO: //Apoptotic Cell (4): RGB #E60000 & RGB #4D4DFF
-			glColor4f(0.302f, 0.302f, 1.0f, 1.0f);
-			glutSolidSphere(cells[i].nucleusRadius, NUM_SEGMENTS, NUM_SEGMENTS);
-			glDepthMask(GL_FALSE);
-			glColor4f(0.902f, 0.0f, 0.0f, 0.2f);
-			glutSolidSphere(cells[i].radius, NUM_SEGMENTS, NUM_SEGMENTS);
-			glDepthMask(GL_TRUE);
-			break;
-		case G1: //G1 Cell (5): RGB #00CC00 & RGB #4D4DFF
-			glColor4f(0.302f, 0.302f, 1.0f, 1.0f);
-			glutSolidSphere(cells[i].nucleusRadius, NUM_SEGMENTS, NUM_SEGMENTS);
-			glColor4f(0.0f, 0.8f, 0.0f, 0.2f);
-			glDepthMask(GL_FALSE);
-			glutSolidSphere(cells[i].radius, NUM_SEGMENTS, NUM_SEGMENTS);
-			glDepthMask(GL_TRUE);
-			break;
-		case NOR: //Normal Cell (6): RGB #E8E8F5 & RGB #DDDDF7
-			glColor4f(0.867f, 0.867f, 0.969f, 1.0f);
-			glutSolidSphere(cells[i].nucleusRadius, NUM_SEGMENTS, NUM_SEGMENTS);
-			glDepthMask(GL_FALSE);
-			glColor4f(0.91f, 0.91f, 0.961f, 0.2f);
-			glutSolidSphere(cells[i].radius, NUM_SEGMENTS, NUM_SEGMENTS);
-			glDepthMask(GL_TRUE);
-			break;
-		default:
-			glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-			glutSolidSphere(cells[i].nucleusRadius, NUM_SEGMENTS, NUM_SEGMENTS);
-			break;
-
-		}
-		glPopMatrix();
-	}
-}
+#include "GlutWindow.h"
 
 ogl::GlutWindow::GlutWindow(int argc, char * argv[])
 {
@@ -124,8 +64,7 @@ void ogl::GlutWindow::glutProjection() {
 void ogl::GlutWindow::glutDisplay() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	ogl::Render render;
-	render.renderCells(cells);
+	render->renderCells(cells);
 
 	glutSwapBuffers();
 }
@@ -135,29 +74,29 @@ void ogl::GlutWindow::glutKeyboard(unsigned char key, int x, int y) {
 	switch (key) {
 	case 27: //ESC: EXIT
 		exit(0);
-	case 'x': //OBSERVER MOVEMENT -X
-		observer.x -= 5;
-		glutProjection();
+	case 'a': 
+		render->leftLimit -= 1;
 		break;
-	case 'X': //OBSERVER MOVEMENT +X
-		observer.x += 5;
-		glutProjection();
+	case 'A':
+		render->leftLimit += 1;
 		break;
-	case 'y': //OBSERVER MOVEMENT -Y
-		observer.y -= 5;
-		glutProjection();
+	case 'd':
+		render->rightLimit += 1;
 		break;
-	case 'Y': //OBSERVER MOVEMENT +Y
-		observer.y += 5;
-		glutProjection();
+	case 'D':
+		render->rightLimit -= 1;
 		break;
-	case 'z': //OBSERVER MOVEMENT -Z
-		observer.z -= 5;
-		glutProjection();
+	case 's':
+		render->bottomLimit -= 1;
 		break;
-	case 'Z': //OBSERVER MOVEMENT +Z
-		observer.z += 5;
-		glutProjection();
+	case 'S':
+		render->bottomLimit += 1;
+		break;
+	case 'w':
+		render->topLimit += 1;
+		break;
+	case 'W':
+		render->topLimit -= 1;
 		break;
 	}
 
@@ -186,7 +125,8 @@ void ogl::GlutWindow::glutMotion(int x, int y) {
 	}
 	else if (bpress == GLUT_RIGHT_BUTTON) {
 		int dz = pos.y - y;
-		observer.z = observer.z + dz / SENS_OBS;
+		if (observer.z + dz / SENS_OBS > ZOOM_MIN && observer.z + dz / SENS_OBS < ZOOM_MAX)
+			observer.z = observer.z + dz / SENS_OBS;
 	}
 	else if (bpress == GLUT_MIDDLE_BUTTON) {
 		int dx = pos.x - x;

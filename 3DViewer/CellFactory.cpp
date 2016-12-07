@@ -30,21 +30,14 @@ std::vector<Cell> CellFactory::fabricate()
 		Cell c((CellType)type, pos, radius, calcification, nucleusRadius, v);
 		cells_.push_back(c);
 
-		//all_.x += c.coordinates.x;
-		//all_.y += c.coordinates.y;
-		////all_.z += c.coordinates.z;
-
-		//if (all_.z < c.coordinates.x)
-		//	all_.z = c.coordinates.x;
-
 		if (c.coordinates.x > max.x)
 			max.x = c.coordinates.x;
-		else if (c.coordinates.y < max.y)
+		else if (c.coordinates.y < min.y)
 			min.x = c.coordinates.x;
 
 		if (c.coordinates.y > max.y)
 			max.y = c.coordinates.y;
-		else if (c.coordinates.y < max.y)
+		else if (c.coordinates.y < min.y)
 			min.y = c.coordinates.y;
 	}
 	return cells_;

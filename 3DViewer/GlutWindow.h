@@ -3,11 +3,12 @@
 #include "Global.h"
 
 namespace ogl {
-	#define NUM_SEGMENTS 25
-
 	#define SENS_ROT     5.0
 	#define SENS_OBS     2.0
 	#define SENS_TRANSL  30.0
+
+	#define ZOOM_MIN 100
+	#define ZOOM_MAX 1800
 
 	class GlutWindow {
 	public:
@@ -20,11 +21,5 @@ namespace ogl {
 		static void glutMouse(int button, int state, int x, int y);
 		void start();
 	};
-
-	class Render {
-	public:
-		void renderCells(std::vector<Cell> cells);
-	};
-
 
 }

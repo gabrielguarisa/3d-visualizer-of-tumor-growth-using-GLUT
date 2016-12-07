@@ -22,14 +22,16 @@
     <ClCompile Include="Cell.cpp" />
     <ClCompile Include="CellFactory.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="OGL.cpp" />
+    <ClCompile Include="GlutWIndow.cpp" />
+    <ClCompile Include="Render.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cell.h" />
     <ClInclude Include="CellFactory.h" />
     <ClInclude Include="Global.h" />
+    <ClInclude Include="Render.h" />
     <ClInclude Include="Util.h" />
-    <ClInclude Include="OGL.h" />
+    <ClInclude Include="GlutWindow.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{37b8e60b-c88d-42b8-bf9b-d30169d2785c}</ProjectGuid>

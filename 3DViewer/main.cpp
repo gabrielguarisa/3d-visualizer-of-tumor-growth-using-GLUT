@@ -1,6 +1,8 @@
 #include "CellFactory.h"
 #include "OGL.h"
 
+#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
+
 //Observer Position
 Vector3 observer, obsini;
 

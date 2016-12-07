@@ -27,6 +27,7 @@
   <ItemGroup>
     <ClInclude Include="Cell.h" />
     <ClInclude Include="CellFactory.h" />
+    <ClInclude Include="Global.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="OGL.h" />
   </ItemGroup>

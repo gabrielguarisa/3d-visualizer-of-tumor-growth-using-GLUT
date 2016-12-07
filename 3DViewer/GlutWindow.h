@@ -3,9 +3,10 @@
 #include "Global.h"
 
 namespace ogl {
-	#define SENS_ROT     5.0
-	#define SENS_OBS     2.0
-	#define SENS_TRANSL  30.0
+	#define SENS_ROT    5.0
+	#define SENS_OBS	2.0
+	#define SENS_TRANSL	30.0
+	#define SENS_SLICES	1
 
 	#define ZOOM_MIN 100
 	#define ZOOM_MAX 1800

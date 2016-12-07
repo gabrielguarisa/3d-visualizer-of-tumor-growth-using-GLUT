@@ -32,6 +32,7 @@
     <ClInclude Include="Render.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="GlutWindow.h" />
+    <ClInclude Include="Vector3.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{37b8e60b-c88d-42b8-bf9b-d30169d2785c}</ProjectGuid>

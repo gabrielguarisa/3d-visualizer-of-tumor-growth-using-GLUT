@@ -1,19 +1,16 @@
 #include "Render.h"
 
-ogl::Render::Render(GLfloat rightLimit, GLfloat leftLimit, GLfloat topLimit, GLfloat bottomLimit)
+ogl::Render::Render(Vector3 minimumLimit, Vector3 maximumLimit)
 {
-	this->rightLimit = rightLimit;
-	this->leftLimit = leftLimit;
-	this->topLimit = topLimit;
-	this->bottomLimit = bottomLimit;
-	this->middleX_ = (rightLimit + leftLimit) / 2;
-	this->middleY_ = (topLimit + bottomLimit) / 2;
+	this->minimumLimit = this->min_ = minimumLimit - CELL_GAP;
+	this->maximumLimit = this->max_ = maximumLimit + CELL_GAP;
+	this->middle_ = Vector3((min_.x + max_.x) / 2, (min_.y + max_.y) / 2, (min_.z + max_.z) / 2);
 }
 
 void ogl::Render::renderCells(std::vector<Cell> cells)
 {
 	for (int i = 0; i < cells.size(); i++) {
-		if ((cells[i].coordinates.x > this->leftLimit && cells[i].coordinates.x < this->rightLimit) && (cells[i].coordinates.y > this->bottomLimit && cells[i].coordinates.y < this->topLimit)) {
+		if ((cells[i].coordinates.x > this->minimumLimit.x && cells[i].coordinates.x < this->maximumLimit.x) && (cells[i].coordinates.y > this->minimumLimit.y && cells[i].coordinates.y < this->maximumLimit.y) && (cells[i].coordinates.z > this->minimumLimit.z && cells[i].coordinates.z < this->maximumLimit.z)) {
 			glPushMatrix();
 			glTranslatef(cells[i].coordinates.x, cells[i].coordinates.y, cells[i].coordinates.z);
 			switch (cells[i].type) {
@@ -72,12 +69,43 @@ void ogl::Render::renderCells(std::vector<Cell> cells)
 	}
 }
 
-GLfloat ogl::Render::getMiddleX()
+void ogl::Render::renderLines()
 {
-	return this->middleX_;
+	glLineWidth(2.5);
+	glColor3f(1.0, 0.0, 0.0);
+	//Right
+	glBegin(GL_LINES);
+	glVertex3f(this->maximumLimit.x, this->min_.y, 0);
+	glVertex3f(this->maximumLimit.x, this->max_.y, 0);
+	glEnd();
+	//Left
+	glBegin(GL_LINES);
+	glVertex3f(this->minimumLimit.x, this->min_.y, 0);
+	glVertex3f(this->minimumLimit.x, this->max_.y, 0);
+	glEnd();
+	//Top
+	glBegin(GL_LINES);
+	glVertex3f(this->min_.x, this->maximumLimit.y, 0);
+	glVertex3f(this->max_.x, this->maximumLimit.y, 0);
+	glEnd();
+	//Bottom
+	glBegin(GL_LINES);
+	glVertex3f(this->min_.x, this->minimumLimit.y, 0);
+	glVertex3f(this->max_.x, this->minimumLimit.y, 0);
+	glEnd();
 }
 
-GLfloat ogl::Render::getMiddleY()
+Vector3 ogl::Render::getMiddle()
 {
-	return this->middleY_;
+	return middle_;
+}
+
+Vector3 ogl::Render::getMin()
+{
+	return min_;
+}
+
+Vector3 ogl::Render::getMax()
+{
+	return max_;
 }

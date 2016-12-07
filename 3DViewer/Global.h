@@ -23,3 +23,5 @@ extern ogl::Render *render;
 
 extern GLint	windowWidth,
 				windowHeight;
+
+extern GLboolean lines;

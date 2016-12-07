@@ -14,6 +14,7 @@ ogl::GlutWindow::GlutWindow(int argc, char * argv[])
 	glutMouseFunc(this->glutMouse);
 	glutMotionFunc(this->glutMotion);
 	glutKeyboardFunc(this->glutKeyboard);
+	glutSpecialFunc(this->glutSpecial);
 }
 
 
@@ -66,6 +67,9 @@ void ogl::GlutWindow::glutDisplay() {
 
 	render->renderCells(cells);
 
+	if(lines)
+		render->renderLines();
+
 	glutSwapBuffers();
 }
 
@@ -75,28 +79,35 @@ void ogl::GlutWindow::glutKeyboard(unsigned char key, int x, int y) {
 	case 27: //ESC: EXIT
 		exit(0);
 	case 'a': 
-		render->leftLimit -= 1;
+		render->minimumLimit.x -= SENS_SLICES;
 		break;
 	case 'A':
-		render->leftLimit += 1;
+		render->minimumLimit.x += SENS_SLICES;
 		break;
 	case 'd':
-		render->rightLimit += 1;
+		render->maximumLimit.x += SENS_SLICES;
 		break;
 	case 'D':
-		render->rightLimit -= 1;
+		render->maximumLimit.x -= SENS_SLICES;
 		break;
 	case 's':
-		render->bottomLimit -= 1;
+		render->minimumLimit.y -= SENS_SLICES;
 		break;
 	case 'S':
-		render->bottomLimit += 1;
+		render->minimumLimit.y += SENS_SLICES;
 		break;
 	case 'w':
-		render->topLimit += 1;
+		render->maximumLimit.y += SENS_SLICES;
 		break;
 	case 'W':
-		render->topLimit -= 1;
+		render->maximumLimit.y -= SENS_SLICES;
+		break;
+	case 'l': case 'L':
+		lines = !lines;
+		break;
+	case '0':
+		render->maximumLimit = render->getMax();
+		render->minimumLimit = render->getMin();
 		break;
 	}
 

@@ -23,11 +23,15 @@ ogl::Render *render;
 
 std::vector<Cell> cells;
 
+GLboolean lines = false;
+
 int main(int argc, char** argv) {
 	CellFactory factory("saida_anna.dat");
 	cells = factory.fabricate();
-	render = new ogl::Render(factory.max.x, factory.min.x, factory.max.y, factory.min.y);
-	observer = Vector3(render->getMiddleX(), render->getMiddleY(), 900);
+
+	render = new ogl::Render(factory.min, factory.max);
+
+	observer = Vector3(render->getMiddle().x, render->getMiddle().y, 900);
 
 	ogl::GlutWindow window(argc, argv);
 

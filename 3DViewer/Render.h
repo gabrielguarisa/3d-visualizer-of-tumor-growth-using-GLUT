@@ -6,23 +6,28 @@
 
 namespace ogl {
 	#define NUM_SEGMENTS 25
+	#define CELL_GAP 15
 
 	class Render {
 	private:
-		GLfloat	middleX_,
-			middleY_;
+		Vector3	min_,		// Left and Top limits
+				max_,		// Right and Bottom limits
+				middle_;	// (min + max) / 2
 	public:
 
-		GLfloat rightLimit,
-			leftLimit,
-			topLimit,
-			bottomLimit;
+		Vector3 minimumLimit, // Left and Top limits
+				maximumLimit; // Right and Bottom limits
 
-		Render(GLfloat rightLimit, GLfloat leftLimit, GLfloat topLimit, GLfloat bottomLimit);
+		Render(Vector3 minimumLimit, Vector3 maximumLimit);
+
 		void renderCells(std::vector<Cell> cells);
 
-		GLfloat getMiddleX();
+		void renderLines();
 
-		GLfloat getMiddleY();
+		Vector3 getMiddle();
+
+		Vector3 getMin();
+
+		Vector3 getMax();
 	};
 }

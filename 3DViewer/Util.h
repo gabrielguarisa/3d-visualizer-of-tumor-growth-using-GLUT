@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GL/glut.h>
+#include "Vector3.h"
 
 // Cell Types
 typedef enum
@@ -14,15 +14,4 @@ typedef enum
 	NOR = 6   /***  Normal Cell  ***/
 } CellType;
 
-class Vector3
-{
-public:
-	GLfloat x, y, z;
 
-	Vector3(GLfloat x = 0.0f, GLfloat y = 0.0f, GLfloat z = 0.0f)
-	{
-		this->x = x;
-		this->y = y;
-		this->z = z;
-	}
-};

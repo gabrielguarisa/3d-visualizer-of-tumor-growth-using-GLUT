@@ -39,6 +39,11 @@ std::vector<Cell> CellFactory::fabricate()
 			max.y = c.coordinates.y;
 		else if (c.coordinates.y < min.y)
 			min.y = c.coordinates.y;
+
+		if (c.coordinates.z > max.z)
+			max.z = c.coordinates.z;
+		else if (c.coordinates.z < min.z)
+			min.z = c.coordinates.z;
 	}
 	return cells_;
 }

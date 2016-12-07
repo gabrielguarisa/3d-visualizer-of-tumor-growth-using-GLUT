@@ -14,7 +14,6 @@ ogl::GlutWindow::GlutWindow(int argc, char * argv[])
 	glutMouseFunc(this->glutMouse);
 	glutMotionFunc(this->glutMotion);
 	glutKeyboardFunc(this->glutKeyboard);
-	glutSpecialFunc(this->glutSpecial);
 }
 
 

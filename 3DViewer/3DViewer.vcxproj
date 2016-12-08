@@ -24,6 +24,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="GlutWindow.cpp" />
     <ClCompile Include="Render.cpp" />
+    <ClCompile Include="Screenshot.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cell.h" />

@@ -337,3 +337,7 @@ build/
 
 # dat files
 *.dat
+
+*.jpg
+*.jpeg
+*.png

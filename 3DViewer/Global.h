@@ -3,6 +3,7 @@
 #include <vector>
 #include "Render.h"
 #include "Cell.h"
+#include "Screenshot.h"
 
 //Observer Position
 extern Vector3 observer;
@@ -25,3 +26,5 @@ extern GLint	windowWidth,
 				windowHeight;
 
 extern GLboolean lines;
+
+extern ogl::Screenshot screenshot;

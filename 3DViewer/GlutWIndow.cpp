@@ -77,6 +77,12 @@ void ogl::GlutWindow::glutKeyboard(unsigned char key, int x, int y) {
 	switch (key) {
 	case 27: //ESC: EXIT
 		exit(0);
+	case 'p': // PrintScreen PNG
+		screenshot.newPhoto(PNG);
+		break;
+	case 'P': // PrintScreen JPG
+		screenshot.newPhoto(JPG);
+		break;
 				/*** SLICES CONTROL ***/
 				/*** lowercase -> out ***/
 				/*** UPPERCASE -> center ***/

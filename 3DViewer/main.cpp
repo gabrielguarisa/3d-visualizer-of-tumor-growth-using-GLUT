@@ -20,6 +20,7 @@ GLint	windowWidth = 500,
 GLint bpress;
 
 ogl::Render *render;
+ogl::Screenshot screenshot;
 
 std::vector<Cell> cells;
 

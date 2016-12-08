@@ -15,3 +15,8 @@ typedef enum
 } CellType;
 
 
+typedef enum
+{
+	PNG,
+	JPG
+} ImageFormat;

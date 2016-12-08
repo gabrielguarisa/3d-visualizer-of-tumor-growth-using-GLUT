@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Screenshot.h"
 #include "Global.h"
 
 namespace ogl {

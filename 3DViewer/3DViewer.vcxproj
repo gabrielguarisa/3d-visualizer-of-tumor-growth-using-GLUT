@@ -22,7 +22,7 @@
     <ClCompile Include="Cell.cpp" />
     <ClCompile Include="CellFactory.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="GlutWIndow.cpp" />
+    <ClCompile Include="GlutWindow.cpp" />
     <ClCompile Include="Render.cpp" />
   </ItemGroup>
   <ItemGroup>

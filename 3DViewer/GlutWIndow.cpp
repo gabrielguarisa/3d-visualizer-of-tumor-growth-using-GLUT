@@ -77,6 +77,9 @@ void ogl::GlutWindow::glutKeyboard(unsigned char key, int x, int y) {
 	switch (key) {
 	case 27: //ESC: EXIT
 		exit(0);
+				/*** SLICES CONTROL ***/
+				/*** lowercase -> out ***/
+				/*** UPPERCASE -> center ***/
 	case 'a': 
 		render->minimumLimit.x -= SENS_SLICES;
 		break;
@@ -101,10 +104,22 @@ void ogl::GlutWindow::glutKeyboard(unsigned char key, int x, int y) {
 	case 'W':
 		render->maximumLimit.y -= SENS_SLICES;
 		break;
-	case 'l': case 'L':
+	case 'q':
+		render->maximumLimit.z += SENS_SLICES;
+		break;
+	case 'Q':
+		render->maximumLimit.z -= SENS_SLICES;
+		break;
+	case 'e':
+		render->minimumLimit.z -= SENS_SLICES;
+		break;
+	case 'E':
+		render->minimumLimit.z += SENS_SLICES;
+		break;
+	case 'l': case 'L': // Show/Hide Lines
 		lines = !lines;
 		break;
-	case '0':
+	case '0':	// reset Slices
 		render->maximumLimit = render->getMax();
 		render->minimumLimit = render->getMin();
 		break;

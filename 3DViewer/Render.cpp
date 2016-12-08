@@ -93,6 +93,24 @@ void ogl::Render::renderLines()
 	glVertex3f(this->min_.x, this->minimumLimit.y, 0);
 	glVertex3f(this->max_.x, this->minimumLimit.y, 0);
 	glEnd();
+	//Back
+	glBegin(GL_LINES);
+	glVertex3f(this->middle_.x - CELL_GAP, this->middle_.y, this->maximumLimit.z);
+	glVertex3f(this->middle_.x + CELL_GAP, this->middle_.y, this->maximumLimit.z);
+	glEnd();
+	glBegin(GL_LINES);
+	glVertex3f(this->middle_.x, this->middle_.y - CELL_GAP, this->maximumLimit.z);
+	glVertex3f(this->middle_.x, this->middle_.y + CELL_GAP, this->maximumLimit.z);
+	glEnd();
+	//Front
+	glBegin(GL_LINES);
+	glVertex3f(this->middle_.x - CELL_GAP, this->middle_.y, this->minimumLimit.z);
+	glVertex3f(this->middle_.x + CELL_GAP, this->middle_.y, this->minimumLimit.z);
+	glEnd();
+	glBegin(GL_LINES);
+	glVertex3f(this->middle_.x, this->middle_.y - CELL_GAP, this->minimumLimit.z);
+	glVertex3f(this->middle_.x, this->middle_.y + CELL_GAP, this->minimumLimit.z);
+	glEnd();
 }
 
 Vector3 ogl::Render::getMiddle()

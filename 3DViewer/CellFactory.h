@@ -4,6 +4,8 @@
 #include <vector>
 #include "Cell.h"
 
+#include <cmath>
+
 class CellFactory
 {
 private:
@@ -32,5 +34,7 @@ public:
 	CellFactory(std::string filename);
 
 	std::vector<Cell> fabricate();
+
+	std::vector<Cell> simulate3D();//remove
 
 };

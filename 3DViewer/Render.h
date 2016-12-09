@@ -5,7 +5,7 @@
 #include "Cell.h"
 
 namespace ogl {
-	#define NUM_SEGMENTS 25
+	#define NUM_SEGMENTS 8
 	#define CELL_GAP 15
 
 	class Render {

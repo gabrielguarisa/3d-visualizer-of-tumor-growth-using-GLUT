@@ -20,6 +20,9 @@ extern GLint bpress;
 
 extern std::vector<Cell> cells;
 
+extern std::vector<Cell> temp; //remove
+extern bool trueRender; //remove
+
 extern ogl::Render *render;
 
 extern GLint	windowWidth,

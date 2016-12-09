@@ -24,12 +24,14 @@ ogl::Screenshot screenshot;
 
 std::vector<Cell> cells;
 
+std::vector<Cell> temp; //remove
+bool trueRender = true; //remove
 GLboolean lines = false;
 
 int main(int argc, char** argv) {
 	CellFactory factory("saida_anna.dat");
 	cells = factory.fabricate();
-
+	temp = factory.simulate3D(); //remove
 	render = new ogl::Render(factory.min, factory.max);
 
 	observer = Vector3(render->getMiddle().x, render->getMiddle().y, 900);

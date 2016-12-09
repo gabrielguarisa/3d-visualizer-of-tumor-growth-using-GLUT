@@ -44,6 +44,26 @@ std::vector<Cell> CellFactory::fabricate()
 			max.z = c.coordinates.z;
 		else if (c.coordinates.z < min.z)
 			min.z = c.coordinates.z;
+
 	}
 	return cells_;
+}
+
+std::vector<Cell> CellFactory::simulate3D()//remove
+{
+	int r = 250;
+	std::vector<Cell> tempCells;
+	for (int i = 0; i < this->cells_.size(); i++)
+	{
+		Vector3 pos = cells_[i].coordinates;
+		for (int j = -r; j < r; j += 13)
+		{
+			pos.z = j;
+			if (((pow(cells_[i].coordinates.x - 249.167, 2)) + (pow(cells_[i].coordinates.y - 249.723, 2)) + (pow(pos.z, 2)) <= pow(r, 2)))
+			{
+				tempCells.push_back(Cell(cells_[i].type, pos, cells_[i].radius, cells_[i].calcification, cells_[i].nucleusRadius, cells_[i].v));
+			}
+		}
+	}
+	return tempCells;
 }

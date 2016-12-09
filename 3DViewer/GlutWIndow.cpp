@@ -64,7 +64,15 @@ void ogl::GlutWindow::glutProjection() {
 void ogl::GlutWindow::glutDisplay() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	render->renderCells(cells);
+	if (trueRender)
+	{
+		render->renderCells(cells);
+	}
+	else
+	{
+		render->renderCells(temp);
+	}
+	
 
 	if(lines)
 		render->renderLines();
@@ -128,6 +136,21 @@ void ogl::GlutWindow::glutKeyboard(unsigned char key, int x, int y) {
 	case '0':	// reset Slices
 		render->maximumLimit = render->getMax();
 		render->minimumLimit = render->getMin();
+		break;
+	case 'r': case 'R':	//remove
+		if (!trueRender)
+		{
+			trueRender = true;
+			render->maximumLimit.z = 10;
+			render->minimumLimit.z = -10;
+
+		}
+		else
+		{
+			trueRender = false;
+			render->maximumLimit.z = 250;
+			render->minimumLimit.z = -250;
+		}
 		break;
 	}
 

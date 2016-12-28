@@ -16,3 +16,9 @@ $(PROG):$(OBJ_FILES)
 
 $(BUILD_FOLDER)%.o: $(FOLDER)%.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $^ $(LIBS)
+
+run:
+	$(PROG)
+
+clean:
+	rm -f $(PROG) $(BUILD_FOLDER)*.o

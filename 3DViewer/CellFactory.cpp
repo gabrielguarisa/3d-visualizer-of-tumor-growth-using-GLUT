@@ -3,7 +3,7 @@
 CellFactory::CellFactory(std::string filename)
 {
 	time_ = xdomain_ = ydomain_ = zdomain_ = outcells_ = tumcells_ = 0.0;
-	file_.open(filename);
+	file_.open(filename.c_str());
 	numCells = 0;
 	file_ >> xdomain_ >> ydomain_;
 	file_ >> numCells >> time_;

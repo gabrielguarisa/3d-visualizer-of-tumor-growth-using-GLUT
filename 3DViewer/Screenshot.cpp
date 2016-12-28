@@ -10,7 +10,7 @@ std::string ogl::Screenshot::generateFileName()
 	return std::strcat(buffer, type.c_str());
 }
 
-void ogl::Screenshot::newPhoto(ImageFormat imageFormat)
+void ogl::Screenshot::newPicture(ImageFormat imageFormat)
 {
 	//get current viewport
 	glGetIntegerv(GL_VIEWPORT, this->viewport_);

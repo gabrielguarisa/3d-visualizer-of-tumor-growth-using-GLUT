@@ -1,7 +1,7 @@
 #include "CellFactory.h"
 #include "GlutWindow.h"
 
-#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
+//#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 
 //Observer Position
 Vector3 observer;

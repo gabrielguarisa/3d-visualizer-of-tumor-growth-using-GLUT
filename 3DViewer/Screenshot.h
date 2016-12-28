@@ -15,6 +15,6 @@ namespace ogl {
 		std::string type;
 		std::string generateFileName();
 	public:
-		void newPhoto(ImageFormat imageFormat = PNG);
+		void newPicture(ImageFormat imageFormat = PNG);
 	};
 }

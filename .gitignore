@@ -341,3 +341,6 @@ build/
 *.jpg
 *.jpeg
 *.png
+
+*.sln
+*.vcxproj

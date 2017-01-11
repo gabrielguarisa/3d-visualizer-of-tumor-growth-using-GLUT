@@ -72,7 +72,7 @@ void ogl::GlutWindow::glutDisplay() {
 	{
 		render->renderCells(temp);
 	}
-	
+
 
 	if(lines)
 		render->renderLines();
@@ -94,7 +94,7 @@ void ogl::GlutWindow::glutKeyboard(unsigned char key, int x, int y) {
 				/*** SLICES CONTROL ***/
 				/*** lowercase -> out ***/
 				/*** UPPERCASE -> center ***/
-	case 'a': 
+	case 'a':
 		render->minimumLimit.x -= SENS_SLICES;
 		break;
 	case 'A':
@@ -152,6 +152,29 @@ void ogl::GlutWindow::glutKeyboard(unsigned char key, int x, int y) {
 			render->minimumLimit.z = -250;
 		}
 		break;
+
+	/*** CELL VISIBILITY ***/
+	case '1':
+		visibilityNEC = !visibilityNEC;
+		break;
+	case '2':
+		visibilityQUI = !visibilityQUI;
+		break;
+	case '3':
+		visibilityPRO = !visibilityPRO;
+		break;
+	case '4':
+		visibilityHIP = !visibilityHIP;
+		break;
+	case '5':
+		visibilityAPO = !visibilityAPO;
+		break;
+	case '6':
+		visibilityG1 = !visibilityG1;
+		break;
+	case '7':
+		visibilityNOR = !visibilityNOR;
+		break;
 	}
 
 	glutPostRedisplay();
@@ -197,7 +220,7 @@ void ogl::GlutWindow::glutMotion(int x, int y) {
 	glutPostRedisplay();
 }
 
-void ogl::GlutWindow::start() 
+void ogl::GlutWindow::start()
 {
 	glutMainLoop();
 }

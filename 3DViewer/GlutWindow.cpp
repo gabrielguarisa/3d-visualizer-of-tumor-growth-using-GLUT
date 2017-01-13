@@ -64,15 +64,7 @@ void ogl::GlutWindow::glutProjection() {
 void ogl::GlutWindow::glutDisplay() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	if (trueRender)
-	{
-		render->renderCells(cells);
-	}
-	else
-	{
-		render->renderCells(temp);
-	}
-	
+	render->renderCells(frames[frameNum]->cells);
 
 	if(lines)
 		render->renderLines();
@@ -94,7 +86,7 @@ void ogl::GlutWindow::glutKeyboard(unsigned char key, int x, int y) {
 				/*** SLICES CONTROL ***/
 				/*** lowercase -> out ***/
 				/*** UPPERCASE -> center ***/
-	case 'a': 
+	case 'a':
 		render->minimumLimit.x -= SENS_SLICES;
 		break;
 	case 'A':
@@ -137,20 +129,39 @@ void ogl::GlutWindow::glutKeyboard(unsigned char key, int x, int y) {
 		render->maximumLimit = render->getMax();
 		render->minimumLimit = render->getMin();
 		break;
-	case 'r': case 'R':	//remove
-		if (!trueRender)
-		{
-			trueRender = true;
-			render->maximumLimit.z = 10;
-			render->minimumLimit.z = -10;
 
-		}
-		else
-		{
-			trueRender = false;
-			render->maximumLimit.z = 250;
-			render->minimumLimit.z = -250;
-		}
+
+	/*** CELL VISIBILITY ***/
+	case '1':
+		visibilityNEC = !visibilityNEC;
+		break;
+	case '2':
+		visibilityQUI = !visibilityQUI;
+		break;
+	case '3':
+		visibilityPRO = !visibilityPRO;
+		break;
+	case '4':
+		visibilityHIP = !visibilityHIP;
+		break;
+	case '5':
+		visibilityAPO = !visibilityAPO;
+		break;
+	case '6':
+		visibilityG1 = !visibilityG1;
+		break;
+	case '7':
+		visibilityNOR = !visibilityNOR;
+		break;
+
+	/*** CHANGE CELL ***/
+	case ',':
+		if(frameNum > 2)
+			frameNum--;
+		break;
+	case '.':
+		if(frameNum < frames.size()-2)
+			frameNum++;
 		break;
 	}
 
@@ -197,7 +208,7 @@ void ogl::GlutWindow::glutMotion(int x, int y) {
 	glutPostRedisplay();
 }
 
-void ogl::GlutWindow::start() 
+void ogl::GlutWindow::start()
 {
 	glutMainLoop();
 }

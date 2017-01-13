@@ -66,13 +66,3 @@ CellFrame* CellFactory::fabricate(std::string fileName)
 	file.close();
 	return new CellFrame(time, domain, outCells, tumCells, numCells, cells, min, max);
 }
-
-// std::vector<CellFrame> CellFactory::fabricateVector(std::vector<std::string> files)
-// {
-// 	std::vector<CellFrame> frames;
-//
-// 	for (int i = 0; i < files.size(); i++)
-// 		frames[i] = this->fabricateFile(files[i]);
-//
-// 	return frames;
-// }

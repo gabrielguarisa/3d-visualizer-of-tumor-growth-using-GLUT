@@ -1,9 +1,11 @@
-#ifndef CELLSFRAME_H
-#define CELLSFRAME_H
+#pragma once
 
 #include <vector>
 #include "Cell.h"
 
+/*
+** CELL FRAME
+*/
 class CellFrame
 {
 private:
@@ -27,5 +29,3 @@ public:
 
     Vector3 getMax();
 };
-
-#endif /* end of include guard: CELLSFRAME_H */

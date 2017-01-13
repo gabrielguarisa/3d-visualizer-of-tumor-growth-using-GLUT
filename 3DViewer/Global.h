@@ -2,9 +2,8 @@
 
 #include <vector>
 #include "Render.h"
-#include "Cell.h"
-#include "Screenshot.h"
 #include "CellFrame.h"
+#include "Screenshot.h"
 
 //Observer Position
 extern Vector3 observer;

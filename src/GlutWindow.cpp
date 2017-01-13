@@ -66,6 +66,25 @@ void ogl::GlutWindow::glutDisplay() {
 
 	render->renderCells(frames[frameNum]->cells);
 
+	if(automaticPlay != 0)
+	{
+		if(automaticPlay == 1)
+		{
+			if(frameNum < frames.size()-1)
+				frameNum++;
+			else
+				automaticPlay = 0;
+		}
+		else if(automaticPlay = -1)
+		{
+			if(frameNum > 1)
+				frameNum--;
+			else
+				automaticPlay = 0;
+		}
+		glutPostRedisplay();
+	}
+
 	if(lines)
 		render->renderLines();
 
@@ -156,12 +175,28 @@ void ogl::GlutWindow::glutKeyboard(unsigned char key, int x, int y) {
 
 	/*** CHANGE CELL ***/
 	case ',':
-		if(frameNum > 2)
+		if(automaticPlay != 0)
+			automaticPlay = 0;
+		else if(frameNum > 1)
 			frameNum--;
 		break;
 	case '.':
-		if(frameNum < frames.size()-2)
+		if(automaticPlay != 0)
+			automaticPlay = 0;
+		else if(frameNum < frames.size()-1)
 			frameNum++;
+		break;
+	case 'm':
+		if(automaticPlay == -1)
+			automaticPlay = 0;
+		else
+			automaticPlay = -1;
+		break;
+	case ';':
+		if(automaticPlay == 1)
+			automaticPlay = 0;
+		else
+			automaticPlay = 1;
 		break;
 	}
 

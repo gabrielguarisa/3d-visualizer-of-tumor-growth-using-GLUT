@@ -23,7 +23,8 @@ ogl::Render *render;
 ogl::Screenshot screenshot;
 
 std::vector<CellFrame*> frames;
-int frameNum = 0;
+int frameNum = 0,
+	automaticPlay= 0;
 
 GLboolean lines = false;
 

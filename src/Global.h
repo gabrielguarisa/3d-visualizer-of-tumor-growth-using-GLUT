@@ -19,7 +19,8 @@ extern Vector3	rotation,
 extern GLint bpress;
 
 extern std::vector<CellFrame*> frames;
-extern int frameNum;
+extern int 	frameNum,
+			automaticPlay;
 
 extern ogl::Render *render;
 

@@ -16,6 +16,3 @@ public:
     FileReader(std::string path="files");
     std::vector<std::string> result;
 };
-
-
-#endif /* end of include guard: FILEREADER_H */

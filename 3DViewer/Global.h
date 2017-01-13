@@ -4,6 +4,7 @@
 #include "Render.h"
 #include "Cell.h"
 #include "Screenshot.h"
+#include "CellFrame.h"
 
 //Observer Position
 extern Vector3 observer;
@@ -18,10 +19,8 @@ extern Vector3	rotation,
 
 extern GLint bpress;
 
-extern std::vector<Cell> cells;
-
-extern std::vector<Cell> temp; //remove
-extern bool trueRender; //remove
+extern std::vector<CellFrame*> frames;
+extern int frameNum;
 
 extern ogl::Render *render;
 

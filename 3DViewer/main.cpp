@@ -1,7 +1,7 @@
+#include <iostream>
 #include "CellFactory.h"
 #include "GlutWindow.h"
-
-//#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
+#include "FileReader.h"
 
 //Observer Position
 Vector3 observer;
@@ -22,17 +22,24 @@ GLint bpress;
 ogl::Render *render;
 ogl::Screenshot screenshot;
 
-std::vector<Cell> cells;
+std::vector<CellFrame*> frames;
+int frameNum = 0;
 
-std::vector<Cell> temp; //remove
-bool trueRender = true; //remove
 GLboolean lines = false;
 
 int main(int argc, char** argv) {
-	CellFactory factory("saida_anna.dat");
-	cells = factory.fabricate();
-	temp = factory.simulate3D(); //remove
-	render = new ogl::Render(factory.min, factory.max);
+	FileReader reader;
+	CellFactory factory;
+
+	for (int i = 2; i < reader.result.size(); i++)
+	{
+		std::cout << reader.result[i] << std::endl;
+		frames.push_back(factory.fabricate(reader.result[i]));
+	}
+
+	//frames.push_back(factory.fabricate("files/saida0-00400.dat"));
+
+	render = new ogl::Render(frames[0]->getMin(), frames[0]->getMax());
 
 	observer = Vector3(render->getMiddle().x, render->getMiddle().y, 900);
 

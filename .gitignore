@@ -344,3 +344,5 @@ build/
 
 *.sln
 *.vcxproj
+
+files/

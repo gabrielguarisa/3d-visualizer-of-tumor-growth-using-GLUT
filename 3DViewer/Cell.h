@@ -13,7 +13,7 @@ public:
 	Vector3 coordinates,
 			v;
 
-	GLfloat	radius,
+	float	radius,
 			calcification,
 			nucleusRadius;
 

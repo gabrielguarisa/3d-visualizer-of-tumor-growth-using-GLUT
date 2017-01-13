@@ -1,7 +1,7 @@
 CXX = g++
 CXXFLAGS = -m64 -g -Wall -w
 SRCS = Cell.cpp CellFactory.cpp Render.cpp Screenshot.cpp GlutWindow.cpp main.cpp
-FOLDER = 3DViewer/
+FOLDER = src/
 BUILD_FOLDER = build/
 PROG = $(BUILD_FOLDER)main.exe
 CPP_FILES := $(wildcard $(FOLDER)*.cpp)

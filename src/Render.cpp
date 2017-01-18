@@ -101,23 +101,23 @@ void ogl::Render::renderLines()
 	glColor3f(1.0, 0.0, 0.0);
 	//Right
 	glBegin(GL_LINES);
-	glVertex3f(this->maximumLimit.x, this->min_.y, 0);
-	glVertex3f(this->maximumLimit.x, this->max_.y, 0);
+	glVertex3f(this->maximumLimit.x, this->min_.y, this->middle_.z);
+	glVertex3f(this->maximumLimit.x, this->max_.y, this->middle_.z);
 	glEnd();
 	//Left
 	glBegin(GL_LINES);
-	glVertex3f(this->minimumLimit.x, this->min_.y, 0);
-	glVertex3f(this->minimumLimit.x, this->max_.y, 0);
+	glVertex3f(this->minimumLimit.x, this->min_.y, this->middle_.z);
+	glVertex3f(this->minimumLimit.x, this->max_.y, this->middle_.z);
 	glEnd();
 	//Top
 	glBegin(GL_LINES);
-	glVertex3f(this->min_.x, this->maximumLimit.y, 0);
-	glVertex3f(this->max_.x, this->maximumLimit.y, 0);
+	glVertex3f(this->min_.x, this->maximumLimit.y, this->middle_.z);
+	glVertex3f(this->max_.x, this->maximumLimit.y, this->middle_.z);
 	glEnd();
 	//Bottom
 	glBegin(GL_LINES);
-	glVertex3f(this->min_.x, this->minimumLimit.y, 0);
-	glVertex3f(this->max_.x, this->minimumLimit.y, 0);
+	glVertex3f(this->min_.x, this->minimumLimit.y, this->middle_.z);
+	glVertex3f(this->max_.x, this->minimumLimit.y, this->middle_.z);
 	glEnd();
 	//Back
 	glBegin(GL_LINES);

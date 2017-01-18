@@ -1,13 +1,11 @@
 #pragma once
 
-#include <GL/glut.h>
-
 class Vector3
 {
 public:
-	GLfloat x, y, z;
+	float x, y, z;
 
-	Vector3(GLfloat x = 0.0f, GLfloat y = 0.0f, GLfloat z = 0.0f)
+	Vector3(float x = 0.0f, float y = 0.0f, float z = 0.0f)
 	{
 		this->x = x;
 		this->y = y;
@@ -22,11 +20,11 @@ public:
 		return Vector3(this->x - v.x, this->y - v.y, this->z - v.z);
 	}
 
-	Vector3 operator+(const GLfloat c) {
+	Vector3 operator+(const float c) {
 		return Vector3(this->x + c, this->y + c, this->z + c);
 	}
 
-	Vector3 operator-(const GLfloat c) {
+	Vector3 operator-(const float c) {
 		return Vector3(this->x - c, this->y - c, this->z - c);
 	}
 
@@ -42,13 +40,13 @@ public:
 		this->z -= v.z;
 	}
 
-	void operator+=(const GLfloat c) {
+	void operator+=(const float c) {
 		this->x += c;
 		this->y += c;
 		this->z += c;
 	}
 
-	void operator-=(const GLfloat c) {
+	void operator-=(const float c) {
 		this->x -= c;
 		this->y -= c;
 		this->z -= c;
@@ -62,11 +60,11 @@ public:
 		return Vector3(this->x / v.x, this->y / v.y, this->z / v.z);
 	}
 
-	Vector3 operator*(const GLfloat c) {
+	Vector3 operator*(const float c) {
 		return Vector3(this->x * c, this->y * c, this->z * c);
 	}
 
-	Vector3 operator/(const GLfloat c) {
+	Vector3 operator/(const float c) {
 		return Vector3(this->x / c, this->y / c, this->z / c);
 	}
 
@@ -82,13 +80,13 @@ public:
 		this->z /= v.z;
 	}
 
-	void operator*=(const GLfloat c) {
+	void operator*=(const float c) {
 		this->x *= c;
 		this->y *= c;
 		this->z *= c;
 	}
 
-	void operator/=(const GLfloat c) {
+	void operator/=(const float c) {
 		this->x /= c;
 		this->y /= c;
 		this->z /= c;

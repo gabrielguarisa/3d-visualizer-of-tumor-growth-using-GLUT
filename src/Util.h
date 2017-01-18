@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Vector.h"
+#include <GL/glut.h>
 
 // Cell Types
 typedef enum

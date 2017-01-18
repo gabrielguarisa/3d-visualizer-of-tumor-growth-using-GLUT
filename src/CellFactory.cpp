@@ -33,16 +33,16 @@ CellFrame* CellFactory::fabricate(std::string fileName)
 
 	file.open(fileName.c_str());
 
-	file >> domain.x >> domain.y;
+	file >> domain.x >> domain.y >> domain.z;
 	file >> numCells >> time;
 	file >> outCells >> tumCells;
 
 	// Reading all cells
 	for (int i = 0; i < numCells; i++) {
 		file >> type;
-		file >> pos.x >> pos.y;
+		file >> pos.x >> pos.y >> pos.z ;
 		file >> nucleusRadius >> radius >> calcification;
-		file >> v.x >> v.y;
+		file >> v.x >> v.y >> v.z;
 
 		Cell c((CellType)type, pos, radius, calcification, nucleusRadius, v);
 		cells.push_back(c);

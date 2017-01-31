@@ -14,8 +14,8 @@ Vector3 rotation = Vector3(),
 		rotIni = Vector3(),
 		pos = Vector3();
 
-GLint	windowWidth = 500,
-		windowHeight = 500;
+GLint	windowWidth = 600,
+		windowHeight = 600;
 
 GLint bpress;
 
@@ -33,9 +33,9 @@ int main(int argc, char** argv) {
 
 	frames = CellFactory::makeListFrames(files);
 
-	render = new ogl::Render(Vector3(), frames[0]->getDomain());
+	render = new ogl::Render(Vector3(), frames[0]->domain);
 
-	observer = frames[0]->getDomain();
+	observer = frames[0]->domain;
 	observer.z += 600;
 
 	ogl::GlutWindow window(argc, argv);

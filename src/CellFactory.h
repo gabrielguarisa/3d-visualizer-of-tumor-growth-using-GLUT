@@ -6,9 +6,6 @@
 #include <string>
 #include "CellFrame.h"
 
-/*
-** CELL FACTORY
-*/
 class CellFactory
 {
 public:
@@ -16,58 +13,34 @@ public:
     {
     	// FILE
     	std::ifstream file;
-    	//
 
-    	// CellFrame stuff
-    	GLfloat	outCells = 0.0,
-    			tumCells = 0.0,
-    			time = 0.0;
+        // FRAME
+        CellFrame frame;
 
-    	GLint numCells = 0;
-
-    	Vector3	domain;
-
-    	std::vector<Cell> cells;
-    	//
-
-    	// Cell stuff
-    	GLfloat radius = 0.0f,
-    			calcification = 0.0f,
-    			nucleusRadius = 0.0f,
-                actionRadius = 0.0f,
-                lifetime = 0.0f,
-                previousState = 0.0f,
-                oConsumption = 0.0f,
-                egfConsumption = 0.0f;
-
-    	GLint 	type = 0;
-
-    	Vector3 coord,
-    			speed;
-    	//
+        Cell c;
+        int type;
+        int numCells = 0;
 
     	file.open(fileName.c_str());
 
-    	file >> domain.x >> domain.y >> domain.z;
-    	file >> numCells >> time;
-    	file >> outCells >> tumCells;
+    	file >> frame.domain.x >> frame.domain.y >> frame.domain.z;
+    	file >> numCells >> frame.time;
+    	file >> frame.outCells >> frame.tumorCells;
 
     	// Reading all cells
     	for (int i = 0; i < numCells; i++) {
     		file >> type;
-    		file >> coord.x >> coord.y >> coord.z ;
-    		file >> nucleusRadius >> radius >> actionRadius;
-            file >> lifetime >> previousState >> oConsumption >> egfConsumption >> calcification;
-    		file >> speed.x >> speed.y >> speed.z;
+            c.type = (CellType)type;
+    		file >> c.coordinates.x >> c.coordinates.y >> c.coordinates.z ;
+    		file >> c.nucleusRadius >> c.radius >> c.actionRadius;
+            file >> c.lifetime >> c.previousState >> c.oConsumption >> c.egfConsumption >> c.calcification;
+    		file >> c.speed.x >> c.speed.y >> c.speed.z;
 
-    		cells.push_back(Cell(   (CellType)type, coord, nucleusRadius, radius, actionRadius,
-                                    lifetime, previousState, oConsumption, egfConsumption, calcification, speed));
-
-
+    		frame.cells.push_back(c);
     	}
-    	//
+
     	file.close();
-    	return new CellFrame(time, domain, outCells, tumCells, numCells, cells);
+    	return new CellFrame(frame);
     }
 
 

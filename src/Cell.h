@@ -20,9 +20,10 @@ public:
 			egfConsumption,
 			calcification;
 
-	Cell(CellType type, Vector3 coordinates, float nucleusRadius, float radius,
-		float actionRadius, float lifetime, float previousState, float oConsumption,
-		float egfConsumption, float calcification, Vector3 speed = Vector3())
+	Cell(CellType type = UND, Vector3 coordinates = Vector3(), float nucleusRadius = 0.0f,
+		float radius = 0.0f, float actionRadius = 0.0f, float lifetime = 0.0f,
+		float previousState = 0.0f, float oConsumption = 0.0f, float egfConsumption = 0.0f,
+		float calcification = 0.0f, Vector3 speed = Vector3())
 		:
 			type(type),
 			coordinates(coordinates),
@@ -35,9 +36,6 @@ public:
 			egfConsumption(egfConsumption),
 			calcification(calcification),
 			speed(speed)
-	{}
-
-	Cell()
 	{}
 };
 

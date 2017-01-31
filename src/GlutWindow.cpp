@@ -19,7 +19,7 @@ ogl::GlutWindow::GlutWindow(int argc, char * argv[])
 
 void ogl::GlutWindow::glutSetup() {
 	//Background Color (White)
-	glClearColor(backgroundColor, backgroundColor, backgroundColor, 1.0f);
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
 	//Z-Buffer & Light
 	glShadeModel(GL_SMOOTH);
@@ -57,7 +57,7 @@ void ogl::GlutWindow::glutProjection() {
 	//ModelView
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(observer.x, observer.y, observer.z, (GLfloat)windowWidth / 2, (GLfloat)windowHeight / 2, 0.0, 0.0, 1.0, 0.0); //EYE, CENTER & UP
+	gluLookAt(observer.x/2, observer.y/2, observer.z, observer.x/2, observer.y/2, observer.x/2, 0.0, 1.0, 0.0); //EYE, CENTER & UP
 }
 
 //Display Function
@@ -101,14 +101,6 @@ void ogl::GlutWindow::glutKeyboard(unsigned char key, int x, int y) {
 		break;
 	case 'P': // PrintScreen JPG
 		screenshot.newPicture(JPG);
-		break;
-	case 'r': // Backgroud Color -> black
-		if(backgroundColor > 0.0f)
-			backgroundColor -= 0.1f;
-		break;
-	case 'R': // Backgroud Color -> white
-		if(backgroundColor < 1.0f)
-			backgroundColor += 0.1f;
 		break;
 				/*** SLICES CONTROL ***/
 				/*** lowercase -> out ***/
@@ -185,7 +177,7 @@ void ogl::GlutWindow::glutKeyboard(unsigned char key, int x, int y) {
 	case ',':
 		if(automaticPlay != 0)
 			automaticPlay = 0;
-		else if(frameNum > 0)
+		else if(frameNum > 1)
 			frameNum--;
 		break;
 	case '.':
@@ -207,7 +199,6 @@ void ogl::GlutWindow::glutKeyboard(unsigned char key, int x, int y) {
 			automaticPlay = 1;
 		break;
 	}
-
 	glutPostRedisplay();
 }
 
@@ -233,8 +224,7 @@ void ogl::GlutWindow::glutMotion(int x, int y) {
 	}
 	else if (bpress == GLUT_RIGHT_BUTTON) {
 		int dz = pos.y - y;
-		if (observer.z + dz / SENS_OBS > ZOOM_MIN && observer.z + dz / SENS_OBS < ZOOM_MAX)
-			observer.z = observer.z + dz / SENS_OBS;
+		observer.z = observer.z + dz / SENS_OBS;
 	}
 	else if (bpress == GLUT_MIDDLE_BUTTON) {
 		int dx = pos.x - x;
@@ -245,9 +235,10 @@ void ogl::GlutWindow::glutMotion(int x, int y) {
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glTranslated(-observer.x, -observer.y, -observer.z);
+	glTranslated(-observer.x/2, -observer.y/2, -observer.z);
 	glRotatef(rotation.x, 1, 0, 0);
 	glRotatef(rotation.y, 0, 1, 0);
+
 	glutPostRedisplay();
 }
 

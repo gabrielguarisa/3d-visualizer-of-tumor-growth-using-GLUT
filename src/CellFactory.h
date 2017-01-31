@@ -25,9 +25,7 @@ public:
 
     	GLint numCells = 0;
 
-    	Vector3	domain,
-    			min,
-    			max;
+    	Vector3	domain;
 
     	std::vector<Cell> cells;
     	//
@@ -44,8 +42,8 @@ public:
 
     	GLint 	type = 0;
 
-    	Vector3 pos,
-    			v;
+    	Vector3 coord,
+    			speed;
     	//
 
     	file.open(fileName.c_str());
@@ -57,32 +55,19 @@ public:
     	// Reading all cells
     	for (int i = 0; i < numCells; i++) {
     		file >> type;
-    		file >> pos.x >> pos.y >> pos.z ;
+    		file >> coord.x >> coord.y >> coord.z ;
     		file >> nucleusRadius >> radius >> actionRadius;
             file >> lifetime >> previousState >> oConsumption >> egfConsumption >> calcification;
-    		file >> v.x >> v.y >> v.z;
+    		file >> speed.x >> speed.y >> speed.z;
 
-    		cells.push_back(Cell(   (CellType)type, pos, nucleusRadius, radius, actionRadius,
-                                    lifetime, previousState, oConsumption, egfConsumption, calcification, v));
+    		cells.push_back(Cell(   (CellType)type, coord, nucleusRadius, radius, actionRadius,
+                                    lifetime, previousState, oConsumption, egfConsumption, calcification, speed));
 
-    		if (pos.x > max.x)
-    			max.x = pos.x;
-    		else if (pos.y < min.y)
-    			min.x = pos.x;
 
-    		if (pos.y > max.y)
-    			max.y = pos.y;
-    		else if (pos.y < min.y)
-    			min.y = pos.y;
-
-    		if (pos.z > max.z)
-    			max.z = pos.z;
-    		else if (pos.z < min.z)
-    			min.z = pos.z;
     	}
     	//
     	file.close();
-    	return new CellFrame(time, domain, outCells, tumCells, numCells, cells, min, max);
+    	return new CellFrame(time, domain, outCells, tumCells, numCells, cells);
     }
 
 

@@ -39,4 +39,17 @@ extern bool visibilityNEC,  /***  Necrotic Cell  ***/
 			visibilityG1,   /***  Cell G1 State  ***/
 			visibilityNOR;  /***  Normal Cell  ***/
 
-extern GLfloat backgroundColor;
+
+
+// Camera position
+extern float x, y; // initially 5 units south of origin
+extern float deltaMove; // initially camera doesn't move
+
+// Camera direction
+extern float lx, ly; // camera points initially along y-axis
+extern float angle; // angle of rotation for the camera direction
+extern float deltaAngle; // additional angle change when dragging
+
+// Mouse drag control
+extern int isDragging; // true when dragging
+extern int xDragStart; // records the x-coordinate when dragging starts

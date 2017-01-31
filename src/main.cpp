@@ -10,9 +10,9 @@ Vector3 observer;
 Vector3 light(320.0f, 228.0f, 500.0f);
 
 //Mouse Movement
-Vector3 rotation,
-		rotIni,
-		pos;
+Vector3 rotation = Vector3(),
+		rotIni = Vector3(),
+		pos = Vector3();
 
 GLint	windowWidth = 500,
 		windowHeight = 500;
@@ -28,16 +28,15 @@ int frameNum = 0,
 
 GLboolean lines = false;
 
-extern GLfloat backgroundColor = 1.0f;
-
 int main(int argc, char** argv) {
 	std::vector<std::string> files = FileList::getFileNames("files/agentes/");
 
 	frames = CellFactory::makeListFrames(files);
 
-	render = new ogl::Render(frames[0]->getMin(), frames[0]->getMax());
+	render = new ogl::Render(Vector3(), frames[0]->getDomain());
 
-	observer = Vector3(render->getMiddle().x, render->getMiddle().y, 900);
+	observer = frames[0]->getDomain();
+	observer.z += 600;
 
 	ogl::GlutWindow window(argc, argv);
 

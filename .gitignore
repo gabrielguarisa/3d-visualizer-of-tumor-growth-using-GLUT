@@ -346,3 +346,4 @@ build/
 *.vcxproj
 
 files/
+out/

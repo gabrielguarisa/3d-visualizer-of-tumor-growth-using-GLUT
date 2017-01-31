@@ -1,13 +1,17 @@
 #include "Screenshot.h"
+#include <sys/stat.h>
 
 std::string ogl::Screenshot::generateFileName()
 {
 	time_t t = time(0);   // get time now
 	struct tm * now = localtime(&t);
 
+	mkdir("out", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+
 	char buffer[80];
 	strftime(buffer, 80, "%Y-%m-%d-%I-%M-%S", now);
-	return std::strcat(buffer, type.c_str());
+	
+	return "out/" + std::string(buffer) + type;
 }
 
 void ogl::Screenshot::newPicture(ImageFormat imageFormat)

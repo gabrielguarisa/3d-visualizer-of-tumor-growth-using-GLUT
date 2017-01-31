@@ -6,6 +6,7 @@
 // Cell Types
 typedef enum
 {
+	UND = -1, /***  Undefined Cell  ***/
 	NEC = 0,  /***  Necrotic Cell  ***/
 	QUI = 1,  /***  Quiescent Cell  ***/
 	PRO = 2,  /***  Proliferative Cell  ***/

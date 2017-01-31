@@ -38,3 +38,5 @@ extern bool visibilityNEC,  /***  Necrotic Cell  ***/
 			visibilityAPO,  /***  Apoptotic Cell  ***/
 			visibilityG1,   /***  Cell G1 State  ***/
 			visibilityNOR;  /***  Normal Cell  ***/
+
+extern GLfloat backgroundColor;

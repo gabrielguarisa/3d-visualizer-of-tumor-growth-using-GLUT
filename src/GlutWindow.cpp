@@ -19,7 +19,7 @@ ogl::GlutWindow::GlutWindow(int argc, char * argv[])
 
 void ogl::GlutWindow::glutSetup() {
 	//Background Color (White)
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	glClearColor(backgroundColor, backgroundColor, backgroundColor, 1.0f);
 
 	//Z-Buffer & Light
 	glShadeModel(GL_SMOOTH);
@@ -77,7 +77,7 @@ void ogl::GlutWindow::glutDisplay() {
 		}
 		else if(automaticPlay = -1)
 		{
-			if(frameNum > 1)
+			if(frameNum > 0)
 				frameNum--;
 			else
 				automaticPlay = 0;
@@ -101,6 +101,14 @@ void ogl::GlutWindow::glutKeyboard(unsigned char key, int x, int y) {
 		break;
 	case 'P': // PrintScreen JPG
 		screenshot.newPicture(JPG);
+		break;
+	case 'r': // Backgroud Color -> black
+		if(backgroundColor > 0.0f)
+			backgroundColor -= 0.1f;
+		break;
+	case 'R': // Backgroud Color -> white
+		if(backgroundColor < 1.0f)
+			backgroundColor += 0.1f;
 		break;
 				/*** SLICES CONTROL ***/
 				/*** lowercase -> out ***/
@@ -177,7 +185,7 @@ void ogl::GlutWindow::glutKeyboard(unsigned char key, int x, int y) {
 	case ',':
 		if(automaticPlay != 0)
 			automaticPlay = 0;
-		else if(frameNum > 1)
+		else if(frameNum > 0)
 			frameNum--;
 		break;
 	case '.':

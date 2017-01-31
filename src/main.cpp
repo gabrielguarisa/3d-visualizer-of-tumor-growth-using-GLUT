@@ -1,7 +1,7 @@
 #include <iostream>
 #include "CellFactory.h"
 #include "GlutWindow.h"
-#include "FileReader.h"
+#include "FileList.h"
 
 //Observer Position
 Vector3 observer;
@@ -24,21 +24,16 @@ ogl::Screenshot screenshot;
 
 std::vector<CellFrame*> frames;
 int frameNum = 0,
-	automaticPlay= 0;
+	automaticPlay = 0;
 
 GLboolean lines = false;
 
+extern GLfloat backgroundColor = 1.0f;
+
 int main(int argc, char** argv) {
-	FileReader reader;
-	CellFactory factory;
+	std::vector<std::string> files = FileList::getFileNames("files/agentes/");
 
-	for (int i = 2; i < reader.result.size(); i++)
-	{
-		std::cout << reader.result[i] << std::endl;
-		frames.push_back(factory.fabricate(reader.result[i]));
-	}
-
-	//frames.push_back(factory.fabricate("files/saida0-00400.dat"));
+	frames = CellFactory::makeListFrames(files);
 
 	render = new ogl::Render(frames[0]->getMin(), frames[0]->getMax());
 

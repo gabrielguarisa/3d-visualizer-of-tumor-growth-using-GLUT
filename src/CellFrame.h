@@ -21,7 +21,8 @@ private:
     Vector3 min_, max_;
 
 public:
-    CellFrame(float time, Vector3 domain, float outCells, float tumCells, int numCells, std::vector<Cell> cells, Vector3 min, Vector3 max);
+    CellFrame(  float time, Vector3 domain, float outCells, float tumCells,
+                int numCells, std::vector<Cell> cells, Vector3 min, Vector3 max);
 
     std::vector<Cell> cells;
 

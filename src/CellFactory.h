@@ -47,7 +47,7 @@ public:
     static std::vector<CellFrame*> makeListFrames(std::vector<std::string> fileNames)
     {
         std::vector<CellFrame*> frames;
-        for (int i = 2; i < fileNames.size(); i++)
+        for (int i = 0; i < fileNames.size(); i++)
     	{
             frames.push_back(CellFactory::makeFrame(fileNames[i]));
             std::cout << fileNames[i] << std::endl;

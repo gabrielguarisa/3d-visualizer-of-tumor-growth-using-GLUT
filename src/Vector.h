@@ -91,4 +91,14 @@ public:
 		this->y /= c;
 		this->z /= c;
 	}
+
+	bool operator==(const Vector3& vec)
+	{
+		return this->x == vec.x && this->y == vec.y && this->z == vec.z;
+	}
+
+	bool operator!=(const Vector3& vec)
+	{
+		return !(this->x == vec.x && this->y == vec.y && this->z == vec.z);
+	}
 };

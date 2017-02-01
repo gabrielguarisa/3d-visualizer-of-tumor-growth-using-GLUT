@@ -18,6 +18,8 @@ extern Vector3	rotation,
 
 extern GLint bpress;
 
+extern std::vector<std::vector<std::vector<std::vector<double> > > > nutGrids;
+extern std::vector<std::vector<std::vector<std::vector<double> > > > egfGrids;
 extern std::vector<CellFrame*> frames;
 extern int 	frameNum,
 			automaticPlay;

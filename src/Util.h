@@ -2,6 +2,7 @@
 
 #include "Vector.h"
 #include <GL/glut.h>
+#include <map>
 
 // Cell Types
 typedef enum
@@ -22,3 +23,11 @@ typedef enum
 	PNG,
 	JPG
 } ImageFormat;
+
+
+typedef enum
+{
+	STD = 0,
+	NUT = 1,
+	EGF = 2
+} ViewMode;

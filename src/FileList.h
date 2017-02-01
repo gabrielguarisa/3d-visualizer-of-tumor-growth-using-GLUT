@@ -21,9 +21,10 @@ public:
         if (dpdf_ != NULL){
             std::string temp;
             while (epdf_ = readdir(dpdf_)){
-                //std::cout << epdf->d_name << std::endl;
-                temp = path + epdf_->d_name;
-                result.push_back(temp);
+                temp = epdf_->d_name;
+                if (temp[0] == '.')
+                    continue;
+                result.push_back(path + temp);
             }
             std::sort(result.begin(), result.end());
         }

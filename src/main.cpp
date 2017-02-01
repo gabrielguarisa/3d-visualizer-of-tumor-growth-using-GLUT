@@ -2,6 +2,7 @@
 #include "CellFactory.h"
 #include "GlutWindow.h"
 #include "FileList.h"
+#include "GridFactory.h"
 
 //Observer Position
 Vector3 observer;
@@ -22,6 +23,8 @@ GLint bpress;
 ogl::Render *render;
 ogl::Screenshot screenshot;
 
+std::vector<std::vector<std::vector<std::vector<double> > > > nutGrids;
+std::vector<std::vector<std::vector<std::vector<double> > > > egfGrids;
 std::vector<CellFrame*> frames;
 int frameNum = 0,
 	automaticPlay = 0;
@@ -29,9 +32,14 @@ int frameNum = 0,
 GLboolean lines = false;
 
 int main(int argc, char** argv) {
-	std::vector<std::string> files = FileList::getFileNames("files/agentes/");
+	std::vector<std::string> agents = FileList::getFileNames("files/agentes/");
+	std::vector<std::string> nut = FileList::getFileNames("files/nut/");
+	std::vector<std::string> egf = FileList::getFileNames("files/egf/");
 
-	frames = CellFactory::makeListFrames(files);
+	frames = CellFactory::makeListFrames(agents);
+
+	nutGrids = GridFactory::makeListGrids(nut, frames[0]->domain, 10);
+	egfGrids = GridFactory::makeListGrids(egf, frames[0]->domain, 10);
 
 	render = new ogl::Render(Vector3(), frames[0]->domain);
 

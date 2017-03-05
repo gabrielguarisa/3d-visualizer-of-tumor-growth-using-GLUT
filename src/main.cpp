@@ -15,19 +15,17 @@ Vector3 rotation = Vector3(),
 		rotIni = Vector3(),
 		pos = Vector3();
 
-GLint	windowWidth = 600,
-		windowHeight = 600;
+GLint	windowWidth = 800,
+ 		windowHeight = 600;
+
 
 GLint bpress;
 
 ogl::Render *render;
 ogl::Screenshot screenshot;
 
-std::vector<std::vector<std::vector<std::vector<double> > > > nutGrids;
-std::vector<std::vector<std::vector<std::vector<double> > > > egfGrids;
 std::vector<CellFrame*> frames;
-int frameNum = 0,
-	automaticPlay = 0;
+int automaticPlay = 0;
 
 GLboolean lines = false;
 

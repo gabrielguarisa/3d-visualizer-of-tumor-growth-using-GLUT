@@ -1,4 +1,6 @@
 #include "Render.h"
+#include <cmath>
+#include <iostream>
 
 bool 	visibilityNEC = true,  /***  Necrotic Cell  ***/
 		visibilityQUI = true,  /***  Quiescent Cell  ***/
@@ -7,6 +9,15 @@ bool 	visibilityNEC = true,  /***  Necrotic Cell  ***/
 		visibilityAPO = true,  /***  Apoptotic Cell  ***/
 		visibilityG1 = true,   /***  Cell G1 State  ***/
 		visibilityNOR = true;  /***  Normal Cell  ***/
+
+ViewMode viewMode = STD;
+
+int frameNum = 0;
+float accuracy = 10.0f;
+
+std::vector<std::vector<std::vector<std::vector<float> > > > nutGrids;
+std::vector<std::vector<std::vector<std::vector<float> > > > egfGrids;
+
 
 ogl::Render::Render(Vector3 minimumLimit, Vector3 maximumLimit)
 {
@@ -19,23 +30,51 @@ void ogl::Render::renderCells(std::vector<Cell> cells)
 {
 	for (int i = 0; i < cells.size(); i++) {
 		if ((cells[i].coordinates.x > this->minimumLimit.x && cells[i].coordinates.x < this->maximumLimit.x) && (cells[i].coordinates.y > this->minimumLimit.y && cells[i].coordinates.y < this->maximumLimit.y) && (cells[i].coordinates.z > this->minimumLimit.z && cells[i].coordinates.z < this->maximumLimit.z)) {
+
+			float _valueNut = nutGrids[frameNum][(int)round(cells[i].coordinates.x/accuracy)][(int)round(cells[i].coordinates.y/accuracy)][(int)round(cells[i].coordinates.z/accuracy)];
+			float _valueEgf = egfGrids[frameNum][(int)round(cells[i].coordinates.x/accuracy)][(int)round(cells[i].coordinates.y/accuracy)][(int)round(cells[i].coordinates.z/accuracy)];
+
 			glPushMatrix();
 			glTranslatef(cells[i].coordinates.x, cells[i].coordinates.y, cells[i].coordinates.z);
 			switch (cells[i].type) {
 			case NEC: //Necrotic Cell (0): RGB DEPENDS ON CALCIFICATION LEVEL
 				if(visibilityNEC)
 				{
-					glColor4f((cells[i].calcification)*1.0f, 0.0f, (1 - cells[i].calcification)*1.0f, 1.0f);
+					if(viewMode == STD)
+						glColor4f((cells[i].calcification)*1.0f, 0.0f, (1 - cells[i].calcification)*1.0f, 1.0f);
+					else
+					{
+						if(viewMode == NUT)
+							glColor4f(1.0f, _valueNut, 1.0f, 1.0f);
+						else if(viewMode == EGF)
+							glColor4f(1.0f, 1.0f, _valueEgf, 1.0f);
+					}
 					glutSolidSphere(cells[i].radius, NUM_SEGMENTS, NUM_SEGMENTS);
 				}
 				break;
 			case QUI: //Quiescent Cell (1): RGB #CCCCFF & RGB #4D4DFF
 				if(visibilityQUI)
 				{
-					glColor4f(0.302f, 0.302f, 1.0f, 1.0f);
+					if(viewMode == STD)
+						glColor4f(0.302f, 0.302f, 1.0f, 1.0f);
+					else
+					{
+						if(viewMode == NUT)
+							glColor4f(1.0f, _valueNut, 1.0f, 1.0f);
+						else if(viewMode == EGF)
+							glColor4f(1.0f, 1.0f, _valueEgf, 1.0f);
+					}
 					glutSolidSphere(cells[i].nucleusRadius, NUM_SEGMENTS, NUM_SEGMENTS);
 					glDepthMask(GL_FALSE);
-					glColor4f(0.8f, 0.8f, 1.0f, 0.2f);
+					if(viewMode == STD)
+						glColor4f(0.8f, 0.8f, 1.0f, 0.2f);
+					else
+					{
+						if(viewMode == NUT)
+							glColor4f(0.9f, _valueNut, 0.9f, 0.2f);
+						else if(viewMode == EGF)
+							glColor4f(0.9f, 0.9f, _valueEgf, 0.2f);
+					}
 					glutSolidSphere(cells[i].radius, NUM_SEGMENTS, NUM_SEGMENTS);
 					glDepthMask(GL_TRUE);
 				}
@@ -43,10 +82,27 @@ void ogl::Render::renderCells(std::vector<Cell> cells)
 			case PRO: //Proliferative Cell (2): RGB #00CC00 & RGB #4D4DFF
 				if(visibilityPRO)
 				{
-					glColor4f(0.302f, 0.302f, 1.0f, 1.0f);
+					if(viewMode == STD)
+						glColor4f(0.302f, 0.302f, 1.0f, 1.0f);
+					else
+					{
+						if(viewMode == NUT)
+							glColor4f(1.0f, _valueNut, 1.0f, 1.0f);
+						else if(viewMode == EGF)
+							glColor4f(1.0f, 1.0f, _valueEgf, 1.0f);
+					}
+
 					glutSolidSphere(cells[i].nucleusRadius, NUM_SEGMENTS, NUM_SEGMENTS);
 					glDepthMask(GL_FALSE);
-					glColor4f(0.0f, 0.8f, 0.0f, 0.2f);
+					if(viewMode == STD)
+						glColor4f(0.0f, 0.8f, 0.0f, 0.2f);
+					else
+					{
+						if(viewMode == NUT)
+							glColor4f(0.9f, _valueNut, 0.9f, 0.2f);
+						else if(viewMode == EGF)
+							glColor4f(0.9f, 0.9f, _valueEgf, 0.2f);
+					}
 					glutSolidSphere(cells[i].radius, NUM_SEGMENTS, NUM_SEGMENTS);
 					glDepthMask(GL_TRUE);
 				}
@@ -54,10 +110,26 @@ void ogl::Render::renderCells(std::vector<Cell> cells)
 			case APO: //Apoptotic Cell (4): RGB #E60000 & RGB #4D4DFF
 				if(visibilityAPO)
 				{
-					glColor4f(0.302f, 0.302f, 1.0f, 1.0f);
+					if(viewMode == STD)
+						glColor4f(0.302f, 0.302f, 1.0f, 1.0f);
+					else
+					{
+						if(viewMode == NUT)
+							glColor4f(1.0f, _valueNut, 1.0f, 1.0f);
+						else if(viewMode == EGF)
+							glColor4f(1.0f, 1.0f, _valueEgf, 1.0f);
+					}
 					glutSolidSphere(cells[i].nucleusRadius, NUM_SEGMENTS, NUM_SEGMENTS);
 					glDepthMask(GL_FALSE);
-					glColor4f(0.902f, 0.0f, 0.0f, 0.2f);
+					if(viewMode == STD)
+						glColor4f(0.902f, 0.0f, 0.0f, 0.2f);
+					else
+					{
+						if(viewMode == NUT)
+							glColor4f(0.9f, _valueNut, 0.9f, 0.2f);
+						else if(viewMode == EGF)
+							glColor4f(0.9f, 0.9f, _valueEgf, 0.2f);
+					}
 					glutSolidSphere(cells[i].radius, NUM_SEGMENTS, NUM_SEGMENTS);
 					glDepthMask(GL_TRUE);
 				}
@@ -65,9 +137,25 @@ void ogl::Render::renderCells(std::vector<Cell> cells)
 			case G1: //G1 Cell (5): RGB #00CC00 & RGB #4D4DFF
 				if(visibilityG1)
 				{
-					glColor4f(0.302f, 0.302f, 1.0f, 1.0f);
+					if(viewMode == STD)
+						glColor4f(0.302f, 0.302f, 1.0f, 1.0f);
+					else
+					{
+						if(viewMode == NUT)
+							glColor4f(1.0f, _valueNut, 1.0f, 1.0f);
+						else if(viewMode == EGF)
+							glColor4f(1.0f, 1.0f, _valueEgf, 1.0f);
+					}
 					glutSolidSphere(cells[i].nucleusRadius, NUM_SEGMENTS, NUM_SEGMENTS);
-					glColor4f(0.0f, 0.8f, 0.0f, 0.2f);
+					if(viewMode == STD)
+						glColor4f(0.0f, 0.8f, 0.0f, 0.2f);
+					else
+					{
+						if(viewMode == NUT)
+							glColor4f(0.9f, _valueNut, 0.9f, 0.2f);
+						else if(viewMode == EGF)
+							glColor4f(0.9f, 0.9f, _valueEgf, 0.2f);
+					}
 					glDepthMask(GL_FALSE);
 					glutSolidSphere(cells[i].radius, NUM_SEGMENTS, NUM_SEGMENTS);
 					glDepthMask(GL_TRUE);
@@ -76,10 +164,27 @@ void ogl::Render::renderCells(std::vector<Cell> cells)
 			case NOR: //Normal Cell (6): RGB #E8E8F5 & RGB #DDDDF7
 				if(visibilityNOR)
 				{
-					glColor4f(0.867f, 0.867f, 0.969f, 1.0f);
+					if(viewMode == STD)
+						glColor4f(0.867f, 0.867f, 0.969f, 1.0f);
+					else
+					{
+						if(viewMode == NUT)
+							glColor4f(1.0f, _valueNut, 1.0f, 1.0f);
+						else if(viewMode == EGF)
+							glColor4f(1.0f, 1.0f, _valueEgf, 1.0f);
+					}
 					glutSolidSphere(cells[i].nucleusRadius, NUM_SEGMENTS, NUM_SEGMENTS);
 					glDepthMask(GL_FALSE);
-					glColor4f(0.91f, 0.91f, 0.961f, 0.2f);
+					if(viewMode == STD)
+						glColor4f(0.91f, 0.91f, 0.961f, 0.2f);
+					else
+					{
+						if(viewMode == NUT)
+							glColor4f(0.9f, _valueNut, 0.9f, 0.2f);
+						else if(viewMode == EGF)
+							glColor4f(0.9f, 0.9f, _valueEgf, 0.2f);
+					}
+
 					glutSolidSphere(cells[i].radius, NUM_SEGMENTS, NUM_SEGMENTS);
 					glDepthMask(GL_TRUE);
 				}

@@ -3,7 +3,9 @@
 ogl::GlutWindow::GlutWindow(int argc, char * argv[])
 {
 	glutInit(&argc, argv);
-	glutInitWindowPosition((glutGet(GLUT_SCREEN_WIDTH) - windowWidth) / 2, (glutGet(GLUT_SCREEN_HEIGHT) - windowHeight) / 2);
+	windowWidth  = 900;
+	windowHeight = 700;
+	//glutInitWindowPosition((glutGet(GLUT_SCREEN_WIDTH) - windowWidth) / 2, (glutGet(GLUT_SCREEN_HEIGHT) - windowHeight) / 2);
 	glutInitWindowSize(windowWidth, windowHeight);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutCreateWindow("3D Viewer");
@@ -15,7 +17,6 @@ ogl::GlutWindow::GlutWindow(int argc, char * argv[])
 	glutMotionFunc(this->glutMotion);
 	glutKeyboardFunc(this->glutKeyboard);
 }
-
 
 void ogl::GlutWindow::glutSetup() {
 	//Background Color (White)
@@ -37,7 +38,7 @@ void ogl::GlutWindow::glutSetup() {
 	glEnable(GL_COLOR_MATERIAL);
 
 	////Light Color (RGBA) & Position
-	GLfloat clight[] = { 0.0, 0.0, 1.0, 1.0 };
+	GLfloat clight[] = { 0.0, 0.0, 2.0, 0.5 };
 	GLfloat plight[] = { light.x, light.y, light.z, 1.0 }; //Positional Light (1.0)
 
 														   //										//Light Parameters
@@ -57,7 +58,7 @@ void ogl::GlutWindow::glutProjection() {
 	//ModelView
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(observer.x/2, observer.y/2, observer.z, observer.x/2, observer.y/2, observer.x/2, 0.0, 1.0, 0.0); //EYE, CENTER & UP
+	gluLookAt(observer.x/2, observer.y/2, observer.z/1.2, observer.x/2, observer.y/2, observer.x/2, 0.0, 1.0, 0.0); //EYE, CENTER & UP
 }
 
 //Display Function
@@ -198,6 +199,15 @@ void ogl::GlutWindow::glutKeyboard(unsigned char key, int x, int y) {
 		else
 			automaticPlay = 1;
 		break;
+	case 'z':
+		viewMode = STD;
+		break;
+	case 'x':
+		viewMode = NUT;
+		break;
+	case 'c':
+		viewMode = EGF;
+		break;
 	}
 	glutPostRedisplay();
 }
@@ -235,7 +245,7 @@ void ogl::GlutWindow::glutMotion(int x, int y) {
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glTranslated(-observer.x/2, -observer.y/2, -observer.z);
+	glTranslated(-observer.x/2, -observer.y/2, -observer.z/1.2);
 	glRotatef(rotation.x, 1, 0, 0);
 	glRotatef(rotation.y, 0, 1, 0);
 

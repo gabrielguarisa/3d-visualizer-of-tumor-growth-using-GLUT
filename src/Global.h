@@ -18,8 +18,8 @@ extern Vector3	rotation,
 
 extern GLint bpress;
 
-extern std::vector<std::vector<std::vector<std::vector<double> > > > nutGrids;
-extern std::vector<std::vector<std::vector<std::vector<double> > > > egfGrids;
+extern std::vector<std::vector<std::vector<std::vector<float> > > > nutGrids;
+extern std::vector<std::vector<std::vector<std::vector<float> > > > egfGrids;
 extern std::vector<CellFrame*> frames;
 extern int 	frameNum,
 			automaticPlay;
@@ -55,3 +55,5 @@ extern float deltaAngle; // additional angle change when dragging
 // Mouse drag control
 extern int isDragging; // true when dragging
 extern int xDragStart; // records the x-coordinate when dragging starts
+
+extern ViewMode viewMode;

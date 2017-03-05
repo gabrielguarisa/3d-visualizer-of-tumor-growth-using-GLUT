@@ -5,7 +5,7 @@
 
 class GridFactory{
 public:
-    static std::vector<std::vector<std::vector<double> > > makeGrid(std::string fileName, Vector3 dimension, float accuracy)
+    static std::vector<std::vector<std::vector<float> > > makeGrid(std::string fileName, Vector3 dimension, float accuracy)
     {
         // FILE
     	std::ifstream _file;
@@ -14,7 +14,9 @@ public:
 
         Vector3 _coordinates;
 
-        std::vector<std::vector<std::vector<double> > > _grid;
+        std::vector<std::vector<std::vector<float> > > _grid;
+
+        float intensity;
 
         int _height = ((int)round(dimension.x/accuracy))+1,
             _width = ((int)round(dimension.y/accuracy))+1,
@@ -35,15 +37,16 @@ public:
             if (!_line.length() || _line[0] == '#')
                 continue;
             std::istringstream iss(_line);
-            iss >> _coordinates.x >> _coordinates.y >> _coordinates.z >> _grid[(int)round(_coordinates.x/accuracy)][(int)round(_coordinates.y/accuracy)][(int)round(_coordinates.z/accuracy)];
+            iss >> _coordinates.x >> _coordinates.y >> _coordinates.z >> intensity;
+            _grid[(int)round(_coordinates.x/accuracy)][(int)round(_coordinates.y/accuracy)][(int)round(_coordinates.z/accuracy)] = intensity;
         }
     	_file.close();
     	return _grid;
     }
 
-    static std::vector<std::vector<std::vector<std::vector<double> > > > makeListGrids(std::vector<std::string> fileNames, Vector3 dimension, float accuracy)
+    static std::vector<std::vector<std::vector<std::vector<float> > > > makeListGrids(std::vector<std::string> fileNames, Vector3 dimension, float accuracy)
     {
-        std::vector<std::vector<std::vector<std::vector<double> > > > grids;
+        std::vector<std::vector<std::vector<std::vector<float> > > > grids;
         for (int i = 0; i < fileNames.size(); i++)
     	{
             grids.push_back(GridFactory::makeGrid(fileNames[i], dimension, accuracy));

@@ -16,6 +16,7 @@ namespace ogl {
 		static void glutMotion(int x, int y);
 		static void glutKeyboard(unsigned char key, int x, int y);
 		static void glutMouse(int button, int state, int x, int y);
+		static void glutReshape(GLsizei width, GLsizei height);
 		void start();
 		static void renderString(GLdouble x, GLdouble y, std::string string);
 	};

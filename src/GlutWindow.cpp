@@ -162,7 +162,7 @@ void ogl::GlutWindow::glutKeyboard(unsigned char key, int x, int y) {
 	case '.':
 		if(automaticPlay != 0)
 			automaticPlay = 0;
-		else if(frameNum < frames.size()-1)
+		else if(frameNum < frames.size())
 			frameNum++;
 		break;
 	case 'm':
@@ -170,6 +170,12 @@ void ogl::GlutWindow::glutKeyboard(unsigned char key, int x, int y) {
 			automaticPlay = 0;
 		else
 			automaticPlay = -1;
+		break;
+	case 'n':
+		frameNum = 0;
+		break;
+	case 'N':
+		frameNum = frames.size() - 1;
 		break;
 	case ';':
 		if(automaticPlay == 1)

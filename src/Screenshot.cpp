@@ -1,60 +1,83 @@
 #include "Screenshot.h"
-#include <sys/stat.h>
 
-std::string ogl::Screenshot::generateFileName()
-{
-	time_t t = time(0);   // get time now
-	struct tm * now = localtime(&t);
-
-	mkdir("out", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-
-	char buffer[80];
-	strftime(buffer, 80, "%Y-%m-%d-%I-%M-%S", now);
-	
-	return "out/" + std::string(buffer) + type;
-}
-
-void ogl::Screenshot::newPicture(ImageFormat imageFormat)
+// VIEWPORT
+ogl::Viewport::Viewport()
 {
 	//get current viewport
-	glGetIntegerv(GL_VIEWPORT, this->viewport_);
+	glGetIntegerv(GL_VIEWPORT, this->viewport);
 
-	this->width_ = this->viewport_[2];
-	this->height_ = this->viewport_[3];
+	this->width = this->viewport[2];
+	this->height = this->viewport[3];
 
-	this->bits_ = new GLubyte[this->width_ * 3 * this->height_];
+	this->bits = new GLubyte[this->width * 3 * this->height];
 
 	//read pixel from frame buffer
 	glFinish(); //finish all commands of OpenGL
+
 	glPixelStorei(GL_PACK_ALIGNMENT, 4);
 	glPixelStorei(GL_PACK_ROW_LENGTH, 0);
 	glPixelStorei(GL_PACK_SKIP_ROWS, 0);
 	glPixelStorei(GL_PACK_SKIP_PIXELS, 0);
-	glReadPixels(0, 0, this->width_, this->height_, GL_BGR_EXT, GL_UNSIGNED_BYTE, this->bits_);
+	glReadPixels(0, 0, this->width, this->height, GL_BGR_EXT, GL_UNSIGNED_BYTE, this->bits);
+}
 
-	capImg_ = cvCreateImage(cvSize(this->width_, this->height_), IPL_DEPTH_8U, 3);
-	for (int i = 0; i < this->height_; ++i)
+ogl::Viewport::~Viewport()
+{
+	delete[] this->bits;
+}
+
+// SCREENSHOT
+void ogl::Screenshot::takeScreenshot(Viewport* viewport, std::string fileName)
+{
+	IplImage* _img;
+
+
+
+	_img = cvCreateImage(cvSize(viewport->width, viewport->height), IPL_DEPTH_8U, 3);
+	for (int i = 0; i < viewport->height; ++i)
 	{
-		for (int j = 0; j < this->width_; ++j)
+		for (int j = 0; j < viewport->width; ++j)
 		{
-			capImg_->imageData[i*capImg_->widthStep + j * 3 + 0] = (unsigned char)(this->bits_[(this->height_ - i - 1) * 3 * this->width_ + j * 3 + 0]);
-			capImg_->imageData[i*capImg_->widthStep + j * 3 + 1] = (unsigned char)(this->bits_[(this->height_ - i - 1) * 3 * this->width_ + j * 3 + 1]);
-			capImg_->imageData[i*capImg_->widthStep + j * 3 + 2] = (unsigned char)(this->bits_[(this->height_ - i - 1) * 3 * this->width_ + j * 3 + 2]);
+			_img->imageData[i*_img->widthStep + j * 3 + 0] = (unsigned char)(viewport->bits[(viewport->height - i - 1) * 3 * viewport->width + j * 3 + 0]);
+			_img->imageData[i*_img->widthStep + j * 3 + 1] = (unsigned char)(viewport->bits[(viewport->height - i - 1) * 3 * viewport->width + j * 3 + 1]);
+			_img->imageData[i*_img->widthStep + j * 3 + 2] = (unsigned char)(viewport->bits[(viewport->height - i - 1) * 3 * viewport->width + j * 3 + 2]);
 		}
 	}
 
-	switch (imageFormat)
+	cvSaveImage(fileName.c_str(), _img);
+	cvReleaseImage(&_img);
+}
+
+void ogl::Screenshot::startLongScreenshot()
+{
+	if (!longScreenshot_)
 	{
-	case PNG:
-		type = ".png";
-		break;
-	case JPG:
-		type = ".jpg";
-		break;
+		longScreenshot_ = true;
 	}
+}
 
-	cvSaveImage(this->generateFileName().c_str(), capImg_);
-	cvReleaseImage(&capImg_);
-	delete[] this->bits_;
+void ogl::Screenshot::stopLongScreenshot()
+{
+	if (longScreenshot_)
+	{
+		longScreenshot_ = false;
+		path = "out/" + Util::getCurrentTime() + "/";
+		for (int i = 0; i < viewports.size(); i++) {
+			this->takeScreenshot(viewports[i], Util::generateImageFileName(static_cast<std::ostringstream*>( &(std::ostringstream() << i) )->str(), path, JPG));
+		}
+		viewports.clear();
+	}
+}
 
+void ogl::Screenshot::longScreenshotWatch()
+{
+	if (longScreenshot_)
+	{
+		viewports.push_back(new Viewport());
+	}
+}
+
+void ogl::Screenshot::screenshot(ImageFormat imageFormat)
+{
+	this->takeScreenshot(new Viewport(), Util::generateImageFileName(Util::getCurrentTime(), "out/", imageFormat));
 }

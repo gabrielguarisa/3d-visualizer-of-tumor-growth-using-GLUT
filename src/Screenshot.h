@@ -1,20 +1,35 @@
 #pragma once
 
 #include <opencv2/highgui/highgui.hpp>
-#include <time.h>
 #include "Util.h"
 
-
 namespace ogl {
-	class Screenshot {
-	private:
-		GLubyte *bits_; //RGB bits
-		GLint viewport_[4]; //current viewport
-		GLint width_, height_;
-		IplImage * capImg_;
-		std::string type;
-		std::string generateFileName();
+
+	class Viewport
+	{
 	public:
-		void newPicture(ImageFormat imageFormat = PNG);
+		GLubyte *bits; //RGB bits
+		GLint viewport[4]; //current viewport
+		GLint width, height;
+
+		Viewport();
+		~Viewport();
+	};
+
+	class Screenshot
+	{
+	private:
+		std::vector<Viewport*> viewports;
+		bool longScreenshot_;
+		std::string path;
+
+		void takeScreenshot(Viewport* viewport, std::string fileName);
+
+	public:
+		Screenshot(bool longScreenshotInit = false) : longScreenshot_(longScreenshotInit) { }
+		void startLongScreenshot();
+		void stopLongScreenshot();
+		void longScreenshotWatch();
+		void screenshot(ImageFormat imageFormat);
 	};
 }

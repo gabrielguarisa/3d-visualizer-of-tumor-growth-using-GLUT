@@ -66,7 +66,7 @@ void ogl::GlutWindow::glutDisplay() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	render->renderCells(frames[frameNum]->cells);
-
+	screenshot.longScreenshotWatch();
 	if(automaticPlay != 0)
 	{
 		if(automaticPlay == 1)
@@ -98,10 +98,16 @@ void ogl::GlutWindow::glutKeyboard(unsigned char key, int x, int y) {
 	case 27: //ESC: EXIT
 		exit(0);
 	case 'p': // PrintScreen PNG
-		screenshot.newPicture(PNG);
+		screenshot.screenshot(PNG);
 		break;
 	case 'P': // PrintScreen JPG
-		screenshot.newPicture(JPG);
+		screenshot.screenshot(JPG);
+		break;
+	case 'o':
+		screenshot.startLongScreenshot();
+		break;
+	case 'O':
+		screenshot.stopLongScreenshot();
 		break;
 				/*** SLICES CONTROL ***/
 				/*** lowercase -> out ***/

@@ -3,6 +3,9 @@
 #include "Vector.h"
 #include <GL/glut.h>
 #include <map>
+#include <time.h>
+#include <sys/stat.h>
+#include <string>
 
 // Cell Types
 typedef enum
@@ -31,3 +34,42 @@ typedef enum
 	NUT = 1,
 	EGF = 2
 } ViewMode;
+
+class Util
+{
+public:
+	static std::string generateImageFileName(std::string name, std::string path = "out/", ImageFormat imageFormat = PNG)
+	{
+		std::string _type;
+
+		mkdirIfNot(path);
+
+		switch (imageFormat)
+		{
+			case PNG:
+				_type = ".png";
+				break;
+			case JPG:
+				_type = ".jpg";
+				break;
+		}
+
+		return path + name + _type;
+	}
+
+	static void mkdirIfNot(std::string path)
+	{
+		mkdir(path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+	}
+
+	static std::string getCurrentTime()
+	{
+		time_t _t = time(0);   // get time now
+		struct tm * _now = localtime(&_t);
+
+		char _buffer[80];
+		strftime(_buffer, 80, "%Y-%m-%d-%I-%M-%S", _now);
+
+		return std::string(_buffer);
+	}
+};

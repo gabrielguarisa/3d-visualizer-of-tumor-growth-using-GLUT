@@ -27,7 +27,8 @@ ogl::Screenshot screenshot;
 std::vector<CellFrame*> frames;
 int automaticPlay = 0;
 
-GLboolean lines = false;
+GLboolean 	lines = false,
+			showInfo = true;
 
 int main(int argc, char** argv) {
 	std::vector<std::string> agents = FileList::getFileNames("files/agentes/");

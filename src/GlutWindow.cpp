@@ -61,37 +61,6 @@ void ogl::GlutWindow::glutProjection() {
 	gluLookAt(observer.x/2, observer.y/2, observer.z/1.2, observer.x/2, observer.y/2, observer.x/2, 0.0, 1.0, 0.0); //EYE, CENTER & UP
 }
 
-//Display Function
-void ogl::GlutWindow::glutDisplay() {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	render->renderCells(frames[frameNum]->cells);
-	screenshot.longScreenshotWatch();
-	if(automaticPlay != 0)
-	{
-		if(automaticPlay == 1)
-		{
-			if(frameNum < frames.size()-1)
-				frameNum++;
-			else
-				automaticPlay = 0;
-		}
-		else if(automaticPlay = -1)
-		{
-			if(frameNum > 0)
-				frameNum--;
-			else
-				automaticPlay = 0;
-		}
-		glutPostRedisplay();
-	}
-
-	if(lines)
-		render->renderLines();
-
-	glutSwapBuffers();
-}
-
 //Keyboard Actions
 void ogl::GlutWindow::glutKeyboard(unsigned char key, int x, int y) {
 	switch (key) {
@@ -150,6 +119,9 @@ void ogl::GlutWindow::glutKeyboard(unsigned char key, int x, int y) {
 		break;
 	case 'l': case 'L': // Show/Hide Lines
 		lines = !lines;
+		break;
+	case 'i': case 'I': // Show/Hide Info
+		showInfo = !showInfo;
 		break;
 	case '0':	// reset Slices
 		render->maximumLimit = render->getMax();
@@ -261,4 +233,67 @@ void ogl::GlutWindow::glutMotion(int x, int y) {
 void ogl::GlutWindow::start()
 {
 	glutMainLoop();
+}
+
+void ogl::GlutWindow::renderString(GLdouble x, GLdouble y, std::string text)
+{
+	glMatrixMode( GL_PROJECTION );
+	glPushMatrix();
+	glLoadIdentity();
+	gluOrtho2D( 0, 1280, 0, 1024 );
+
+	glMatrixMode( GL_MODELVIEW );
+	glPushMatrix();
+	glLoadIdentity();
+		glColor3f(0.0f, 0.0f, 0.0f);
+		glRasterPos2f(x, y);
+
+		for (int i = 0; i < text.length(); i++)
+		{
+			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, text[i]);
+		}
+		glPopMatrix();
+
+	glMatrixMode( GL_PROJECTION );
+	glPopMatrix();
+	glMatrixMode( GL_MODELVIEW );
+}
+
+
+//Display Function
+void ogl::GlutWindow::glutDisplay() {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	render->renderCells(frames[frameNum]->cells);
+
+	if(showInfo)
+	{
+		std::string info = 	"agents: " +  std::to_string(frames[frameNum]->cells.size()) + "    out cells: " +  std::to_string(frames[frameNum]->outCells)  + "    tumor cells: " +  std::to_string(frames[frameNum]->tumorCells)  + "    time stamp: " +  std::to_string(frames[frameNum]->time);
+		GlutWindow::renderString(10, 990, info);
+	}
+
+	screenshot.longScreenshotWatch();
+	if(automaticPlay != 0)
+	{
+		if(automaticPlay == 1)
+		{
+			if(frameNum < frames.size()-1)
+				frameNum++;
+			else
+				automaticPlay = 0;
+		}
+		else if(automaticPlay = -1)
+		{
+			if(frameNum > 0)
+				frameNum--;
+			else
+				automaticPlay = 0;
+		}
+		glutPostRedisplay();
+	}
+
+	if(lines)
+		render->renderLines();
+
+	glutSwapBuffers();
 }

@@ -29,7 +29,8 @@ extern ogl::Render *render;
 extern GLint	windowWidth,
 				windowHeight;
 
-extern GLboolean lines;
+extern GLboolean 	lines,
+					showInfo;
 
 extern ogl::Screenshot screenshot;
 

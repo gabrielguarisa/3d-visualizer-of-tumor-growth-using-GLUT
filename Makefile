@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -m64 -g -Wall -w
+CXXFLAGS = -std=c++11 -m64 -g -Wall -w
 SRCS = Cell.cpp CellFactory.cpp Render.cpp Screenshot.cpp GlutWindow.cpp main.cpp
 FOLDER = src/
 BUILD_FOLDER = build/

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef RENDER
+#define RENDER
 
 #include <GL/glut.h>
 #include <vector>
@@ -20,7 +21,7 @@ namespace ogl {
 
 		Render(Vector3 minimumLimit, Vector3 maximumLimit);
 
-		void renderCells(std::vector<Cell> cells);
+		void renderCells(std::vector<Cell> cells, ViewMode viewMode, CellDisplayTypes cellDT);
 
 		void renderLines();
 
@@ -31,3 +32,5 @@ namespace ogl {
 		Vector3 getMax();
 	};
 }
+
+#endif /* end of include guard: RENDER */

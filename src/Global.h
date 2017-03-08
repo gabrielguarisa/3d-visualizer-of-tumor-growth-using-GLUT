@@ -4,9 +4,9 @@
 #include "Render.h"
 #include "CellFrame.h"
 #include "Screenshot.h"
-#include "ConfigFileHandler.h"
+#include "ConfigHandler.h"
 
-extern ConfigFileHandler* config;
+extern ConfigHandler* config;
 
 //Observer Position
 extern Vector3 observer;
@@ -29,23 +29,7 @@ extern int 	frameNum,
 
 extern ogl::Render *render;
 
-extern GLint	windowWidth,
-				windowHeight;
-
-extern GLboolean 	lines,
-					showInfo;
-
 extern ogl::Screenshot screenshot;
-
-extern bool visibilityNEC,  /***  Necrotic Cell  ***/
-			visibilityQUI,  /***  Quiescent Cell  ***/
-			visibilityPRO,  /***  Proliferative Cell  ***/
-			visibilityHIP,  /***  Hipoxic Cell  ***/
-			visibilityAPO,  /***  Apoptotic Cell  ***/
-			visibilityG1,   /***  Cell G1 State  ***/
-			visibilityNOR;  /***  Normal Cell  ***/
-
-
 
 // Camera position
 extern float x, y; // initially 5 units south of origin
@@ -59,5 +43,3 @@ extern float deltaAngle; // additional angle change when dragging
 // Mouse drag control
 extern int isDragging; // true when dragging
 extern int xDragStart; // records the x-coordinate when dragging starts
-
-extern ViewMode viewMode;

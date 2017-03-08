@@ -3,13 +3,15 @@
 ogl::GlutWindow::GlutWindow(int argc, char * argv[])
 {
 	glutInit(&argc, argv);
-	windowWidth  = 900;
-	windowHeight = 700;
-	//glutInitWindowPosition((glutGet(GLUT_SCREEN_WIDTH) - windowWidth) / 2, (glutGet(GLUT_SCREEN_HEIGHT) - windowHeight) / 2);
-	glutInitWindowSize(windowWidth, windowHeight);
+
+	//glutInitWindowPosition((glutGet(GLUT_SCREEN_WIDTH) - config->window.width) / 2, (glutGet(GLUT_SCREEN_HEIGHT) - config->window.height) / 2);
+	glutInitWindowSize(config->window.width, config->window.height);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-	glutCreateWindow("3D Viewer");
-	glutReshapeWindow(windowWidth, windowHeight);
+	glutCreateWindow(config->window.title.c_str());
+	glutReshapeWindow(config->window.width, config->window.height);
+
+	if(config->window.fullscreen)
+		glutFullScreen();
 
 	this->glutSetup();
 
@@ -43,7 +45,6 @@ void ogl::GlutWindow::glutSetup() {
 	GLfloat clight[] = { 0.0, 0.0, 2.0, 0.5 };
 	GLfloat plight[] = { light.x, light.y, light.z, 1.0 }; //Positional Light (1.0)
 
-														   //										//Light Parameters
 	glLightfv(GL_LIGHT0, GL_AMBIENT_AND_DIFFUSE, clight);
 	glLightfv(GL_LIGHT0, GL_POSITION, plight);
 
@@ -55,7 +56,7 @@ void ogl::GlutWindow::glutProjection() {
 	//Projection
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(45.0, (GLfloat)windowWidth / (GLfloat)windowHeight, 1.0, 2000.0);
+	gluPerspective(45.0, (GLfloat)config->window.width / (GLfloat)config->window.height, 1.0, 2000.0);
 
 	//ModelView
 	glMatrixMode(GL_MODELVIEW);
@@ -120,10 +121,10 @@ void ogl::GlutWindow::glutKeyboard(unsigned char key, int x, int y) {
 		render->minimumLimit.z += SENS_SLICES;
 		break;
 	case 'l': case 'L': // Show/Hide Lines
-		lines = !lines;
+		config->display.showLines = !config->display.showLines;
 		break;
 	case 'i': case 'I': // Show/Hide Info
-		showInfo = !showInfo;
+		config->display.showInfo = !config->display.showInfo;
 		break;
 	case '0':	// reset Slices
 		render->maximumLimit = render->getMax();
@@ -133,25 +134,25 @@ void ogl::GlutWindow::glutKeyboard(unsigned char key, int x, int y) {
 
 	/*** CELL VISIBILITY ***/
 	case '1':
-		visibilityNEC = !visibilityNEC;
+		config->display.cells.NEC.visibility = !config->display.cells.NEC.visibility;
 		break;
 	case '2':
-		visibilityQUI = !visibilityQUI;
+		config->display.cells.QUI.visibility = !config->display.cells.QUI.visibility;
 		break;
 	case '3':
-		visibilityPRO = !visibilityPRO;
+		config->display.cells.PRO.visibility = !config->display.cells.PRO.visibility;
 		break;
 	case '4':
-		visibilityHIP = !visibilityHIP;
+		config->display.cells.HIP.visibility = !config->display.cells.HIP.visibility;
 		break;
 	case '5':
-		visibilityAPO = !visibilityAPO;
+		config->display.cells.APO.visibility = !config->display.cells.APO.visibility;
 		break;
 	case '6':
-		visibilityG1 = !visibilityG1;
+		config->display.cells.G1.visibility = !config->display.cells.G1.visibility;
 		break;
 	case '7':
-		visibilityNOR = !visibilityNOR;
+		config->display.cells.NOR.visibility = !config->display.cells.NOR.visibility;
 		break;
 
 	/*** CHANGE CELL ***/
@@ -186,13 +187,24 @@ void ogl::GlutWindow::glutKeyboard(unsigned char key, int x, int y) {
 			automaticPlay = 1;
 		break;
 	case 'z':
-		viewMode = STD;
+		config->display.viewMode = STD;
 		break;
 	case 'x':
-		viewMode = NUT;
+		config->display.viewMode = NUT;
 		break;
 	case 'c':
-		viewMode = EGF;
+		config->display.viewMode = EGF;
+		break;
+	case 'f': case 'F':
+		if(config->window.fullscreen)
+		{
+			glutReshapeWindow(config->window.width, config->window.height);
+			config->window.fullscreen = false;
+		}else
+		{
+			glutFullScreen();
+			config->window.fullscreen = true;
+		}
 		break;
 	}
 	glutPostRedisplay();
@@ -272,9 +284,9 @@ void ogl::GlutWindow::renderString(GLdouble x, GLdouble y, std::string text)
 void ogl::GlutWindow::glutDisplay() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	render->renderCells(frames[frameNum]->cells);
+	render->renderCells(frames[frameNum]->cells, config->display.viewMode, config->display.cells);
 
-	if(showInfo)
+	if(config->display.showInfo)
 	{
 		std::string info = 	"agents: " +  std::to_string(frames[frameNum]->cells.size()) + "    out cells: " +  std::to_string(frames[frameNum]->outCells)  + "    tumor cells: " +  std::to_string(frames[frameNum]->tumorCells)  + "    time stamp: " +  std::to_string(frames[frameNum]->time);
 		GlutWindow::renderString(10, 990, info);
@@ -300,7 +312,8 @@ void ogl::GlutWindow::glutDisplay() {
 		glutPostRedisplay();
 	}
 
-	if(lines)
+
+	if(config->display.showLines)
 		render->renderLines();
 
 	glutSwapBuffers();

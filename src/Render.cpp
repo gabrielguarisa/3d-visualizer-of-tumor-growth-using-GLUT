@@ -2,16 +2,6 @@
 #include <cmath>
 #include <iostream>
 
-bool 	visibilityNEC = true,  /***  Necrotic Cell  ***/
-		visibilityQUI = true,  /***  Quiescent Cell  ***/
-		visibilityPRO = true,  /***  Proliferative Cell  ***/
-		visibilityHIP = true,  /***  Hipoxic Cell  ***/
-		visibilityAPO = true,  /***  Apoptotic Cell  ***/
-		visibilityG1 = true,   /***  Cell G1 State  ***/
-		visibilityNOR = true;  /***  Normal Cell  ***/
-
-ViewMode viewMode = STD;
-
 int frameNum = 0;
 float accuracy = 10.0f;
 
@@ -26,7 +16,7 @@ ogl::Render::Render(Vector3 minimumLimit, Vector3 maximumLimit)
 	this->middle_ = Vector3((min_.x + max_.x) / 2, (min_.y + max_.y) / 2, (min_.z + max_.z) / 2);
 }
 
-void ogl::Render::renderCells(std::vector<Cell> cells)
+void ogl::Render::renderCells(std::vector<Cell> cells, ViewMode viewMode, CellDisplayTypes cellDT)
 {
 	for (int i = 0; i < cells.size(); i++) {
 		if ((cells[i].coordinates.x > this->minimumLimit.x && cells[i].coordinates.x < this->maximumLimit.x) && (cells[i].coordinates.y > this->minimumLimit.y && cells[i].coordinates.y < this->maximumLimit.y) && (cells[i].coordinates.z > this->minimumLimit.z && cells[i].coordinates.z < this->maximumLimit.z)) {
@@ -38,7 +28,7 @@ void ogl::Render::renderCells(std::vector<Cell> cells)
 			glTranslatef(cells[i].coordinates.x, cells[i].coordinates.y, cells[i].coordinates.z);
 			switch (cells[i].type) {
 			case NEC: //Necrotic Cell (0): RGB DEPENDS ON CALCIFICATION LEVEL
-				if(visibilityNEC)
+				if(cellDT.NEC.visibility)
 				{
 					if(viewMode == STD)
 						glColor4f((cells[i].calcification)*1.0f, 0.0f, (1 - cells[i].calcification)*1.0f, 1.0f);
@@ -53,7 +43,7 @@ void ogl::Render::renderCells(std::vector<Cell> cells)
 				}
 				break;
 			case QUI: //Quiescent Cell (1): RGB #CCCCFF & RGB #4D4DFF
-				if(visibilityQUI)
+				if(cellDT.QUI.visibility)
 				{
 					if(viewMode == STD)
 						glColor4f(0.302f, 0.302f, 1.0f, 1.0f);
@@ -80,7 +70,7 @@ void ogl::Render::renderCells(std::vector<Cell> cells)
 				}
 				break;
 			case PRO: //Proliferative Cell (2): RGB #00CC00 & RGB #4D4DFF
-				if(visibilityPRO)
+				if(cellDT.PRO.visibility)
 				{
 					if(viewMode == STD)
 						glColor4f(0.302f, 0.302f, 1.0f, 1.0f);
@@ -108,7 +98,7 @@ void ogl::Render::renderCells(std::vector<Cell> cells)
 				}
 				break;
 			case APO: //Apoptotic Cell (4): RGB #E60000 & RGB #4D4DFF
-				if(visibilityAPO)
+				if(cellDT.APO.visibility)
 				{
 					if(viewMode == STD)
 						glColor4f(0.302f, 0.302f, 1.0f, 1.0f);
@@ -135,7 +125,7 @@ void ogl::Render::renderCells(std::vector<Cell> cells)
 				}
 				break;
 			case G1: //G1 Cell (5): RGB #00CC00 & RGB #4D4DFF
-				if(visibilityG1)
+				if(cellDT.G1.visibility)
 				{
 					if(viewMode == STD)
 						glColor4f(0.302f, 0.302f, 1.0f, 1.0f);
@@ -162,7 +152,7 @@ void ogl::Render::renderCells(std::vector<Cell> cells)
 				}
 				break;
 			case NOR: //Normal Cell (6): RGB #E8E8F5 & RGB #DDDDF7
-				if(visibilityNOR)
+				if(cellDT.NOR.visibility)
 				{
 					if(viewMode == STD)
 						glColor4f(0.867f, 0.867f, 0.969f, 1.0f);

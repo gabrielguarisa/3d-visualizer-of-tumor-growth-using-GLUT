@@ -33,18 +33,20 @@ typedef enum
 	EGF = 2
 } ViewMode;
 
-typedef enum
+typedef struct CellDisplay{
+	bool visibility;
+};
+
+typedef struct CellDisplayTypes
 {
-	// Paths
-	PATH_AGENTS,
-	PATH_NUT,
-	PATH_EGF,
-	PATH_OUTPUT,
-	// window
-	WINDOW_TITLE,
-	WINDOW_WIDTH,
-	WINDOW_HEIGHT
-} ConfigFileOption;
+	CellDisplay NEC,
+				QUI,
+				PRO,
+				HIP,
+				APO,
+				G1,
+				NOR;
+};
 
 class Util
 {

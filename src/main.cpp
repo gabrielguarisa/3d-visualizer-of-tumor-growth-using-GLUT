@@ -4,7 +4,7 @@
 #include "FileList.h"
 #include "GridFactory.h"
 
-ConfigFileHandler* config;
+ConfigHandler* config;
 
 //Observer Position
 Vector3 observer;
@@ -17,10 +17,6 @@ Vector3 rotation = Vector3(),
 		rotIni = Vector3(),
 		pos = Vector3();
 
-GLint	windowWidth = 800,
- 		windowHeight = 600;
-
-
 GLint bpress;
 
 ogl::Render *render;
@@ -29,11 +25,8 @@ ogl::Screenshot screenshot;
 std::vector<CellFrame*> frames;
 int automaticPlay = 0;
 
-GLboolean 	lines = false,
-			showInfo = true;
-
 int main(int argc, char** argv) {
-	config = new ConfigFileHandler();
+	config = new ConfigHandler();
 	if (!config->created())
 		return EXIT_FAILURE;
 

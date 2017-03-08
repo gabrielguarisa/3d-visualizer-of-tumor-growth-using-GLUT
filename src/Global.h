@@ -4,6 +4,9 @@
 #include "Render.h"
 #include "CellFrame.h"
 #include "Screenshot.h"
+#include "ConfigFileHandler.h"
+
+extern ConfigFileHandler* config;
 
 //Observer Position
 extern Vector3 observer;

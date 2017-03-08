@@ -20,13 +20,11 @@ typedef enum
 	NOR = 6   /***  Normal Cell  ***/
 } CellType;
 
-
 typedef enum
 {
 	PNG,
 	JPG
 } ImageFormat;
-
 
 typedef enum
 {
@@ -34,6 +32,19 @@ typedef enum
 	NUT = 1,
 	EGF = 2
 } ViewMode;
+
+typedef enum
+{
+	// Paths
+	PATH_AGENTS,
+	PATH_NUT,
+	PATH_EGF,
+	PATH_OUTPUT,
+	// window
+	WINDOW_TITLE,
+	WINDOW_WIDTH,
+	WINDOW_HEIGHT
+} ConfigFileOption;
 
 class Util
 {

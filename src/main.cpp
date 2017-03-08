@@ -4,6 +4,8 @@
 #include "FileList.h"
 #include "GridFactory.h"
 
+ConfigFileHandler* config;
+
 //Observer Position
 Vector3 observer;
 
@@ -31,9 +33,13 @@ GLboolean 	lines = false,
 			showInfo = true;
 
 int main(int argc, char** argv) {
-	std::vector<std::string> agents = FileList::getFileNames("files/agentes/");
-	std::vector<std::string> nut = FileList::getFileNames("files/nut/");
-	std::vector<std::string> egf = FileList::getFileNames("files/egf/");
+	config = new ConfigFileHandler();
+	if (!config->created())
+		return EXIT_FAILURE;
+
+	std::vector<std::string> agents = FileList::getFileNames(config->paths.agents);
+	std::vector<std::string> nut = FileList::getFileNames(config->paths.nut);
+	std::vector<std::string> egf = FileList::getFileNames(config->paths.egf);
 
 	frames = CellFactory::makeListFrames(agents);
 

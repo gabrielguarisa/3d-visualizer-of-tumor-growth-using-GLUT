@@ -157,35 +157,36 @@ void ogl::GlutWindow::glutKeyboard(unsigned char key, int x, int y) {
 
 	/*** CHANGE CELL ***/
 	case ',':
-		if(automaticPlay != 0)
-			automaticPlay = 0;
-		else if(frameNum > 1)
-			frameNum--;
+		if(config->player.state != PAUSE)
+			config->player.state = PAUSE;
+		else
+			config->player.state = PREVIOUS;
 		break;
 	case '.':
-		if(automaticPlay != 0)
-			automaticPlay = 0;
-		else if(frameNum < frames.size())
-			frameNum++;
-		break;
-	case 'm':
-		if(automaticPlay == -1)
-			automaticPlay = 0;
+		if(config->player.state != PAUSE)
+			config->player.state = PAUSE;
 		else
-			automaticPlay = -1;
+			config->player.state = NEXT;
+		break;
+	case '<':
+		if(config->player.state == REVERSE)
+			config->player.state = PAUSE;
+		else
+			config->player.state = REVERSE;
+		break;
+	case '>':
+		if(config->player.state == PLAY)
+			config->player.state = PAUSE;
+		else
+			config->player.state = PLAY;
 		break;
 	case 'n':
-		frameNum = 0;
+		config->player.frame = 0;
 		break;
 	case 'N':
-		frameNum = frames.size() - 1;
+		config->player.frame = frames.size() - 1;
 		break;
-	case ';':
-		if(automaticPlay == 1)
-			automaticPlay = 0;
-		else
-			automaticPlay = 1;
-		break;
+
 	case 'z':
 		config->display.viewMode = STD;
 		break;
@@ -250,13 +251,11 @@ void ogl::GlutWindow::glutMotion(int x, int y) {
 	glutPostRedisplay();
 }
 
-void ogl::GlutWindow::start()
-{
+void ogl::GlutWindow::start() {
 	glutMainLoop();
 }
 
-void ogl::GlutWindow::renderString(GLdouble x, GLdouble y, std::string text)
-{
+void ogl::GlutWindow::renderString(GLdouble x, GLdouble y, std::string text) {
 	glMatrixMode( GL_PROJECTION );
 	glPushMatrix();
 	glLoadIdentity();
@@ -279,49 +278,29 @@ void ogl::GlutWindow::renderString(GLdouble x, GLdouble y, std::string text)
 	glMatrixMode( GL_MODELVIEW );
 }
 
-
 //Display Function
 void ogl::GlutWindow::glutDisplay() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	render->renderCells(frames[frameNum]->cells, config->display.viewMode, config->display.cells);
+	render->renderCells(frames[config->player.frame]->cells, config->display.viewMode, config->display.cells, nutGrids[config->player.frame], egfGrids[config->player.frame]);
 
 	if(config->display.showInfo)
 	{
-		std::string info = 	"agents: " +  std::to_string(frames[frameNum]->cells.size()) + "    out cells: " +  std::to_string(frames[frameNum]->outCells)  + "    tumor cells: " +  std::to_string(frames[frameNum]->tumorCells)  + "    time stamp: " +  std::to_string(frames[frameNum]->time);
+		std::string info = 	"agents: " +  std::to_string(frames[config->player.frame]->cells.size()) + "    out cells: " +  std::to_string(frames[config->player.frame]->outCells)  + "    tumor cells: " +  std::to_string(frames[config->player.frame]->tumorCells)  + "    time stamp: " +  std::to_string(frames[config->player.frame]->time);
 		GlutWindow::renderString(10, 990, info);
 	}
-
-	screenshot.longScreenshotWatch();
-	if(automaticPlay != 0)
-	{
-		if(automaticPlay == 1)
-		{
-			if(frameNum < frames.size()-1)
-				frameNum++;
-			else
-				automaticPlay = 0;
-		}
-		else if(automaticPlay = -1)
-		{
-			if(frameNum > 0)
-				frameNum--;
-			else
-				automaticPlay = 0;
-		}
-		glutPostRedisplay();
-	}
-
 
 	if(config->display.showLines)
 		render->renderLines();
 
+	screenshot.longScreenshotWatch();
+
+	GlutWindow::play();
+
 	glutSwapBuffers();
 }
 
-
-void ogl::GlutWindow::glutReshape(GLsizei width, GLsizei height)
-{
+void ogl::GlutWindow::glutReshape(GLsizei width, GLsizei height) {
 	if (height == 0) height = 1;                // To prevent divide by 0
 	GLfloat aspect = (GLfloat)width / (GLfloat)height;
 
@@ -333,4 +312,38 @@ void ogl::GlutWindow::glutReshape(GLsizei width, GLsizei height)
 	glLoadIdentity();             // Reset
 	// Enable perspective projection with fovy, aspect, zNear and zFar
 		gluPerspective(45.0, (GLfloat)aspect, 1.0, 2000.0);
+}
+
+void ogl::GlutWindow::play() {
+	if(config->player.state != PAUSE)
+	{
+		switch (config->player.state) {
+			case PLAY:
+				if(config->player.frame < frames.size()-1)
+					config->player.frame++;
+				else
+					config->player.state = PAUSE;
+				break;
+			case REVERSE:
+				if(config->player.frame > 0)
+					config->player.frame--;
+				else
+					config->player.state = PAUSE;
+				break;
+			case PREVIOUS:
+				if(config->player.frame > 0)
+					config->player.frame--;
+				config->player.state = PAUSE;
+				break;
+			case NEXT:
+				if(config->player.frame < frames.size() - 1)
+					config->player.frame++;
+				config->player.state = PAUSE;
+				break;
+			default:
+				config->player.state = PAUSE;
+				break;
+		}
+		glutPostRedisplay();
+	}
 }

@@ -28,13 +28,30 @@ typedef enum
 
 typedef enum
 {
+	PAUSE,
+	PLAY,
+	PREVIOUS,
+	NEXT,
+	REVERSE
+} PlayerStates;
+
+typedef enum
+{
 	STD = 0,
 	NUT = 1,
 	EGF = 2
 } ViewMode;
 
+typedef struct ColorRGBA {
+	GLfloat r, g, b, a;
+};
+
 typedef struct CellDisplay{
 	bool visibility;
+	struct {
+		ColorRGBA 	primary,
+					secondary;
+	} color;
 };
 
 typedef struct CellDisplayTypes

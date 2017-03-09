@@ -24,8 +24,6 @@ extern GLint bpress;
 extern std::vector<std::vector<std::vector<std::vector<float> > > > nutGrids;
 extern std::vector<std::vector<std::vector<std::vector<float> > > > egfGrids;
 extern std::vector<CellFrame*> frames;
-extern int 	frameNum,
-			automaticPlay;
 
 extern ogl::Render *render;
 

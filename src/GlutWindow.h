@@ -1,6 +1,9 @@
 #include "Screenshot.h"
 #include "Global.h"
 
+#include <chrono>
+#include <thread>
+
 namespace ogl {
 	#define SENS_ROT    5.0
 	#define SENS_OBS	2.0
@@ -17,6 +20,7 @@ namespace ogl {
 		static void glutKeyboard(unsigned char key, int x, int y);
 		static void glutMouse(int button, int state, int x, int y);
 		static void glutReshape(GLsizei width, GLsizei height);
+		static void play();
 		void start();
 		static void renderString(GLdouble x, GLdouble y, std::string string);
 	};

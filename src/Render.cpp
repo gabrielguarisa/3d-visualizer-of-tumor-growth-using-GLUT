@@ -2,12 +2,42 @@
 #include <cmath>
 #include <iostream>
 
-int frameNum = 0;
 float accuracy = 10.0f;
 
-std::vector<std::vector<std::vector<std::vector<float> > > > nutGrids;
-std::vector<std::vector<std::vector<std::vector<float> > > > egfGrids;
+void ogl::Render::drawCell_(Cell c, ViewMode viewMode, ColorRGBA primary, ColorRGBA secondary, ColorRGBA nut, ColorRGBA egf) {
+	glPushMatrix();
 
+	glTranslatef(c.coordinates.x, c.coordinates.y, c.coordinates.z);
+
+	if(viewMode == STD)
+	{
+		if (c.type == NEC)
+			glColor4f((c.calcification)*primary.r, primary.g, (1 - c.calcification)*primary.b, primary.a);
+		else
+			glColor4f(primary.r, primary.g, primary.b, primary.a);
+	}
+	else if(viewMode == NUT)
+		glColor4f(nut.r, nut.g, nut.b, nut.a);
+	else if(viewMode == EGF)
+		glColor4f(egf.r, egf.g, egf.b, egf.a);
+
+	glutSolidSphere(c.nucleusRadius, NUM_SEGMENTS, NUM_SEGMENTS);
+
+	if (c.type != NEC)
+	{
+		glDepthMask(GL_FALSE);
+		if(viewMode == STD)
+			glColor4f(secondary.r, secondary.g, secondary.b, secondary.a);
+		else if(viewMode == NUT)
+			glColor4f(nut.r, nut.g, nut.b, nut.a - 0.8);
+		else if(viewMode == EGF)
+			glColor4f(egf.r, egf.g, egf.b, egf.a - 0.8);
+		glutSolidSphere(c.radius, NUM_SEGMENTS, NUM_SEGMENTS);
+		glDepthMask(GL_TRUE);
+	}
+
+	glPopMatrix();
+}
 
 ogl::Render::Render(Vector3 minimumLimit, Vector3 maximumLimit)
 {
@@ -16,176 +46,50 @@ ogl::Render::Render(Vector3 minimumLimit, Vector3 maximumLimit)
 	this->middle_ = Vector3((min_.x + max_.x) / 2, (min_.y + max_.y) / 2, (min_.z + max_.z) / 2);
 }
 
-void ogl::Render::renderCells(std::vector<Cell> cells, ViewMode viewMode, CellDisplayTypes cellDT)
+void ogl::Render::renderCells(std::vector<Cell> cells, ViewMode viewMode, CellDisplayTypes cellDT, std::vector<std::vector<std::vector<float> > >  nutGrid, std::vector<std::vector<std::vector<float> > >  egfGrid)
 {
+	ColorRGBA nut, egf;
+	nut.r = nut.g = nut.b = nut.a = 1.0f;
+	egf.r = egf.g = egf.b = egf.a = 1.0f;
+
 	for (int i = 0; i < cells.size(); i++) {
 		if ((cells[i].coordinates.x > this->minimumLimit.x && cells[i].coordinates.x < this->maximumLimit.x) && (cells[i].coordinates.y > this->minimumLimit.y && cells[i].coordinates.y < this->maximumLimit.y) && (cells[i].coordinates.z > this->minimumLimit.z && cells[i].coordinates.z < this->maximumLimit.z)) {
 
-			float _valueNut = nutGrids[frameNum][(int)round(cells[i].coordinates.x/accuracy)][(int)round(cells[i].coordinates.y/accuracy)][(int)round(cells[i].coordinates.z/accuracy)];
-			float _valueEgf = egfGrids[frameNum][(int)round(cells[i].coordinates.x/accuracy)][(int)round(cells[i].coordinates.y/accuracy)][(int)round(cells[i].coordinates.z/accuracy)];
+			nut.g = nutGrid[(int)round(cells[i].coordinates.x/accuracy)][(int)round(cells[i].coordinates.y/accuracy)][(int)round(cells[i].coordinates.z/accuracy)];
+			egf.b = egfGrid[(int)round(cells[i].coordinates.x/accuracy)][(int)round(cells[i].coordinates.y/accuracy)][(int)round(cells[i].coordinates.z/accuracy)];
 
-			glPushMatrix();
-			glTranslatef(cells[i].coordinates.x, cells[i].coordinates.y, cells[i].coordinates.z);
 			switch (cells[i].type) {
-			case NEC: //Necrotic Cell (0): RGB DEPENDS ON CALCIFICATION LEVEL
-				if(cellDT.NEC.visibility)
-				{
-					if(viewMode == STD)
-						glColor4f((cells[i].calcification)*1.0f, 0.0f, (1 - cells[i].calcification)*1.0f, 1.0f);
-					else
-					{
-						if(viewMode == NUT)
-							glColor4f(1.0f, _valueNut, 1.0f, 1.0f);
-						else if(viewMode == EGF)
-							glColor4f(1.0f, 1.0f, _valueEgf, 1.0f);
-					}
-					glutSolidSphere(cells[i].radius, NUM_SEGMENTS, NUM_SEGMENTS);
-				}
-				break;
-			case QUI: //Quiescent Cell (1): RGB #CCCCFF & RGB #4D4DFF
-				if(cellDT.QUI.visibility)
-				{
-					if(viewMode == STD)
-						glColor4f(0.302f, 0.302f, 1.0f, 1.0f);
-					else
-					{
-						if(viewMode == NUT)
-							glColor4f(1.0f, _valueNut, 1.0f, 1.0f);
-						else if(viewMode == EGF)
-							glColor4f(1.0f, 1.0f, _valueEgf, 1.0f);
-					}
-					glutSolidSphere(cells[i].nucleusRadius, NUM_SEGMENTS, NUM_SEGMENTS);
-					glDepthMask(GL_FALSE);
-					if(viewMode == STD)
-						glColor4f(0.8f, 0.8f, 1.0f, 0.2f);
-					else
-					{
-						if(viewMode == NUT)
-							glColor4f(0.9f, _valueNut, 0.9f, 0.2f);
-						else if(viewMode == EGF)
-							glColor4f(0.9f, 0.9f, _valueEgf, 0.2f);
-					}
-					glutSolidSphere(cells[i].radius, NUM_SEGMENTS, NUM_SEGMENTS);
-					glDepthMask(GL_TRUE);
-				}
-				break;
-			case PRO: //Proliferative Cell (2): RGB #00CC00 & RGB #4D4DFF
-				if(cellDT.PRO.visibility)
-				{
-					if(viewMode == STD)
-						glColor4f(0.302f, 0.302f, 1.0f, 1.0f);
-					else
-					{
-						if(viewMode == NUT)
-							glColor4f(1.0f, _valueNut, 1.0f, 1.0f);
-						else if(viewMode == EGF)
-							glColor4f(1.0f, 1.0f, _valueEgf, 1.0f);
-					}
+				case NEC:
+					if(cellDT.NEC.visibility) //Necrotic Cell (0): RGB DEPENDS ON CALCIFICATION LEVEL
+						this->drawCell_(cells[i], viewMode, cellDT.NEC.color.primary, cellDT.NEC.color.secondary, nut, egf);
 
-					glutSolidSphere(cells[i].nucleusRadius, NUM_SEGMENTS, NUM_SEGMENTS);
-					glDepthMask(GL_FALSE);
-					if(viewMode == STD)
-						glColor4f(0.0f, 0.8f, 0.0f, 0.2f);
-					else
-					{
-						if(viewMode == NUT)
-							glColor4f(0.9f, _valueNut, 0.9f, 0.2f);
-						else if(viewMode == EGF)
-							glColor4f(0.9f, 0.9f, _valueEgf, 0.2f);
-					}
-					glutSolidSphere(cells[i].radius, NUM_SEGMENTS, NUM_SEGMENTS);
-					glDepthMask(GL_TRUE);
-				}
-				break;
-			case APO: //Apoptotic Cell (4): RGB #E60000 & RGB #4D4DFF
-				if(cellDT.APO.visibility)
-				{
-					if(viewMode == STD)
-						glColor4f(0.302f, 0.302f, 1.0f, 1.0f);
-					else
-					{
-						if(viewMode == NUT)
-							glColor4f(1.0f, _valueNut, 1.0f, 1.0f);
-						else if(viewMode == EGF)
-							glColor4f(1.0f, 1.0f, _valueEgf, 1.0f);
-					}
-					glutSolidSphere(cells[i].nucleusRadius, NUM_SEGMENTS, NUM_SEGMENTS);
-					glDepthMask(GL_FALSE);
-					if(viewMode == STD)
-						glColor4f(0.902f, 0.0f, 0.0f, 0.2f);
-					else
-					{
-						if(viewMode == NUT)
-							glColor4f(0.9f, _valueNut, 0.9f, 0.2f);
-						else if(viewMode == EGF)
-							glColor4f(0.9f, 0.9f, _valueEgf, 0.2f);
-					}
-					glutSolidSphere(cells[i].radius, NUM_SEGMENTS, NUM_SEGMENTS);
-					glDepthMask(GL_TRUE);
-				}
-				break;
-			case G1: //G1 Cell (5): RGB #00CC00 & RGB #4D4DFF
-				if(cellDT.G1.visibility)
-				{
-					if(viewMode == STD)
-						glColor4f(0.302f, 0.302f, 1.0f, 1.0f);
-					else
-					{
-						if(viewMode == NUT)
-							glColor4f(1.0f, _valueNut, 1.0f, 1.0f);
-						else if(viewMode == EGF)
-							glColor4f(1.0f, 1.0f, _valueEgf, 1.0f);
-					}
-					glutSolidSphere(cells[i].nucleusRadius, NUM_SEGMENTS, NUM_SEGMENTS);
-					if(viewMode == STD)
-						glColor4f(0.0f, 0.8f, 0.0f, 0.2f);
-					else
-					{
-						if(viewMode == NUT)
-							glColor4f(0.9f, _valueNut, 0.9f, 0.2f);
-						else if(viewMode == EGF)
-							glColor4f(0.9f, 0.9f, _valueEgf, 0.2f);
-					}
-					glDepthMask(GL_FALSE);
-					glutSolidSphere(cells[i].radius, NUM_SEGMENTS, NUM_SEGMENTS);
-					glDepthMask(GL_TRUE);
-				}
-				break;
-			case NOR: //Normal Cell (6): RGB #E8E8F5 & RGB #DDDDF7
-				if(cellDT.NOR.visibility)
-				{
-					if(viewMode == STD)
-						glColor4f(0.867f, 0.867f, 0.969f, 1.0f);
-					else
-					{
-						if(viewMode == NUT)
-							glColor4f(1.0f, _valueNut, 1.0f, 1.0f);
-						else if(viewMode == EGF)
-							glColor4f(1.0f, 1.0f, _valueEgf, 1.0f);
-					}
-					glutSolidSphere(cells[i].nucleusRadius, NUM_SEGMENTS, NUM_SEGMENTS);
-					glDepthMask(GL_FALSE);
-					if(viewMode == STD)
-						glColor4f(0.91f, 0.91f, 0.961f, 0.2f);
-					else
-					{
-						if(viewMode == NUT)
-							glColor4f(0.9f, _valueNut, 0.9f, 0.2f);
-						else if(viewMode == EGF)
-							glColor4f(0.9f, 0.9f, _valueEgf, 0.2f);
-					}
+					break;
+				case QUI:
+					if(cellDT.QUI.visibility)
+						this->drawCell_(cells[i], viewMode, cellDT.QUI.color.primary, cellDT.QUI.color.secondary, nut, egf);
 
-					glutSolidSphere(cells[i].radius, NUM_SEGMENTS, NUM_SEGMENTS);
-					glDepthMask(GL_TRUE);
-				}
-				break;
-			default:
-				glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-				glutSolidSphere(cells[i].nucleusRadius, NUM_SEGMENTS, NUM_SEGMENTS);
-				break;
+					break;
+				case PRO:
+					if(cellDT.PRO.visibility)
+						this->drawCell_(cells[i], viewMode, cellDT.PRO.color.primary, cellDT.PRO.color.secondary, nut, egf);
 
+					break;
+				case APO:
+					if(cellDT.APO.visibility)
+						this->drawCell_(cells[i], viewMode, cellDT.APO.color.primary, cellDT.APO.color.secondary, nut, egf);
+
+					break;
+				case G1:
+					if(cellDT.G1.visibility)
+						this->drawCell_(cells[i], viewMode, cellDT.G1.color.primary, cellDT.G1.color.secondary, nut, egf);
+
+					break;
+				case NOR:
+					if(cellDT.NOR.visibility)
+						this->drawCell_(cells[i], viewMode, cellDT.NOR.color.primary, cellDT.NOR.color.secondary, nut, egf);
+
+					break;
 			}
-			glPopMatrix();
 		}
 	}
 }

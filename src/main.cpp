@@ -12,6 +12,9 @@ Vector3 observer;
 //Light Position
 Vector3 light(320.0f, 228.0f, 500.0f);
 
+std::vector<std::vector<std::vector<std::vector<float> > > > nutGrids;
+std::vector<std::vector<std::vector<std::vector<float> > > > egfGrids;
+
 //Mouse Movement
 Vector3 rotation = Vector3(),
 		rotIni = Vector3(),
@@ -23,7 +26,6 @@ ogl::Render *render;
 ogl::Screenshot screenshot;
 
 std::vector<CellFrame*> frames;
-int automaticPlay = 0;
 
 int main(int argc, char** argv) {
 	config = new ConfigHandler();

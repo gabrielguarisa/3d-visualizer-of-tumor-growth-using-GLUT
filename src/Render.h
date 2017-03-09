@@ -4,6 +4,7 @@
 #include <GL/glut.h>
 #include <vector>
 #include "Cell.h"
+#include "Util.h"
 
 namespace ogl {
 	#define NUM_SEGMENTS 20
@@ -14,6 +15,8 @@ namespace ogl {
 		Vector3	min_,		// Left and Top limits
 				max_,		// Right and Bottom limits
 				middle_;	// (min + max) / 2
+
+		void drawCell_(Cell c, ViewMode viewMode, ColorRGBA primary, ColorRGBA secondary, ColorRGBA nut, ColorRGBA egf);
 	public:
 
 		Vector3 minimumLimit, // Left and Top limits
@@ -21,7 +24,7 @@ namespace ogl {
 
 		Render(Vector3 minimumLimit, Vector3 maximumLimit);
 
-		void renderCells(std::vector<Cell> cells, ViewMode viewMode, CellDisplayTypes cellDT);
+		void renderCells(std::vector<Cell> cells, ViewMode viewMode, CellDisplayTypes cellDT, std::vector<std::vector<std::vector<float> > >  nutGrid, std::vector<std::vector<std::vector<float> > >  egfGrid);
 
 		void renderLines();
 

@@ -11,9 +11,6 @@ extern ConfigHandler* config;
 //Observer Position
 extern Vector3 observer;
 
-//Light Position
-extern Vector3 light;
-
 //Mouse Movement
 extern Vector3	rotation,
 				rotIni,

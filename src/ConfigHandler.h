@@ -225,6 +225,8 @@ public:
         return created_;
     }
 
+    Vector3 light;
+
     struct
     {
         int frame;

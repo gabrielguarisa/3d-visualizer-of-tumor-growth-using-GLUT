@@ -41,13 +41,6 @@ void ogl::GlutWindow::glutSetup() {
 	//Ignore Material Properties: PREDOMINANCE OF glColor3f DIRECTIVES
 	glEnable(GL_COLOR_MATERIAL);
 
-	////Light Color (RGBA) & Position
-	GLfloat clight[] = { 0.0, 0.0, 2.0, 0.5 };
-	GLfloat plight[] = { light.x, light.y, light.z, 1.0 }; //Positional Light (1.0)
-
-	glLightfv(GL_LIGHT0, GL_AMBIENT_AND_DIFFUSE, clight);
-	glLightfv(GL_LIGHT0, GL_POSITION, plight);
-
 	this->glutProjection();
 }
 

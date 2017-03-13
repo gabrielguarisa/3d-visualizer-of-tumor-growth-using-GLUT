@@ -9,9 +9,6 @@ ConfigHandler* config;
 //Observer Position
 Vector3 observer;
 
-//Light Position
-Vector3 light(320.0f, 228.0f, 500.0f);
-
 std::vector<std::vector<std::vector<std::vector<float> > > > nutGrids;
 std::vector<std::vector<std::vector<std::vector<float> > > > egfGrids;
 

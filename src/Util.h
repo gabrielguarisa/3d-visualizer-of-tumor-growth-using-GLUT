@@ -1,4 +1,5 @@
-#pragma once
+#ifndef UTIL
+#define UTIL
 
 #include "Vector.h"
 #include <GL/glut.h>
@@ -6,6 +7,7 @@
 #include <time.h>
 #include <sys/stat.h>
 #include <string>
+#include <vector>
 
 // Cell Types
 typedef enum
@@ -65,6 +67,8 @@ typedef struct CellDisplayTypes
 				NOR;
 };
 
+typedef std::vector<std::vector<std::vector<std::vector<float> > > > Grid;
+
 class Util
 {
 public:
@@ -103,3 +107,5 @@ public:
 		return std::string(_buffer);
 	}
 };
+
+#endif /* end of include guard: UTIL */

@@ -64,14 +64,34 @@ private:
 
             displayConf.lookupValue("viewMode", viewMode);
 
-                if(viewMode == "STD")
-                    this->display.viewMode = STD;
-                else if(viewMode == "NUT")
-                    this->display.viewMode = NUT;
-                else if(viewMode == "EGF")
-                    this->display.viewMode = EGF;
-                else
-                    this->display.viewMode = STD;
+            if(viewMode == "STD")
+                this->display.viewMode = STD;
+            else if(viewMode == "NUT")
+                this->display.viewMode = NUT;
+            else if(viewMode == "EGF")
+                this->display.viewMode = EGF;
+            else
+                this->display.viewMode = STD;
+
+            const Setting &linesConfig = displayConf["lines"];
+
+            linesConfig.lookupValue("automaticPos", this->display.lines.automaticPos);
+            linesConfig.lookupValue("cellGap", this->display.lines.cellGap);
+
+
+            if(this->display.lines.automaticPos){
+                this->display.lines.maximumLimit = Vector3();
+                this->display.lines.minimumLimit = Vector3();
+            } else {
+                linesConfig["maximumPos"].lookupValue("x", this->display.lines.maximumLimit.x);
+                linesConfig["maximumPos"].lookupValue("y", this->display.lines.maximumLimit.y);
+                linesConfig["maximumPos"].lookupValue("z", this->display.lines.maximumLimit.z);
+
+                linesConfig["minimumPos"].lookupValue("x", this->display.lines.minimumLimit.x);
+                linesConfig["minimumPos"].lookupValue("y", this->display.lines.minimumLimit.y);
+                linesConfig["minimumPos"].lookupValue("z", this->display.lines.minimumLimit.z);
+            }
+
 
             const Setting &necConfig = displayConf["cells"]["NEC"];
             necConfig.lookupValue("visibility", this->display.cells.NEC.visibility);
@@ -225,8 +245,6 @@ public:
         return created_;
     }
 
-    Vector3 light;
-
     struct
     {
         int frame;
@@ -257,6 +275,14 @@ public:
         ViewMode viewMode;
 
         CellDisplayTypes cells;
+
+        struct
+        {
+            bool automaticPos;
+            int cellGap;
+            Vector3 maximumLimit;
+            Vector3 minimumLimit;
+        }lines;
     } display;
 };
 

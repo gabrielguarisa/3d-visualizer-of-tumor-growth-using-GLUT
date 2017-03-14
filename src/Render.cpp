@@ -39,21 +39,14 @@ void ogl::Render::drawCell_(Cell c, ViewMode viewMode, ColorRGBA primary, ColorR
 	glPopMatrix();
 }
 
-ogl::Render::Render(Vector3 minimumLimit, Vector3 maximumLimit)
-{
-	this->minimumLimit = this->min_ = minimumLimit - CELL_GAP;
-	this->maximumLimit = this->max_ = maximumLimit + CELL_GAP;
-	this->middle_ = Vector3((min_.x + max_.x) / 2, (min_.y + max_.y) / 2, (min_.z + max_.z) / 2);
-}
-
-void ogl::Render::renderCells(std::vector<Cell> cells, ViewMode viewMode, CellDisplayTypes cellDT, std::vector<std::vector<std::vector<float> > >  nutGrid, std::vector<std::vector<std::vector<float> > >  egfGrid)
+void ogl::Render::renderCells(std::vector<Cell> cells, ViewMode viewMode, CellDisplayTypes cellDT, ConfigHandler* config, std::vector<std::vector<std::vector<float> > >  nutGrid, std::vector<std::vector<std::vector<float> > >  egfGrid)
 {
 	ColorRGBA nut, egf;
 	nut.r = nut.g = nut.b = nut.a = 1.0f;
 	egf.r = egf.g = egf.b = egf.a = 1.0f;
 
 	for (int i = 0; i < cells.size(); i++) {
-		if ((cells[i].coordinates.x > this->minimumLimit.x && cells[i].coordinates.x < this->maximumLimit.x) && (cells[i].coordinates.y > this->minimumLimit.y && cells[i].coordinates.y < this->maximumLimit.y) && (cells[i].coordinates.z > this->minimumLimit.z && cells[i].coordinates.z < this->maximumLimit.z)) {
+		if ((cells[i].coordinates.x > config->display.lines.minimumLimit.x && cells[i].coordinates.x < config->display.lines.maximumLimit.x) && (cells[i].coordinates.y > config->display.lines.minimumLimit.y && cells[i].coordinates.y < config->display.lines.maximumLimit.y) && (cells[i].coordinates.z > config->display.lines.minimumLimit.z && cells[i].coordinates.z < config->display.lines.maximumLimit.z)) {
 
 			nut.g = nutGrid[(int)round(cells[i].coordinates.x/accuracy)][(int)round(cells[i].coordinates.y/accuracy)][(int)round(cells[i].coordinates.z/accuracy)];
 			egf.b = egfGrid[(int)round(cells[i].coordinates.x/accuracy)][(int)round(cells[i].coordinates.y/accuracy)][(int)round(cells[i].coordinates.z/accuracy)];
@@ -94,61 +87,46 @@ void ogl::Render::renderCells(std::vector<Cell> cells, ViewMode viewMode, CellDi
 	}
 }
 
-void ogl::Render::renderLines()
+void ogl::Render::renderLines(ConfigHandler* config)
 {
 	glLineWidth(2.5);
 	glColor3f(1.0, 0.0, 0.0);
 	//Right
 	glBegin(GL_LINES);
-	glVertex3f(this->maximumLimit.x, this->min_.y, this->middle_.z);
-	glVertex3f(this->maximumLimit.x, this->max_.y, this->middle_.z);
+	glVertex3f(config->display.lines.maximumLimit.x, config->display.lines.minimumLimit.y, (config->display.lines.minimumLimit.z + config->display.lines.maximumLimit.z) / 2);
+	glVertex3f(config->display.lines.maximumLimit.x, config->display.lines.maximumLimit.y, (config->display.lines.minimumLimit.z + config->display.lines.maximumLimit.z) / 2);
 	glEnd();
 	//Left
 	glBegin(GL_LINES);
-	glVertex3f(this->minimumLimit.x, this->min_.y, this->middle_.z);
-	glVertex3f(this->minimumLimit.x, this->max_.y, this->middle_.z);
+	glVertex3f(config->display.lines.minimumLimit.x, config->display.lines.minimumLimit.y, (config->display.lines.minimumLimit.z + config->display.lines.maximumLimit.z) / 2);
+	glVertex3f(config->display.lines.minimumLimit.x, config->display.lines.maximumLimit.y, (config->display.lines.minimumLimit.z + config->display.lines.maximumLimit.z) / 2);
 	glEnd();
 	//Top
 	glBegin(GL_LINES);
-	glVertex3f(this->min_.x, this->maximumLimit.y, this->middle_.z);
-	glVertex3f(this->max_.x, this->maximumLimit.y, this->middle_.z);
+	glVertex3f(config->display.lines.minimumLimit.x, config->display.lines.maximumLimit.y, (config->display.lines.minimumLimit.z + config->display.lines.maximumLimit.z) / 2);
+	glVertex3f(config->display.lines.maximumLimit.x, config->display.lines.maximumLimit.y, (config->display.lines.minimumLimit.z + config->display.lines.maximumLimit.z) / 2);
 	glEnd();
 	//Bottom
 	glBegin(GL_LINES);
-	glVertex3f(this->min_.x, this->minimumLimit.y, this->middle_.z);
-	glVertex3f(this->max_.x, this->minimumLimit.y, this->middle_.z);
+	glVertex3f(config->display.lines.minimumLimit.x, config->display.lines.minimumLimit.y, (config->display.lines.minimumLimit.z + config->display.lines.maximumLimit.z) / 2);
+	glVertex3f(config->display.lines.maximumLimit.x, config->display.lines.minimumLimit.y, (config->display.lines.minimumLimit.z + config->display.lines.maximumLimit.z) / 2);
 	glEnd();
 	//Back
 	glBegin(GL_LINES);
-	glVertex3f(this->middle_.x - CELL_GAP, this->middle_.y, this->maximumLimit.z);
-	glVertex3f(this->middle_.x + CELL_GAP, this->middle_.y, this->maximumLimit.z);
+	glVertex3f(((config->display.lines.minimumLimit.x + config->display.lines.maximumLimit.x) / 2) - config->display.lines.cellGap, (config->display.lines.minimumLimit.y + config->display.lines.maximumLimit.y) / 2, config->display.lines.maximumLimit.z);
+	glVertex3f(((config->display.lines.minimumLimit.x + config->display.lines.maximumLimit.x) / 2) + config->display.lines.cellGap, (config->display.lines.minimumLimit.y + config->display.lines.maximumLimit.y) / 2, config->display.lines.maximumLimit.z);
 	glEnd();
 	glBegin(GL_LINES);
-	glVertex3f(this->middle_.x, this->middle_.y - CELL_GAP, this->maximumLimit.z);
-	glVertex3f(this->middle_.x, this->middle_.y + CELL_GAP, this->maximumLimit.z);
+	glVertex3f((config->display.lines.minimumLimit.x + config->display.lines.maximumLimit.x) / 2, ((config->display.lines.minimumLimit.y + config->display.lines.maximumLimit.y) / 2) - config->display.lines.cellGap, config->display.lines.maximumLimit.z);
+	glVertex3f((config->display.lines.minimumLimit.x + config->display.lines.maximumLimit.x) / 2, (config->display.lines.minimumLimit.y + config->display.lines.maximumLimit.y) / 2 + config->display.lines.cellGap, config->display.lines.maximumLimit.z);
 	glEnd();
 	//Front
 	glBegin(GL_LINES);
-	glVertex3f(this->middle_.x - CELL_GAP, this->middle_.y, this->minimumLimit.z);
-	glVertex3f(this->middle_.x + CELL_GAP, this->middle_.y, this->minimumLimit.z);
+	glVertex3f(((config->display.lines.minimumLimit.x + config->display.lines.maximumLimit.x) / 2) - config->display.lines.cellGap, (config->display.lines.minimumLimit.y + config->display.lines.maximumLimit.y) / 2, config->display.lines.minimumLimit.z);
+	glVertex3f(((config->display.lines.minimumLimit.x + config->display.lines.maximumLimit.x) / 2) + config->display.lines.cellGap, (config->display.lines.minimumLimit.y + config->display.lines.maximumLimit.y) / 2, config->display.lines.minimumLimit.z);
 	glEnd();
 	glBegin(GL_LINES);
-	glVertex3f(this->middle_.x, this->middle_.y - CELL_GAP, this->minimumLimit.z);
-	glVertex3f(this->middle_.x, this->middle_.y + CELL_GAP, this->minimumLimit.z);
+	glVertex3f((config->display.lines.minimumLimit.x + config->display.lines.maximumLimit.x) / 2, ((config->display.lines.minimumLimit.y + config->display.lines.maximumLimit.y) / 2) - config->display.lines.cellGap, config->display.lines.minimumLimit.z);
+	glVertex3f((config->display.lines.minimumLimit.x + config->display.lines.maximumLimit.x) / 2, ((config->display.lines.minimumLimit.y + config->display.lines.maximumLimit.y) / 2) + config->display.lines.cellGap, config->display.lines.minimumLimit.z);
 	glEnd();
-}
-
-Vector3 ogl::Render::getMiddle()
-{
-	return middle_;
-}
-
-Vector3 ogl::Render::getMin()
-{
-	return min_;
-}
-
-Vector3 ogl::Render::getMax()
-{
-	return max_;
 }

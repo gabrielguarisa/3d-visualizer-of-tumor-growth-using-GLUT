@@ -1,10 +1,20 @@
 #include "GlutWindow.h"
 
+//Observer Position
+Vector3 observer;
+
+//Mouse Movement
+Vector3	rotation,
+		rotIni,
+		pos;
+
+GLint bpress;
+
 ogl::GlutWindow::GlutWindow(int argc, char * argv[])
 {
 	glutInit(&argc, argv);
-
-	//glutInitWindowPosition((glutGet(GLUT_SCREEN_WIDTH) - config->window.width) / 2, (glutGet(GLUT_SCREEN_HEIGHT) - config->window.height) / 2);
+	observer = Vector3(frames[0]->domain.x, frames[0]->domain.y, frames[0]->domain.z + 600.0f);
+	//glutInitWindowposition((glutGet(GLUT_SCREEN_WIDTH) - config->window.width) / 2, (glutGet(GLUT_SCREEN_HEIGHT) - config->window.height) / 2);
 	glutInitWindowSize(config->window.width, config->window.height);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutCreateWindow(config->window.title.c_str());
@@ -78,40 +88,40 @@ void ogl::GlutWindow::glutKeyboard(unsigned char key, int x, int y) {
 				/*** lowercase -> out ***/
 				/*** UPPERCASE -> center ***/
 	case 'a':
-		render->minimumLimit.x -= SENS_SLICES;
+		config->display.lines.minimumLimit.x -= SENS_SLICES;
 		break;
 	case 'A':
-		render->minimumLimit.x += SENS_SLICES;
+		config->display.lines.minimumLimit.x += SENS_SLICES;
 		break;
 	case 'd':
-		render->maximumLimit.x += SENS_SLICES;
+		config->display.lines.maximumLimit.x += SENS_SLICES;
 		break;
 	case 'D':
-		render->maximumLimit.x -= SENS_SLICES;
+		config->display.lines.maximumLimit.x -= SENS_SLICES;
 		break;
 	case 's':
-		render->minimumLimit.y -= SENS_SLICES;
+		config->display.lines.minimumLimit.y -= SENS_SLICES;
 		break;
 	case 'S':
-		render->minimumLimit.y += SENS_SLICES;
+		config->display.lines.minimumLimit.y += SENS_SLICES;
 		break;
 	case 'w':
-		render->maximumLimit.y += SENS_SLICES;
+		config->display.lines.maximumLimit.y += SENS_SLICES;
 		break;
 	case 'W':
-		render->maximumLimit.y -= SENS_SLICES;
+		config->display.lines.maximumLimit.y -= SENS_SLICES;
 		break;
 	case 'q':
-		render->maximumLimit.z += SENS_SLICES;
+		config->display.lines.maximumLimit.z += SENS_SLICES;
 		break;
 	case 'Q':
-		render->maximumLimit.z -= SENS_SLICES;
+		config->display.lines.maximumLimit.z -= SENS_SLICES;
 		break;
 	case 'e':
-		render->minimumLimit.z -= SENS_SLICES;
+		config->display.lines.minimumLimit.z -= SENS_SLICES;
 		break;
 	case 'E':
-		render->minimumLimit.z += SENS_SLICES;
+		config->display.lines.minimumLimit.z += SENS_SLICES;
 		break;
 	case 'l': case 'L': // Show/Hide Lines
 		config->display.showLines = !config->display.showLines;
@@ -120,8 +130,8 @@ void ogl::GlutWindow::glutKeyboard(unsigned char key, int x, int y) {
 		config->display.showInfo = !config->display.showInfo;
 		break;
 	case '0':	// reset Slices
-		render->maximumLimit = render->getMax();
-		render->minimumLimit = render->getMin();
+		config->display.lines.maximumLimit = frames[0]->domain;
+		config->display.lines.minimumLimit = Vector3();
 		break;
 
 
@@ -258,7 +268,7 @@ void ogl::GlutWindow::renderString(GLdouble x, GLdouble y, std::string text) {
 	glPushMatrix();
 	glLoadIdentity();
 		glColor3f(0.0f, 0.0f, 0.0f);
-		glRasterPos2f(x, y);
+		glRasterPos2d(x, y);
 
 		for (int i = 0; i < text.length(); i++)
 		{
@@ -275,7 +285,7 @@ void ogl::GlutWindow::renderString(GLdouble x, GLdouble y, std::string text) {
 void ogl::GlutWindow::glutDisplay() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	render->renderCells(frames[config->player.frame]->cells, config->display.viewMode, config->display.cells, nutGrids[config->player.frame], egfGrids[config->player.frame]);
+	render->renderCells(frames[config->player.frame]->cells, config->display.viewMode, config->display.cells, config, nutGrids[config->player.frame], egfGrids[config->player.frame]);
 
 	if(config->display.showInfo)
 	{
@@ -284,7 +294,7 @@ void ogl::GlutWindow::glutDisplay() {
 	}
 
 	if(config->display.showLines)
-		render->renderLines();
+		render->renderLines(config);
 
 	screenshot.longScreenshotWatch();
 

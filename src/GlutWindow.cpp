@@ -285,6 +285,8 @@ void ogl::GlutWindow::renderString(GLdouble x, GLdouble y, std::string text) {
 void ogl::GlutWindow::glutDisplay() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	render->axisDraw();
+
 	render->renderCells(frames[config->player.frame]->cells, config->display.viewMode, config->display.cells, config, nutGrids[config->player.frame], egfGrids[config->player.frame]);
 
 	if(config->display.showInfo)

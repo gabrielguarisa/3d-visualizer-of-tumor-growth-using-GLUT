@@ -5,9 +5,9 @@
 ### Ubuntu:
 
 - GLEW: sudo apt-get install libglew-dev glew-utils libglew-dbg
-- GLUT:  sudo apt-get install freeglut3 freeglut3-dbg freeglut3-dev
+- GLUT: sudo apt-get install freeglut3 freeglut3-dev
 - GLM: sudo apt-get install libglm-dev libglm-doc
-- libconfig: sudo apt-get install libconfig-dev libconfig-doc libconfig-dbg
+- libconfig: sudo apt install libconfig++-dev libconfig++-doc libconfig++-dbg
 - OpenCV:
     - sudo apt-get install build-essential cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev qt5-default qttools5-dev-tools
     - [OpenCV.sh](https://help.ubuntu.com/community/OpenCV)

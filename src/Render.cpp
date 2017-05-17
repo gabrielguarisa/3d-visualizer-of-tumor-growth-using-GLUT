@@ -23,18 +23,22 @@ void ogl::Render::drawCell_(Cell c, ViewMode viewMode, ColorRGBA primary, ColorR
 
 	glutSolidSphere(c.nucleusRadius, NUM_SEGMENTS, NUM_SEGMENTS);
 
-	if (c.type != NEC)
+
+	glDepthMask(GL_FALSE);
+	if(viewMode == STD)
 	{
-		glDepthMask(GL_FALSE);
-		if(viewMode == STD)
+		if (c.type == NEC)
+			glColor4f((c.calcification)*secondary.r, secondary.g, (1 - c.calcification)*secondary.b, secondary.a);
+		else
 			glColor4f(secondary.r, secondary.g, secondary.b, secondary.a);
-		else if(viewMode == NUT)
-			glColor4f(nut.r, nut.g, nut.b, nut.a - 0.8);
-		else if(viewMode == EGF)
-			glColor4f(egf.r, egf.g, egf.b, egf.a - 0.8);
-		glutSolidSphere(c.radius, NUM_SEGMENTS, NUM_SEGMENTS);
-		glDepthMask(GL_TRUE);
 	}
+	else if(viewMode == NUT)
+		glColor4f(nut.r, nut.g, nut.b, nut.a - 0.8);
+	else if(viewMode == EGF)
+		glColor4f(egf.r, egf.g, egf.b, egf.a - 0.8);
+	glutSolidSphere(c.radius, NUM_SEGMENTS, NUM_SEGMENTS);
+	glDepthMask(GL_TRUE);
+
 
 	glPopMatrix();
 }
@@ -129,4 +133,29 @@ void ogl::Render::renderLines(ConfigHandler* config)
 	glVertex3f((config->display.lines.minimumLimit.x + config->display.lines.maximumLimit.x) / 2, ((config->display.lines.minimumLimit.y + config->display.lines.maximumLimit.y) / 2) - config->display.lines.cellGap, config->display.lines.minimumLimit.z);
 	glVertex3f((config->display.lines.minimumLimit.x + config->display.lines.maximumLimit.x) / 2, ((config->display.lines.minimumLimit.y + config->display.lines.maximumLimit.y) / 2) + config->display.lines.cellGap, config->display.lines.minimumLimit.z);
 	glEnd();
+}
+
+
+void ogl::Render::axisDraw()
+{
+	glPushMatrix();
+	glDisable(GL_LIGHTING);
+	glLineWidth(3.0);
+
+	glTranslatef(-150, -100, 0);
+	glBegin(GL_LINES);
+		glColor3f(1.0f, 0.0f, 0.0f);
+		glVertex3f(0.0, 0.0, 0.0);
+		glVertex3f(50.0, 0.0, 0.0);
+		glColor3f(0.0f, 1.0f, 0.0f);
+		glVertex3f(0.0, 0.0, 0.0);
+		glVertex3f(0.0, 50.0, 0.0);
+		glColor3f(0.0f, 0.0f, 1.0f);
+		glVertex3f(0.0, 0.0, 0.0);
+		glVertex3f(0.0, 0.0, 50.0);
+	glEnd();
+
+	glEnable(GL_LIGHTING);
+	glLineWidth(1.0);
+	glPopMatrix();
 }

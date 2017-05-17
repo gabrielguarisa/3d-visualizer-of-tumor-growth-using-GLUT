@@ -18,6 +18,8 @@ namespace ogl {
 		void renderCells(std::vector<Cell> cells, ViewMode viewMode, CellDisplayTypes cellDT, ConfigHandler* config, std::vector<std::vector<std::vector<float> > >  nutGrid, std::vector<std::vector<std::vector<float> > >  egfGrid);
 
 		void renderLines(ConfigHandler* config);
+
+		void axisDraw();
 	};
 }
 

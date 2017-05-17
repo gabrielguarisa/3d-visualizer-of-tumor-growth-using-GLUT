@@ -64,9 +64,7 @@ private:
 
             displayConf.lookupValue("viewMode", viewMode);
 
-            if(viewMode == "STD")
-                this->display.viewMode = STD;
-            else if(viewMode == "NUT")
+            if(viewMode == "NUT")
                 this->display.viewMode = NUT;
             else if(viewMode == "EGF")
                 this->display.viewMode = EGF;
@@ -99,6 +97,11 @@ private:
             necConfig["color"]["primary"].lookupValue("g", this->display.cells.NEC.color.primary.g);
             necConfig["color"]["primary"].lookupValue("b", this->display.cells.NEC.color.primary.b);
             necConfig["color"]["primary"].lookupValue("a", this->display.cells.NEC.color.primary.a);
+
+            necConfig["color"]["secondary"].lookupValue("r", this->display.cells.NEC.color.secondary.r);
+            necConfig["color"]["secondary"].lookupValue("g", this->display.cells.NEC.color.secondary.g);
+            necConfig["color"]["secondary"].lookupValue("b", this->display.cells.NEC.color.secondary.b);
+            necConfig["color"]["secondary"].lookupValue("a", this->display.cells.NEC.color.secondary.a);
 
             const Setting &quiConfig = displayConf["cells"]["QUI"];
             quiConfig.lookupValue("visibility", this->display.cells.QUI.visibility);

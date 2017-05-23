@@ -3,6 +3,7 @@
 
 #include <GL/glut.h>
 #include <vector>
+#include <array>
 #include "Cell.h"
 #include "Util.h"
 #include "ConfigHandler.h"
@@ -20,6 +21,8 @@ namespace ogl {
 		void renderLines(ConfigHandler* config);
 
 		void axisDraw();
+
+		void generateColor(ColorRGBA *c, double value, double min = 0.0, double max = 0.6);
 	};
 }
 

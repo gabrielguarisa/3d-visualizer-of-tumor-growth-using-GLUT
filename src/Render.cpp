@@ -46,14 +46,17 @@ void ogl::Render::drawCell_(Cell c, ViewMode viewMode, ColorRGBA primary, ColorR
 void ogl::Render::renderCells(std::vector<Cell> cells, ViewMode viewMode, CellDisplayTypes cellDT, ConfigHandler* config, std::vector<std::vector<std::vector<float> > >  nutGrid, std::vector<std::vector<std::vector<float> > >  egfGrid)
 {
 	ColorRGBA nut, egf;
-	nut.r = nut.g = nut.b = nut.a = 1.0f;
-	egf.r = egf.g = egf.b = egf.a = 1.0f;
+	double nutValue, egfValue;
 
 	for (int i = 0; i < cells.size(); i++) {
 		if ((cells[i].coordinates.x > config->display.lines.minimumLimit.x && cells[i].coordinates.x < config->display.lines.maximumLimit.x) && (cells[i].coordinates.y > config->display.lines.minimumLimit.y && cells[i].coordinates.y < config->display.lines.maximumLimit.y) && (cells[i].coordinates.z > config->display.lines.minimumLimit.z && cells[i].coordinates.z < config->display.lines.maximumLimit.z)) {
 
-			nut.g = nutGrid[(int)round(cells[i].coordinates.x/accuracy)][(int)round(cells[i].coordinates.y/accuracy)][(int)round(cells[i].coordinates.z/accuracy)];
-			egf.b = egfGrid[(int)round(cells[i].coordinates.x/accuracy)][(int)round(cells[i].coordinates.y/accuracy)][(int)round(cells[i].coordinates.z/accuracy)];
+			nutValue = nutGrid[(int)round(cells[i].coordinates.x/accuracy)][(int)round(cells[i].coordinates.y/accuracy)][(int)round(cells[i].coordinates.z/accuracy)];
+			egfValue = egfGrid[(int)round(cells[i].coordinates.x/accuracy)][(int)round(cells[i].coordinates.y/accuracy)][(int)round(cells[i].coordinates.z/accuracy)];
+
+			this->generateColor(&nut, nutValue);
+			this->generateColor(&egf, egfValue, 0.0, 3.0);
+
 
 			switch (cells[i].type) {
 				case NEC:
@@ -89,6 +92,47 @@ void ogl::Render::renderCells(std::vector<Cell> cells, ViewMode viewMode, CellDi
 			}
 		}
 	}
+}
+
+void ogl::Render::generateColor(ColorRGBA *c, double value, double min, double max)
+{
+	double range = max - min;
+	double temp;
+
+	if ( value >= min  && value < (min + range/4.0) ){
+		temp = (value - min)/( (range/4.0)/ 85);
+		temp /= 85;
+
+		c->r = 1;
+		c->g = temp;
+		c->b = 0;
+	}
+	if ( value >= (min + range/4.0)  && value < (min + range/2.0) ){
+		temp = (value - (min + range/4.0))/( (range/4.0)/ 85);
+		temp /= 85;
+
+		c->r = (1 - temp);
+		c->g = 1;
+		c->b = 0;
+	}
+	if ( value >= (min + range/2.0)  && value < (min + 3*range/4.0) ){
+		temp = (value - (min + range / 2.0)) / ((range/4.0) / 85);
+		temp /= 85;
+
+		c->r = 0;
+		c->g = 1;
+		c->b = temp;
+	}
+	if ( value >= (min + 3*range/4.0)  && value <= max ){
+		temp = (value - (min + 3*range/4.0))/( (range/4.0)/ 85);
+		temp /= 85;
+
+		c->r = 0;
+		c->g = (1 - temp);
+		c->b = 1;
+	}
+	c->a = 1;
+	//std::cout << c->r << "  " << c->g << "  " << c->b << std::endl;
 }
 
 void ogl::Render::renderLines(ConfigHandler* config)

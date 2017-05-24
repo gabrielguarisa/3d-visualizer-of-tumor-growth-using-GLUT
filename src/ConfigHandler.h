@@ -215,13 +215,32 @@ private:
         }
     }
 
+    void getCameraValues_()
+    {
+        const Setting& conf = this->cfg_.getRoot()["viewer"]["camera"]["pos"];
+        try
+        {
+            conf.lookupValue("x", this->camera.pos.x);
+            conf.lookupValue("y", this->camera.pos.y);
+            conf.lookupValue("z", this->camera.pos.z);
+        }
+        catch(const SettingNotFoundException &nfex)
+        {
+            this->created_ = false;
+            std::cerr << "Camera Settings Not Found!" << std::endl;
+        }
+    }
+
     void getValues_()
     {
         this->getPathsValues_();
         this->getWindowValues_();
         this->getDisplayValues_();
         this->getPlayerValues_();
+        this->getCameraValues_();
     }
+
+
 public:
     ConfigHandler (std::string configFile = "config.cfg")
     {
@@ -287,6 +306,11 @@ public:
             Vector3 minimumLimit;
         }lines;
     } display;
+
+    struct
+    {
+        Vector3 pos;
+    } camera;
 };
 
 #endif /* end of include guard: CONFIG_HANDLER */

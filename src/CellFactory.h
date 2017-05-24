@@ -31,7 +31,7 @@ public:
     	for (int i = 0; i < numCells; i++) {
     		file >> type;
             c.type = (CellType)type;
-    		file >> c.coordinates.x >> c.coordinates.y >> c.coordinates.z ;
+    		file >> c.coordinates.x >> c.coordinates.y >> c.coordinates.z;
     		file >> c.nucleusRadius >> c.radius >> c.actionRadius;
             file >> c.lifetime >> c.previousState >> c.oConsumption >> c.egfConsumption >> c.calcification;
     		file >> c.speed.x >> c.speed.y >> c.speed.z;

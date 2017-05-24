@@ -137,6 +137,9 @@ void ogl::Render::generateColor(ColorRGBA *c, double value, double min, double m
 
 void ogl::Render::renderLines(ConfigHandler* config)
 {
+	glPushMatrix();
+	glDisable(GL_LIGHTING);
+
 	glLineWidth(2.5);
 	glColor3f(1.0, 0.0, 0.0);
 	//Right
@@ -177,6 +180,9 @@ void ogl::Render::renderLines(ConfigHandler* config)
 	glVertex3f((config->display.lines.minimumLimit.x + config->display.lines.maximumLimit.x) / 2, ((config->display.lines.minimumLimit.y + config->display.lines.maximumLimit.y) / 2) - config->display.lines.cellGap, config->display.lines.minimumLimit.z);
 	glVertex3f((config->display.lines.minimumLimit.x + config->display.lines.maximumLimit.x) / 2, ((config->display.lines.minimumLimit.y + config->display.lines.maximumLimit.y) / 2) + config->display.lines.cellGap, config->display.lines.minimumLimit.z);
 	glEnd();
+
+	glEnable(GL_LIGHTING);
+	glPopMatrix();
 }
 
 

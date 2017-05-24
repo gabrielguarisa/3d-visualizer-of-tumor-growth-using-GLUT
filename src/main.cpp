@@ -16,6 +16,8 @@ std::vector<CellFrame*> frames;
 
 int main(int argc, char** argv) {
 	config = new ConfigHandler();
+
+	std::cout << "Reading::config.cfg" << std::endl;
 	if (!config->created())
 		return EXIT_FAILURE;
 

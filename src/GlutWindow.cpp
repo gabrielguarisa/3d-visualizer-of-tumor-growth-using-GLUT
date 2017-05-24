@@ -13,7 +13,7 @@ GLint bpress;
 ogl::GlutWindow::GlutWindow(int argc, char * argv[])
 {
 	glutInit(&argc, argv);
-	observer = Vector3(frames[0]->domain.x, frames[0]->domain.y, frames[0]->domain.z + 600.0f);
+	observer = Vector3(config->camera.pos.x, config->camera.pos.y, config->camera.pos.z);
 	//glutInitWindowposition((glutGet(GLUT_SCREEN_WIDTH) - config->window.width) / 2, (glutGet(GLUT_SCREEN_HEIGHT) - config->window.height) / 2);
 	glutInitWindowSize(config->window.width, config->window.height);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
@@ -64,7 +64,7 @@ void ogl::GlutWindow::glutProjection() {
 	//ModelView
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(observer.x/2, observer.y/2, observer.z/1.2, observer.x/2, observer.y/2, observer.x/2, 0.0, 1.0, 0.0); //EYE, CENTER & UP
+	gluLookAt(observer.x/2, observer.y/2, observer.z/1.2, observer.x/2, observer.y/2, observer.x/2, 0.0, 0.0, 0.0); //EYE, CENTER & UP
 }
 
 //Keyboard Actions
@@ -285,18 +285,21 @@ void ogl::GlutWindow::renderString(GLdouble x, GLdouble y, std::string text) {
 void ogl::GlutWindow::glutDisplay() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	render->axisDraw();
 
-	render->renderCells(frames[config->player.frame]->cells, config->display.viewMode, config->display.cells, config, nutGrids[config->player.frame], egfGrids[config->player.frame]);
+	glPushMatrix();
+    	glTranslated(config->display.lines.maximumLimit.x/-2, config->display.lines.maximumLimit.y/-2, config->display.lines.maximumLimit.z/-2);
+    	render->axisDraw();
+    	render->renderCells(frames[config->player.frame]->cells, config->display.viewMode, config->display.cells, config, nutGrids[config->player.frame], egfGrids[config->player.frame]);
 
-	if(config->display.showInfo)
-	{
-		std::string info = 	"agents: " +  std::to_string(frames[config->player.frame]->cells.size()) + "    out cells: " +  std::to_string(frames[config->player.frame]->outCells)  + "    tumor cells: " +  std::to_string(frames[config->player.frame]->tumorCells)  + "    time stamp: " +  std::to_string(frames[config->player.frame]->time);
-		GlutWindow::renderString(10, 990, info);
-	}
+    	if(config->display.showInfo)
+    	{
+    		std::string info = 	"Agents: " +  std::to_string(frames[config->player.frame]->cells.size()) + "    Out cells: " +  std::to_string(frames[config->player.frame]->outCells)  + "    Tumor cells: " +  std::to_string(frames[config->player.frame]->tumorCells)  + "    Time step: " +  std::to_string(frames[config->player.frame]->time);
+    		GlutWindow::renderString(10, 990, info);
+    	}
 
-	if(config->display.showLines)
-		render->renderLines(config);
+    	if(config->display.showLines)
+    		render->renderLines(config);
+	glPopMatrix();
 
 	screenshot.longScreenshotWatch();
 
@@ -316,7 +319,12 @@ void ogl::GlutWindow::glutReshape(GLsizei width, GLsizei height) {
 	glMatrixMode(GL_PROJECTION);  // To operate on the Projection matrix
 	glLoadIdentity();             // Reset
 	// Enable perspective projection with fovy, aspect, zNear and zFar
-		gluPerspective(45.0, (GLfloat)aspect, 1.0, 2000.0);
+	gluPerspective(45.0, (GLfloat)aspect, 1.0, 2000.0);
+
+	//ModelView
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	gluLookAt(observer.x/2, observer.y/2, observer.z/1.2, observer.x/2, observer.y/2, observer.x/2, 0.0, 1.0, 0.0); //EYE, CENTER & UP
 }
 
 void ogl::GlutWindow::play() {

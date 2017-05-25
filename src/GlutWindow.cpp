@@ -281,8 +281,9 @@ void ogl::GlutWindow::glutDisplay() {
 
 
 	glPushMatrix();
-    	glTranslated(config->display.lines.maximumLimit.x/-2, config->display.lines.maximumLimit.y/-2, config->display.lines.maximumLimit.z/-2);
+    	glTranslated(config->display.lines.maximumLimit.x/-2, config->display.lines.maximumLimit.y/-2, 0);
     	render->axisDraw();
+		glTranslated(0, 0, config->display.lines.maximumLimit.z/-2);
 		render->renderCells(frames[config->player.frame]->cells, nutGrids[config->player.frame], egfGrids[config->player.frame], config);
     	if(config->display.showInfo)
     	{

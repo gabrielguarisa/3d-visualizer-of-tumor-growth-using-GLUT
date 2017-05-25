@@ -13,10 +13,10 @@ namespace ogl {
 
 	class Render {
 	private:
-		void drawCell_(Cell c, ViewMode viewMode, ColorRGBA primary, ColorRGBA secondary, ColorRGBA nut, ColorRGBA egf);
+		void drawCell_(Cell c, ViewMode viewMode, ColorRGBA primary, ColorRGBA secondary, double nutValue, double egfValue);
 	public:
 
-		void renderCells(std::vector<Cell> cells, ViewMode viewMode, CellDisplayTypes cellDT, ConfigHandler* config, std::vector<std::vector<std::vector<float> > >  nutGrid, std::vector<std::vector<std::vector<float> > >  egfGrid);
+		void renderCells(std::vector<Cell> cells, std::vector<std::vector<std::vector<float> > >  nutGrid, std::vector<std::vector<std::vector<float> > >  egfGrid, ConfigHandler* config);
 
 		void renderLines(ConfigHandler* config);
 

@@ -289,8 +289,7 @@ void ogl::GlutWindow::glutDisplay() {
 	glPushMatrix();
     	glTranslated(config->display.lines.maximumLimit.x/-2, config->display.lines.maximumLimit.y/-2, config->display.lines.maximumLimit.z/-2);
     	render->axisDraw();
-    	render->renderCells(frames[config->player.frame]->cells, config->display.viewMode, config->display.cells, config, nutGrids[config->player.frame], egfGrids[config->player.frame]);
-
+		render->renderCells(frames[config->player.frame]->cells, nutGrids[config->player.frame], egfGrids[config->player.frame], config);
     	if(config->display.showInfo)
     	{
     		std::string info = 	"Agents: " +  std::to_string(frames[config->player.frame]->cells.size()) + "    Out cells: " +  std::to_string(frames[config->player.frame]->outCells)  + "    Tumor cells: " +  std::to_string(frames[config->player.frame]->tumorCells)  + "    Time step: " +  std::to_string(frames[config->player.frame]->time);

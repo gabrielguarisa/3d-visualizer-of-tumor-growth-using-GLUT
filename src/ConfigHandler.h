@@ -194,9 +194,7 @@ private:
 
             conf.lookupValue("state", playerState);
 
-            if(playerState == "PAUSE")
-                this->player.state = PAUSE;
-            else if(playerState == "PLAY")
+            if(playerState == "PLAY")
                 this->player.state = PLAY;
             else if(playerState == "PREVIOUS")
                 this->player.state = PREVIOUS;

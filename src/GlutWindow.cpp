@@ -72,18 +72,12 @@ void ogl::GlutWindow::glutKeyboard(unsigned char key, int x, int y) {
 	switch (key) {
 	case 27: //ESC: EXIT
 		exit(0);
-	case 'p': // PrintScreen PNG
-		screenshot.screenshot(PNG);
-		break;
-	case 'P': // PrintScreen JPG
-		screenshot.screenshot(JPG);
-		break;
-	case 'o':
-		screenshot.startLongScreenshot();
-		break;
-	case 'O':
-		screenshot.stopLongScreenshot();
-		break;
+		case 'p': // PrintScreen PNG
+			ogl::Screenshot::takeScreenshot(Util::generateImageFileName(Util::getCurrentTime(), "out/", PNG));
+			break;
+		case 'P': // PrintScreen JPG
+			ogl::Screenshot::takeScreenshot(Util::generateImageFileName(Util::getCurrentTime(), "out/", JPG));
+			break;
 				/*** SLICES CONTROL ***/
 				/*** lowercase -> out ***/
 				/*** UPPERCASE -> center ***/
@@ -299,8 +293,6 @@ void ogl::GlutWindow::glutDisplay() {
     	if(config->display.showLines)
     		render->renderLines(config);
 	glPopMatrix();
-
-	screenshot.longScreenshotWatch();
 
 	GlutWindow::play();
 

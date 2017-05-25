@@ -10,7 +10,6 @@ Grid 	nutGrids,
 		egfGrids;
 
 ogl::Render *render;
-ogl::Screenshot screenshot;
 
 std::vector<CellFrame*> frames;
 

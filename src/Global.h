@@ -16,6 +16,4 @@ extern std::vector<CellFrame*> frames;
 
 extern ogl::Render *render;
 
-extern ogl::Screenshot screenshot;
-
 #endif /* end of include guard: GLOBAL */

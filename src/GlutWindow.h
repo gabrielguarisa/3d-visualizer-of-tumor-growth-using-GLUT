@@ -23,6 +23,7 @@ namespace ogl {
 		static void play();
 		void start();
 		static void renderString(GLdouble x, GLdouble y, std::string string);
+		static void renderQuad(GLdouble x, GLdouble y);
 	};
 
 }

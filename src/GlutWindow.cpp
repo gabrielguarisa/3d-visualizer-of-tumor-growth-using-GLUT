@@ -291,6 +291,30 @@ void ogl::GlutWindow::glutDisplay() {
     		GlutWindow::renderString(10, 990, info);
     	}
 
+		if(config->display.viewMode == NUT)
+		{
+			std::string info = 	"Oxygen";
+			GlutWindow::renderString(10, 900, info);
+			GlutWindow::renderQuad(100, 100);
+			GlutWindow::renderString(1160, 230, "0.0");
+			GlutWindow::renderString(1160, 330, "0.15");
+			GlutWindow::renderString(1160, 430, "0.30");
+			GlutWindow::renderString(1160, 530, "0.45");
+			GlutWindow::renderString(1160, 630, "0.60");
+		}
+		else if(config->display.viewMode == EGF)
+		{
+			std::string info = 	"EGF";
+			GlutWindow::renderString(10, 900, info);
+			GlutWindow::renderQuad(100, 100);
+			GlutWindow::renderString(1100, 670, "nM/s");
+			GlutWindow::renderString(1160, 230, "0.0");
+			GlutWindow::renderString(1160, 330, "0.5");
+			GlutWindow::renderString(1160, 430, "1.0");
+			GlutWindow::renderString(1160, 530, "1.5");
+			GlutWindow::renderString(1160, 630, "3.0");
+		}
+
     	if(config->display.showLines)
     		render->renderLines(config);
 	glPopMatrix();
@@ -351,4 +375,61 @@ void ogl::GlutWindow::play() {
 		}
 		glutPostRedisplay();
 	}
+}
+
+
+void ogl::GlutWindow::renderQuad(GLdouble x, GLdouble y) {
+	glMatrixMode( GL_PROJECTION );
+	glPushMatrix();
+	glLoadIdentity();
+	gluOrtho2D( 0, 1280, 0, 1024 );
+
+	glMatrixMode( GL_MODELVIEW );
+	glPushMatrix();
+	glLoadIdentity();
+		glRasterPos2d(x, y);
+		glTranslated(0,-70,0);
+		glBegin(GL_QUADS);
+			glColor3f(0.0f, 0.0f, 1.0f);
+			glVertex2f(1100, 710);
+			glColor3f(0.0f, 0.0f, 1.0f);
+			glVertex2f(1150, 710);
+
+			glColor3f(0.0f, 1.0f, 1.0f);
+			glVertex2f(1150, 610);
+			glColor3f(0.0f, 1.0f, 1.0f);
+			glVertex2f(1100, 610);
+		glEnd();
+		glBegin(GL_QUADS);
+			glVertex2f(1100, 610);
+			glVertex2f(1150, 610);
+
+			glColor3f(0.0f, 1.0f, 0.0f);
+			glVertex2f(1150, 510);
+			glColor3f(0.0f, 1.0f, 0.0f);
+			glVertex2f(1100, 510);
+        glEnd();
+        glBegin(GL_QUADS);
+			glVertex2f(1100, 510);
+			glVertex2f(1150, 510);
+
+			glColor3f(1.0f, 1.0f, 0.0f);
+			glVertex2f(1150, 410);
+			glColor3f(1.0f, 1.0f, 0.0f);
+			glVertex2f(1100, 410);
+        glEnd();
+        glBegin(GL_QUADS);
+			glVertex2f(1100, 410);
+			glVertex2f(1150, 410);
+
+			glColor3f(1.0f, 0.0f, 0.0f);
+			glVertex2f(1150, 310);
+			glColor3f(1.0f, 0.0f, 0.0f);
+			glVertex2f(1100, 310);
+        glEnd();
+		glPopMatrix();
+
+	glMatrixMode( GL_PROJECTION );
+	glPopMatrix();
+	glMatrixMode( GL_MODELVIEW );
 }

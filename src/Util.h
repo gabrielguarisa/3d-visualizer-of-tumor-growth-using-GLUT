@@ -67,6 +67,12 @@ typedef struct CellDisplayTypes
 				NOR;
 };
 
+typedef enum
+{
+	BI_D, 	// 2D
+	TRI_D	// 3D
+} FileFormat;
+
 class Util
 {
 public:

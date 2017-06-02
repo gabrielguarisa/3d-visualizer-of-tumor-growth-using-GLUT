@@ -17,7 +17,7 @@ int main(int argc, char** argv) {
 
 	std::vector<std::string> files = FileList::getFileNames(config->paths.files);
 
-    frames = FrameFactory::makeListFrames(files);
+    frames = FrameFactory::makeListFrames(files, config->fileFormat);
 
 	config->display.lines.maximumLimit = Vector3(frames[0]->domain.x + config->display.lines.cellGap, frames[0]->domain.y + config->display.lines.cellGap, frames[0]->domain.z);
 	config->display.lines.minimumLimit = Vector3(-config->display.lines.cellGap, -config->display.lines.cellGap, 0);

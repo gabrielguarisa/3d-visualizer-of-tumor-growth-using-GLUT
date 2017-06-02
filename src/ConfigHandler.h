@@ -227,6 +227,27 @@ private:
         }
     }
 
+    void getFileFormatValues_()
+    {
+        const Setting& conf = this->cfg_.getRoot()["viewer"]["file"];
+        try
+        {
+            std::string format;
+            conf.lookupValue("format", format);
+
+            if(format == "2D" || format == "2d")
+                this->fileFormat = BI_D;
+            else
+                this->fileFormat = TRI_D;
+        }
+        catch(const SettingNotFoundException &nfex)
+        {
+            this->created_ = false;
+            std::cerr << "File Format Settings Not Found!" << std::endl;
+        }
+    }
+
+
     void getValues_()
     {
         this->getPathsValues_();
@@ -234,6 +255,7 @@ private:
         this->getDisplayValues_();
         this->getPlayerValues_();
         this->getCameraValues_();
+        this->getFileFormatValues_();
     }
 
 
@@ -305,6 +327,8 @@ public:
     {
         Vector3 pos;
     } camera;
+
+    FileFormat fileFormat;
 };
 
 #endif /* end of include guard: CONFIG_HANDLER */

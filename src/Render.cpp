@@ -47,7 +47,7 @@ void ogl::Render::drawCell_(Cell c, ViewMode viewMode, ColorRGBA primary, ColorR
 
 void ogl::Render::renderCells(std::vector<Cell> cells, ConfigHandler* config)
 {
-	for (int i = 0; i < cells.size(); i++) {
+	for (std::size_t i = 0; i < cells.size(); i++) {
 		if ((cells[i].coordinates.x > config->display.lines.minimumLimit.x && cells[i].coordinates.x < config->display.lines.maximumLimit.x) && (cells[i].coordinates.y > config->display.lines.minimumLimit.y && cells[i].coordinates.y < config->display.lines.maximumLimit.y) && (cells[i].coordinates.z > config->display.lines.minimumLimit.z && cells[i].coordinates.z < config->display.lines.maximumLimit.z)) {
 			switch (cells[i].type) {
 				case NEC:

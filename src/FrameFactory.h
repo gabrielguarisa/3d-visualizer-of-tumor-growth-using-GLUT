@@ -9,6 +9,44 @@
 class FrameFactory
 {
 public:
+    [[deprecated]]
+    static Frame* makeFrame2d(std::string fileName)
+    {
+        // FILE
+        std::ifstream file;
+
+        // FRAME
+        Frame frame;
+
+        Cell c;
+        int type;
+        int numCells = 0;
+
+        file.open(fileName.c_str());
+
+        file >> frame.domain.x >> frame.domain.y;
+        frame.domain.z = frame.domain.y;
+        file >> numCells >> frame.time;
+        file >> frame.outCells >> frame.tumorCells;
+
+        // Reading all cells
+        for (std::size_t i = 0; i < numCells; i++) {
+            file >> type;
+            c.type = (CellType)type;
+            file >> c.coordinates.x >> c.coordinates.y;
+            c.coordinates.z = frame.domain.z/2;
+            file >> c.nucleusRadius >> c.radius >> c.calcification;
+            file >> c.speed.x >> c.speed.y;
+
+             c.actionRadius = c.speed.z = c.lifetime = c.previousState = c.oConsumption = c.egfConsumption = 0;
+
+            frame.cells.push_back(c);
+        }
+
+        file.close();
+        return new Frame(frame);
+    }
+
     static Frame* makeFrame(std::string fileName)
     {
     	// FILE
@@ -44,13 +82,16 @@ public:
     }
 
 
-    static std::vector<Frame*> makeListFrames(std::vector<std::string> files)
+    static std::vector<Frame*> makeListFrames(std::vector<std::string> files, FileFormat format)
     {
         std::vector<Frame*> frames;
 
         for (std::size_t i = 0; i < files.size(); i++)
     	{
-            frames.push_back(FrameFactory::makeFrame(files[i]));
+            if(format == BI_D)
+                frames.push_back(FrameFactory::makeFrame2d(files[i]));
+            else
+                frames.push_back(FrameFactory::makeFrame(files[i]));
             std::cout << files[i] << std::endl;
         }
 

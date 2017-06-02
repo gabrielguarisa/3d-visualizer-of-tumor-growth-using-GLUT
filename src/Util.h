@@ -67,8 +67,6 @@ typedef struct CellDisplayTypes
 				NOR;
 };
 
-typedef std::vector<std::vector<std::vector<std::vector<float> > > > Grid;
-
 class Util
 {
 public:

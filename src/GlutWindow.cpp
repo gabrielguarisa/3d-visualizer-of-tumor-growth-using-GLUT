@@ -284,7 +284,7 @@ void ogl::GlutWindow::glutDisplay() {
     	glTranslated(config->display.lines.maximumLimit.x/-2, config->display.lines.maximumLimit.y/-2, 0);
     	render->axisDraw();
 		glTranslated(0, 0, config->display.lines.maximumLimit.z/-2);
-		render->renderCells(frames[config->player.frame]->cells, nutGrids[config->player.frame], egfGrids[config->player.frame], config);
+		render->renderCells(frames[config->player.frame]->cells, config);
     	if(config->display.showInfo)
     	{
     		std::string info = 	"Agents: " +  std::to_string(frames[config->player.frame]->cells.size()) + "    Out cells: " +  std::to_string(frames[config->player.frame]->outCells)  + "    Tumor cells: " +  std::to_string(frames[config->player.frame]->tumorCells)  + "    Time step: " +  std::to_string(frames[config->player.frame]->time);

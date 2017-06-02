@@ -9,9 +9,6 @@
 
 extern ConfigHandler* config;
 
-extern Grid     nutGrids,
-                egfGrids;
-
 extern std::vector<CellFrame*> frames;
 
 extern ogl::Render *render;

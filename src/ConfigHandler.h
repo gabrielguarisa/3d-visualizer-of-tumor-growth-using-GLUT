@@ -21,9 +21,7 @@ private:
 
         try
         {
-            pathsConf.lookupValue("agents", this->paths.agents);
-            pathsConf.lookupValue("nut", this->paths.nut);
-            pathsConf.lookupValue("egf", this->paths.egf);
+            pathsConf.lookupValue("files", this->paths.files);
             pathsConf.lookupValue("output", this->paths.output);
         }
         catch(const SettingNotFoundException &nfex)
@@ -281,9 +279,7 @@ public:
 
     struct
     {
-        std::string agents,
-                    nut,
-                    egf,
+        std::string files,
                     output;
     } paths;
 

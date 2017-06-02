@@ -26,14 +26,14 @@ public:
     	file >> frame.domain.x >> frame.domain.y >> frame.domain.z;
     	file >> numCells >> frame.time;
     	file >> frame.outCells >> frame.tumorCells;
-
+        
     	// Reading all cells
-    	for (int i = 0; i < numCells; i++) {
+    	for (std::size_t i = 0; i < numCells; i++) {
     		file >> type;
             c.type = (CellType)type;
     		file >> c.coordinates.x >> c.coordinates.y >> c.coordinates.z;
-    		file >> c.nucleusRadius >> c.radius >> c.actionRadius;
-            file >> c.lifetime >> c.previousState >> c.oConsumption >> c.egfConsumption >> c.calcification;
+    		file >> c.nucleusRadius >> c.radius >> c.actionRadius >> c.lifetime >> c.previousState;
+            file >> c.oConsumption >> c.egfConsumption >> c.calcification >> c.sigmaEGF >> c.sigmaO;
     		file >> c.speed.x >> c.speed.y >> c.speed.z;
 
     		frame.cells.push_back(c);
@@ -44,14 +44,16 @@ public:
     }
 
 
-    static std::vector<CellFrame*> makeListFrames(std::vector<std::string> fileNames)
+    static std::vector<CellFrame*> makeListFrames(std::vector<std::string> files)
     {
         std::vector<CellFrame*> frames;
-        for (int i = 0; i < fileNames.size(); i++)
+
+        for (std::size_t i = 0; i < files.size(); i++)
     	{
-            frames.push_back(CellFactory::makeFrame(fileNames[i]));
-            std::cout << fileNames[i] << std::endl;
+            frames.push_back(CellFactory::makeFrame(files[i]));
+            std::cout << files[i] << std::endl;
         }
+
         return frames;
     }
 

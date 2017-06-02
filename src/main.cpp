@@ -1,5 +1,5 @@
 #include <iostream>
-#include "CellFactory.h"
+#include "FrameFactory.h"
 #include "GlutWindow.h"
 #include "FileList.h"
 
@@ -7,7 +7,7 @@ ConfigHandler* config;
 
 ogl::Render *render;
 
-std::vector<CellFrame*> frames;
+std::vector<Frame*> frames;
 
 int main(int argc, char** argv) {
 	config = new ConfigHandler();
@@ -17,7 +17,7 @@ int main(int argc, char** argv) {
 
 	std::vector<std::string> files = FileList::getFileNames(config->paths.files);
 
-    frames = CellFactory::makeListFrames(files);
+    frames = FrameFactory::makeListFrames(files);
 
 	config->display.lines.maximumLimit = Vector3(frames[0]->domain.x + config->display.lines.cellGap, frames[0]->domain.y + config->display.lines.cellGap, frames[0]->domain.z);
 	config->display.lines.minimumLimit = Vector3(-config->display.lines.cellGap, -config->display.lines.cellGap, 0);

@@ -3,13 +3,13 @@
 
 #include <vector>
 #include "Render.h"
-#include "CellFrame.h"
+#include "Frame.h"
 #include "Screenshot.h"
 #include "ConfigHandler.h"
 
 extern ConfigHandler* config;
 
-extern std::vector<CellFrame*> frames;
+extern std::vector<Frame*> frames;
 
 extern ogl::Render *render;
 

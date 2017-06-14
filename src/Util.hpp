@@ -20,7 +20,7 @@ typedef enum
 	APO = 4,  /***  Apoptotic Cell  ***/
 	G1 = 5,   /***  Cell G1 State  ***/
 	NOR = 6   /***  Normal Cell  ***/
-} CellType;
+} CellState;
 
 typedef enum
 {

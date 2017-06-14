@@ -23,7 +23,7 @@ void ogl::Render::drawCell_(Cell c, ViewMode viewMode, ColorRGBA primary, ColorR
 
 	glTranslatef(c.coordinates.x, c.coordinates.y, c.coordinates.z);
 
-	if (c.type == NEC && viewMode == STD)
+	if (c.state == NEC && viewMode == STD)
 		glColor4f((c.calcification)*primary.r, primary.g, (1 - c.calcification)*primary.b, primary.a);
 	else
 		glColor4f(primary.r, primary.g, primary.b, primary.a);
@@ -33,7 +33,7 @@ void ogl::Render::drawCell_(Cell c, ViewMode viewMode, ColorRGBA primary, ColorR
 
 	glDepthMask(GL_FALSE);
 
-	if (c.type == NEC && viewMode == STD)
+	if (c.state == NEC && viewMode == STD)
 		glColor4f((c.calcification)*secondary.r, secondary.g, (1 - c.calcification)*secondary.b, secondary.a);
 	else
 		glColor4f(secondary.r, secondary.g, secondary.b, secondary.a);
@@ -49,7 +49,7 @@ void ogl::Render::renderCells(std::vector<Cell> cells, ConfigHandler* config)
 {
 	for (std::size_t i = 0; i < cells.size(); i++) {
 		if ((cells[i].coordinates.x > config->display.lines.minimumLimit.x && cells[i].coordinates.x < config->display.lines.maximumLimit.x) && (cells[i].coordinates.y > config->display.lines.minimumLimit.y && cells[i].coordinates.y < config->display.lines.maximumLimit.y) && (cells[i].coordinates.z > config->display.lines.minimumLimit.z && cells[i].coordinates.z < config->display.lines.maximumLimit.z)) {
-			switch (cells[i].type) {
+			switch (cells[i].state) {
 				case NEC:
 					if(config->display.cells.NEC.visibility) //Necrotic Cell (0): RGB DEPENDS ON CALCIFICATION LEVEL
 						this->drawCell_(cells[i], config->display.viewMode, config->display.cells.NEC.color.primary, config->display.cells.NEC.color.secondary);

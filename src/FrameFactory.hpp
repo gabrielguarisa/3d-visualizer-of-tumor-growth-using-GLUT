@@ -19,7 +19,7 @@ public:
         Frame frame;
 
         Cell c;
-        int type;
+        int state;
         int numCells = 0;
 
         file.open(fileName.c_str());
@@ -31,14 +31,14 @@ public:
 
         // Reading all cells
         for (std::size_t i = 0; i < numCells; i++) {
-            file >> type;
-            c.type = (CellType)type;
+            file >> state;
+            c.state = (CellState)state;
             file >> c.coordinates.x >> c.coordinates.y;
             c.coordinates.z = frame.domain.z/2;
             file >> c.nucleusRadius >> c.radius >> c.calcification;
             file >> c.speed.x >> c.speed.y;
 
-             c.actionRadius = c.speed.z = c.lifetime = c.previousState = c.oConsumption = c.egfConsumption = 0;
+            c.actionRadius = c.speed.z = c.lifetime = c.previousState = c.oConsumption = c.egfConsumption = 0;
 
             frame.cells.push_back(c);
         }
@@ -56,7 +56,7 @@ public:
         Frame frame;
 
         Cell c;
-        int type;
+        int state;
         int numCells = 0;
 
     	file.open(fileName.c_str());
@@ -67,8 +67,8 @@ public:
 
     	// Reading all cells
     	for (std::size_t i = 0; i < numCells; i++) {
-    		file >> type;
-            c.type = (CellType)type;
+    		file >> state;
+            c.state = (CellState)state;
     		file >> c.coordinates.x >> c.coordinates.y >> c.coordinates.z;
     		file >> c.nucleusRadius >> c.radius >> c.actionRadius >> c.lifetime >> c.previousState;
             file >> c.oConsumption >> c.egfConsumption >> c.calcification >> c.sigmaEGF >> c.sigmaO;

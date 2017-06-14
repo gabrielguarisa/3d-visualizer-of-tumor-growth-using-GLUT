@@ -1,5 +1,5 @@
-#include "Screenshot.h"
-#include "Global.h"
+#include "Screenshot.hpp"
+#include "Global.hpp"
 
 #include <chrono>
 #include <thread>

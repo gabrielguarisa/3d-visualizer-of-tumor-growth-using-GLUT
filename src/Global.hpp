@@ -2,10 +2,10 @@
 #define GLOBAL
 
 #include <vector>
-#include "Render.h"
-#include "Frame.h"
-#include "Screenshot.h"
-#include "ConfigHandler.h"
+#include "Render.hpp"
+#include "Frame.hpp"
+#include "Screenshot.hpp"
+#include "ConfigHandler.hpp"
 
 extern ConfigHandler* config;
 

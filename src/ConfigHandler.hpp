@@ -6,7 +6,7 @@
 #include <iostream>
 #include <libconfig.h++>
 #include <string>
-#include "Util.h"
+#include "Util.hpp"
 using namespace libconfig;
 
 class ConfigHandler

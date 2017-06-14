@@ -1,7 +1,7 @@
 #ifndef CELL
 #define CELL
 
-#include "Util.h"
+#include "Util.hpp"
 
 class Cell
 {

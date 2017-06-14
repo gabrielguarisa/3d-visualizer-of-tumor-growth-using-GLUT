@@ -1,7 +1,7 @@
 #ifndef UTIL
 #define UTIL
 
-#include "Vector.h"
+#include "Vector.hpp"
 #include <GL/glut.h>
 #include <map>
 #include <time.h>

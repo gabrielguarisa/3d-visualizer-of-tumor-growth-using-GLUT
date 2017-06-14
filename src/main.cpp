@@ -1,7 +1,7 @@
 #include <iostream>
-#include "FrameFactory.h"
-#include "GlutWindow.h"
-#include "FileList.h"
+#include "FrameFactory.hpp"
+#include "GlutWindow.hpp"
+#include "FileList.hpp"
 
 ConfigHandler* config;
 

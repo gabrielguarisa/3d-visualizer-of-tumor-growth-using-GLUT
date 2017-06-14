@@ -4,9 +4,9 @@
 #include <GL/glut.h>
 #include <vector>
 #include <array>
-#include "Cell.h"
-#include "Util.h"
-#include "ConfigHandler.h"
+#include "Cell.hpp"
+#include "Util.hpp"
+#include "ConfigHandler.hpp"
 
 namespace ogl {
 	#define NUM_SEGMENTS 20

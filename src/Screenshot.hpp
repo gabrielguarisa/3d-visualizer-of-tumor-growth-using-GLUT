@@ -1,7 +1,7 @@
 #pragma once
 
 #include <opencv2/highgui/highgui.hpp>
-#include "Util.h"
+#include "Util.hpp"
 
 namespace ogl {
 	class Screenshot

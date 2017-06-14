@@ -1,4 +1,4 @@
-#include "Screenshot.h"
+#include "Screenshot.hpp"
 
 void ogl::Screenshot::takeScreenshot(std::string filename)
 {

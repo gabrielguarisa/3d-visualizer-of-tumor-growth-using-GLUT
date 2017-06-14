@@ -1,4 +1,4 @@
-#include "GlutWindow.h"
+#include "GlutWindow.hpp"
 
 //Observer Position
 Vector3 observer;

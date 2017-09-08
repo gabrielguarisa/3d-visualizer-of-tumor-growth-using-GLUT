@@ -9,17 +9,21 @@
 #include <string>
 #include <vector>
 
-// Cell Types
+// Cell States
 typedef enum
 {
-	UND = -1, /***  Undefined Cell  ***/
-	NEC = 0,  /***  Necrotic Cell  ***/
-	QUI = 1,  /***  Quiescent Cell  ***/
-	PRO = 2,  /***  Proliferative Cell  ***/
-	HIP = 3,  /***  Hipoxic Cell  ***/
-	APO = 4,  /***  Apoptotic Cell  ***/
-	G1 = 5,   /***  Cell G1 State  ***/
-	NOR = 6   /***  Normal Cell  ***/
+	UND = -1, /***  Undefined		***/
+	NEC = 0,  /***  Necrotic		***/
+	QUI = 1,  /***  Quiescent		***/
+	PRO = 2,  /***  Proliferative	***/
+	HIP = 3,  /***  Hipoxic			***/
+	APO = 4,  /***  Apoptotic		***/
+	G1 	= 5,  /***  G1				***/
+	NOR = 6,  /***  Normal			***/
+	TC	= 7,
+	SC1	= 8,
+	SC2	= 9
+
 } CellState;
 
 typedef enum
@@ -64,7 +68,10 @@ typedef struct CellDisplayTypes
 				HIP,
 				APO,
 				G1,
-				NOR;
+				NOR,
+				TC,
+				SC1,
+				SC2;
 };
 
 typedef enum

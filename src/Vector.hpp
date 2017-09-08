@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 class Vector3 {
 public:
 
@@ -100,5 +102,9 @@ public:
 	bool operator!=(const Vector3& vec)
 	{
 		return !(this->x == vec.x && this->y == vec.y && this->z == vec.z);
+	}
+
+	std::string to_string() {
+		return "(" + std::to_string(this->x) + ", " + std::to_string(this->y) + ", " + std::to_string(this->z) + ")";
 	}
 };

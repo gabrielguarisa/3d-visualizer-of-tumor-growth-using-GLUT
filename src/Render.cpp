@@ -47,6 +47,7 @@ void ogl::Render::drawCell_(Cell c, ViewMode viewMode, ColorRGBA primary, ColorR
 
 void ogl::Render::renderCells(std::vector<Cell> cells, ConfigHandler* config)
 {
+	config->display.lateralLine = false;
 	for (std::size_t i = 0; i < cells.size(); i++) {
 		if ((cells[i].coordinates.x > config->display.lines.minimumLimit.x && cells[i].coordinates.x < config->display.lines.maximumLimit.x) && (cells[i].coordinates.y > config->display.lines.minimumLimit.y && cells[i].coordinates.y < config->display.lines.maximumLimit.y) && (cells[i].coordinates.z > config->display.lines.minimumLimit.z && cells[i].coordinates.z < config->display.lines.maximumLimit.z)) {
 			switch (cells[i].state) {
@@ -75,11 +76,35 @@ void ogl::Render::renderCells(std::vector<Cell> cells, ConfigHandler* config)
 						this->drawCell_(cells[i], config->display.viewMode, config->display.cells.G1.color.primary, config->display.cells.G1.color.secondary);
 
 					break;
+				case HIP:
+					if(config->display.cells.HIP.visibility)
+						this->drawCell_(cells[i], config->display.viewMode, config->display.cells.HIP.color.primary, config->display.cells.HIP.color.secondary);
+
+					break;
 				case NOR:
 					if(config->display.cells.NOR.visibility)
 						this->drawCell_(cells[i], config->display.viewMode, config->display.cells.NOR.color.primary, config->display.cells.NOR.color.secondary);
 
 					break;
+				case TC:
+					if(config->display.cells.TC.visibility)
+						this->drawCell_(cells[i], config->display.viewMode, config->display.cells.TC.color.primary, config->display.cells.TC.color.secondary);
+					config->display.lateralLine = true;
+					break;
+				case SC1:
+					if(config->display.cells.SC1.visibility)
+						this->drawCell_(cells[i], config->display.viewMode, config->display.cells.SC1.color.primary, config->display.cells.SC1.color.secondary);
+					config->display.lateralLine = true;
+					break;
+				case SC2:
+					if(config->display.cells.SC2.visibility)
+						this->drawCell_(cells[i], config->display.viewMode, config->display.cells.SC2.color.primary, config->display.cells.SC2.color.secondary);
+					config->display.lateralLine = true;
+					break;
+				default:
+					this->drawCell_(cells[i], config->display.viewMode, config->display.cells.NOR.color.primary, config->display.cells.NOR.color.secondary);
+					break;
+
 			}
 		}
 	}
@@ -183,17 +208,17 @@ void ogl::Render::axisDraw()
 	glDisable(GL_LIGHTING);
 	glLineWidth(3.0);
 
-	glTranslatef(-100, -50, 0);
+	glTranslatef(2512, -50, 0);
 	glBegin(GL_LINES);
 		glColor3f(1.0f, 0.0f, 0.0f);
 		glVertex3f(0.0, 0.0, 0.0);
-		glVertex3f(50.0, 0.0, 0.0);
+		glVertex3f(-50.0, 0.0, 0.0);
 		glColor3f(0.0f, 1.0f, 0.0f);
 		glVertex3f(0.0, 0.0, 0.0);
 		glVertex3f(0.0, 50.0, 0.0);
 		glColor3f(0.0f, 0.0f, 1.0f);
 		glVertex3f(0.0, 0.0, 0.0);
-		glVertex3f(0.0, 0.0, 50.0);
+		glVertex3f(0.0, 0.0, -50.0);
 	glEnd();
 
 	glEnable(GL_LIGHTING);

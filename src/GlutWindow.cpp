@@ -64,7 +64,7 @@ void ogl::GlutWindow::glutProjection() {
 	//ModelView
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(observer.x/2, observer.y/2, observer.z/1.2, observer.x/2, observer.y/2, observer.x/2, 0.0, 0.0, 0.0); //EYE, CENTER & UP
+	gluLookAt(observer.x/2, observer.y/2, observer.z, observer.x/2, observer.y/2, observer.x/2, 0.0, 0.0, 0.0); //EYE, CENTER & UP
 }
 
 //Keyboard Actions
@@ -281,7 +281,23 @@ void ogl::GlutWindow::glutDisplay() {
 
 
 	glPushMatrix();
-    	glTranslated(config->display.lines.maximumLimit.x/-2, config->display.lines.maximumLimit.y/-2, 0);
+		glTranslated(config->display.lines.maximumLimit.x/-2, config->display.lines.maximumLimit.y/-2, 0);
+		glScalef(config->scale.x, config->scale.y, config->scale.z);
+
+		if (config->display.lateralLine) {
+			glPushMatrix();
+				glDisable(GL_LIGHTING);
+
+				glLineWidth(15);
+				glColor3f(config->display.cells.SC2.color.primary.r, config->display.cells.SC2.color.primary.g, config->display.cells.SC2.color.primary.b);
+				//Right
+				glBegin(GL_LINES);
+				glVertex3f(0, config->display.lines.minimumLimit.y, 5);
+				glVertex3f(0, config->display.lines.maximumLimit.y, 5);
+				glEnd();
+			glPopMatrix();
+		}
+
     	render->axisDraw();
 		glTranslated(0, 0, config->display.lines.maximumLimit.z/-2);
 		render->renderCells(frames[config->player.frame]->cells, config);

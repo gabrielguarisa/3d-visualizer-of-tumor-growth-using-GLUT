@@ -9,6 +9,7 @@
 - GLM: sudo apt-get install libglm-dev libglm-doc
 - libconfig: sudo apt install libconfig++-dev libconfig++-doc libconfig++-dbg
 - OpenCV: sudo apt-get install build-essential cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev qt5-default qttools5-dev-tools libopencv-dev
+
 ## Compilando o projeto
 
 1. `make clean`

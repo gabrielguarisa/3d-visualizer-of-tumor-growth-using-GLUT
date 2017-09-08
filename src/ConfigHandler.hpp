@@ -31,6 +31,24 @@ private:
         }
     }
 
+    void getScaleValues_()
+    {
+        const Setting& pathsConf = this->cfg_.getRoot()["viewer"]["scale"];
+
+        try
+        {
+            pathsConf.lookupValue("x", this->scale.x);
+            pathsConf.lookupValue("y", this->scale.y);
+            pathsConf.lookupValue("z", this->scale.z);
+
+        }
+        catch(const SettingNotFoundException &nfex)
+        {
+            this->created_ = false;
+            std::cerr << "Scale Settings Not Found!" << std::endl;
+        }
+    }
+
     void getWindowValues_()
     {
         const Setting& windowConf = this->cfg_.getRoot()["viewer"]["window"];
@@ -173,6 +191,41 @@ private:
             g1Config["color"]["secondary"].lookupValue("b", this->display.cells.G1.color.secondary.b);
             g1Config["color"]["secondary"].lookupValue("a", this->display.cells.G1.color.secondary.a);
 
+            const Setting &tcConfig = displayConf["cells"]["TC"];
+            tcConfig.lookupValue("visibility", this->display.cells.TC.visibility);
+            tcConfig["color"]["primary"].lookupValue("r", this->display.cells.TC.color.primary.r);
+            tcConfig["color"]["primary"].lookupValue("g", this->display.cells.TC.color.primary.g);
+            tcConfig["color"]["primary"].lookupValue("b", this->display.cells.TC.color.primary.b);
+            tcConfig["color"]["primary"].lookupValue("a", this->display.cells.TC.color.primary.a);
+
+            tcConfig["color"]["secondary"].lookupValue("r", this->display.cells.TC.color.secondary.r);
+            tcConfig["color"]["secondary"].lookupValue("g", this->display.cells.TC.color.secondary.g);
+            tcConfig["color"]["secondary"].lookupValue("b", this->display.cells.TC.color.secondary.b);
+            tcConfig["color"]["secondary"].lookupValue("a", this->display.cells.TC.color.secondary.a);
+
+            const Setting &sc1Config = displayConf["cells"]["SC1"];
+            sc1Config.lookupValue("visibility", this->display.cells.SC1.visibility);
+            sc1Config["color"]["primary"].lookupValue("r", this->display.cells.SC1.color.primary.r);
+            sc1Config["color"]["primary"].lookupValue("g", this->display.cells.SC1.color.primary.g);
+            sc1Config["color"]["primary"].lookupValue("b", this->display.cells.SC1.color.primary.b);
+            sc1Config["color"]["primary"].lookupValue("a", this->display.cells.SC1.color.primary.a);
+
+            sc1Config["color"]["secondary"].lookupValue("r", this->display.cells.SC1.color.secondary.r);
+            sc1Config["color"]["secondary"].lookupValue("g", this->display.cells.SC1.color.secondary.g);
+            sc1Config["color"]["secondary"].lookupValue("b", this->display.cells.SC1.color.secondary.b);
+            sc1Config["color"]["secondary"].lookupValue("a", this->display.cells.SC1.color.secondary.a);
+
+            const Setting &sc2Config = displayConf["cells"]["SC2"];
+            sc2Config.lookupValue("visibility", this->display.cells.SC2.visibility);
+            sc2Config["color"]["primary"].lookupValue("r", this->display.cells.SC2.color.primary.r);
+            sc2Config["color"]["primary"].lookupValue("g", this->display.cells.SC2.color.primary.g);
+            sc2Config["color"]["primary"].lookupValue("b", this->display.cells.SC2.color.primary.b);
+            sc2Config["color"]["primary"].lookupValue("a", this->display.cells.SC2.color.primary.a);
+
+            sc2Config["color"]["secondary"].lookupValue("r", this->display.cells.SC2.color.secondary.r);
+            sc2Config["color"]["secondary"].lookupValue("g", this->display.cells.SC2.color.secondary.g);
+            sc2Config["color"]["secondary"].lookupValue("b", this->display.cells.SC2.color.secondary.b);
+            sc2Config["color"]["secondary"].lookupValue("a", this->display.cells.SC2.color.secondary.a);
         }
         catch(const SettingNotFoundException &nfex)
         {
@@ -256,6 +309,7 @@ private:
         this->getPlayerValues_();
         this->getCameraValues_();
         this->getFileFormatValues_();
+        this->getScaleValues_();
     }
 
 
@@ -308,7 +362,8 @@ public:
     struct
     {
         bool    showLines,
-                showInfo;
+                showInfo,
+                lateralLine;
 
         ViewMode viewMode;
 
@@ -327,7 +382,7 @@ public:
     {
         Vector3 pos;
     } camera;
-
+    Vector3 scale;
     FileFormat fileFormat;
 };
 

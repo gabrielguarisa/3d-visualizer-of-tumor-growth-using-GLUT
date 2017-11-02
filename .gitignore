@@ -348,3 +348,4 @@ build/
 files/
 out/
 .dropbox
+.Rhistory

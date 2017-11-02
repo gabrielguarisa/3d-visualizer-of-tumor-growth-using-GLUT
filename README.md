@@ -1,5 +1,7 @@
 # 3d Visualizer of Tumor Growth (GLUT)
 
+Projeto desenvolvido no [TMG](http://tmg.lncc.br/).
+
 - [Demonstrações](https://www.youtube.com/playlist?list=PLBiKOq-ULPIZfYM7N7ghntbDf0wbeoBYo)
 
 ## Dependências

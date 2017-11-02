@@ -1,4 +1,6 @@
-# 3D Viewer (GLUT)
+# 3d Visualizer of Tumor Growth (GLUT)
+
+- [Demonstrações](https://www.youtube.com/playlist?list=PLBiKOq-ULPIZfYM7N7ghntbDf0wbeoBYo)
 
 ## Dependências
 
